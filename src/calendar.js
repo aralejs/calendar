@@ -388,5 +388,13 @@ define(function(require, exports, module) {
         }
     });
 
+    Calendar.autoRender = function(config) {
+        config.trigger = config.element;
+        config.element = '';
+        new Calendar(config);
+    }
+    
     module.exports = Calendar;
+
+
 });
