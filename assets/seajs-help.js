@@ -21,9 +21,9 @@ seajs.config({
     var use = seajs.use;
     seajs.use = function(ids, callback) {
         use.call(seajs, ['../package.json'], function(data) {
-            if (data.seaDependencies && !isSetAlias) {
+            if (data.moduleDependencies && !isSetAlias) {
                 seajs.config({
-                    alias: data.seaDependencies
+                    alias: data.moduleDependencies
                 });
                 isSetAlias = true;
             }

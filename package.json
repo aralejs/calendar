@@ -1,10 +1,10 @@
 {
     "name": "calendar",
     "version": "0.8.0",
-    "seaDependencies": {
-        "base": "base/0.9.16/base",
-        "moment": "moment/1.6.2/moment",
-        "overlay": "overlay/0.9.7/overlay",
+    "moduleDependencies": {
+        "base": "0.9.16",
+        "moment": "1.6.2",
+        "overlay": "0.9.7",
         "templatable": "widget/0.9.16/templatable"
     },
     "tests": [
