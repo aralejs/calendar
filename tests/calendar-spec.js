@@ -1,6 +1,5 @@
 define(function(require) {
-    //var Calendar = require('../src/calendar');
-    var Calendar = require('calendar');
+    var Calendar = require('../src/calendar');
 
     describe('Calendar', function() {
         test('initialize Calendar', function() {
