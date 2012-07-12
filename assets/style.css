@@ -10,8 +10,8 @@
 }
 #header {
     position: relative;
-    background: #fff;
-    box-shadow: 0 0 3px #ccc;
+    background: #f4f4f4;
+    box-shadow: 0 0 5px #ccc;
     height: 46px;
     width: 100%;
     zoom: 1;
@@ -44,12 +44,12 @@
     position: relative;
     max-width: 800px;
     *width: 800px;
+    height: 46px;
     margin: 0 auto;
-    background: #fff;
+    background: #f4f4f4;
     z-index: 9;
 }
 #nav a {
-    color: #d14;
     font-weight: bold;
     font-family: "Helvetica Neue", "Helvetica", arial, sans-serif;
     margin-right: 6px;
