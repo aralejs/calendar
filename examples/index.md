@@ -2,14 +2,7 @@
 
 ## Example
 
-<script type="text/javascript">
-seajs.config({
-    "map": [[/dist\/calendar\/0\.8\.0\/(.*)/i, "lib/calendar/src/$1"]]
-});
-</script>
-
-
-<link rel="stylesheet" href="/lib/calendar/src/themes/simple.css" />
+<link rel="stylesheet" href="../src/themes/simple.css" />
 
 Attached to a field with default options.
 
@@ -19,7 +12,7 @@ Attached to a field with default options.
 
 
 ```javascript
-seajs.use(['calendar'], function(Calendar) {
+seajs.use('../src/calendar', function(Calendar) {
     var cal1 = new Calendar({trigger: '#date-1'});
 });
 ```
@@ -32,7 +25,7 @@ Attached to a field with i18n support.
 </div>
 
 ```javascript
-seajs.use(['calendar', 'calendar/../i18n/zh-CN'], function(Calendar, lang) {
+seajs.use(['../src/calendar', '../src/i18n/zh-CN'], function(Calendar, lang) {
     var cal2 = new Calendar({trigger: '#date-2', lang: lang});
 });
 ```
@@ -45,7 +38,7 @@ Attached to a field with Tuesday unavailable.
 </div>
 
 ```javascript
-seajs.use(['jquery', 'calendar'], function($, Calendar) {
+seajs.use(['jquery', '../src/calendar'], function($, Calendar) {
     var range = function(time) {
         var day = time.day();
         return day != 2;
@@ -68,7 +61,7 @@ Related calendars, set range dynamicly.
 </div>
 
 ```javascript
-seajs.use(['jquery', 'calendar'], function($, Calendar) {
+seajs.use(['jquery', '../src/calendar'], function($, Calendar) {
     var cal4 = new Calendar({trigger: '#date-4'});
     var cal5 = new Calendar({trigger: '#date-5'});
     cal4.on('select-date', function(date) {

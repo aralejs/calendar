@@ -13,7 +13,7 @@
 
 ## 使用说明
 
-```
+```javascript
 define(function(require){
     var Calendar = require('calendar');
     var cal = Calendar();

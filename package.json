@@ -1,11 +1,11 @@
 {
     "name": "calendar",
     "version": "0.8.0",
-    "dist": {
-        "calendar.js": "default",
-        "calendar.tpl": "default",
-        "i18n/zh-CN.js": "default",
-        "model.js": "default"
+    "seaDependencies": {
+        "base": "base/0.9.16/base",
+        "moment": "moment/1.6.2/moment",
+        "overlay": "overlay/0.9.7/overlay",
+        "templatable": "widget/0.9.16/templatable"
     },
     "tests": [
         "calendar",
