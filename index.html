@@ -64,7 +64,7 @@
                         href + '" frameborder="0" width="100%" height="640">' +
                         '</iframe></div>';
                     $('#main').html(iframe);
-                    !!history.pushState && history.pushState(null, 'Test', href);
+                    !!history.pushState && history.pushState(null, 'Test', '#' + href);
                     return false;
                 });
             });
