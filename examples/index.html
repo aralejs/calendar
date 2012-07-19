@@ -5,15 +5,15 @@
         <title>Calendar</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
         
-        <link rel="stylesheet" href="../assets/base.css" />
-        <link rel="stylesheet" href="../assets/style.css" />
-        <link rel="stylesheet" href="../assets/pygments.css" />
-        <script src="http://aralejs.org/dist/seajs/1.2.0/sea.js" id="seajsnode"></script>
+        <link rel="stylesheet" href="http://aralejs.github.com/assets/base.css" />
+        <link rel="stylesheet" href="http://aralejs.github.com/assets/style.css" />
+        <link rel="stylesheet" href="http://aralejs.github.com/assets/pygments.css" />
+        <script src="https://a.alipayobjects.com/static/arale/seajs/1.2.0/sea.js"></script>
         
-<script src="../assets/seajs-help.js"></script>
+<script src="http://aralejs.github.com/tools/seajs-help.js"></script>
 
         <!--[if lt IE 9]>
-        <script type="text/javascript" src="../assets/html5shiv.js"></script>
+        <script type="text/javascript" src="http://aralejs.github.com/assets/html5shiv.js"></script>
         <![endif]-->
     </head>
     <body>
@@ -21,7 +21,6 @@
             <h1 id="brand"><a href="http://aralejs.org/">Arale</a></h1>
             <nav id="nav" role="navigation">
                 <a href="../">Calendar</a>
-                
                 <a href="../examples/">Examples</a>
                 
                 
@@ -32,6 +31,12 @@
 
         <div id="main">
             
+<nav id="side-nav">
+    
+    <a href="../examples/index.html">index</a>
+    
+</nav>
+
             <div class="container">
     <h1>Calendar</h1>
 
@@ -146,18 +151,5 @@ seajs.use(['jquery', '../src/calendar'], function($, Calendar) {
 
         </div>
         <hr class="end" />
-        <script type="text/javascript">
-            seajs.use('#jquery/1.7.2/jquery', function($) {
-                $('#nav-test').click(function() {
-                    var href = $(this).attr('href');
-                    var iframe = '<div class="container"><iframe src="' +
-                        href + '" frameborder="0" width="100%" height="640">' +
-                        '</iframe></div>';
-                    $('#main').html(iframe);
-                    !!history.pushState && history.pushState(null, 'Test', '#' + href);
-                    return false;
-                });
-            });
-        </script>
     </body>
 </html>

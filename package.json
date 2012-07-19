@@ -1,12 +1,32 @@
 {
     "name": "calendar",
-    "version": "0.8.0",
-    "moduleDependencies": {
-        "base": "0.9.16",
+    "version": "0.8.0-dev",
+    "author": "Hsiaoming Yang <lepture@me.com>",
+    "homepage": "http://aralejs.github.com/calednar/",
+
+    "dependencies": {
         "moment": "1.6.2",
-        "overlay": "0.9.7",
-        "templatable": "widget/0.9.16/templatable"
+        "base": "0.9.16",
+        "overlay": "0.9.16",
+        "widget": "0.9.16",
+        "templatable": "widget/0.9.16/templatable",
     },
+
+    "devDependencies": {
+        "base": "base/master/base",
+        "moment": "1.6.2",
+        "overlay": "overlay/master/overlay",
+        "templatable": "widget/master/templatable",
+
+        // extends for development
+        "handlebars": "1.0.0",
+        "events": "events/master/events",
+        "position": "position/master/position",
+        "iframe-shim": "iframe-shim/master/iframe-shim",
+        "class": "class/master/class",
+        "widget": "widget/master/widget"
+    },
+
     "tests": [
         "calendar",
         "model"
