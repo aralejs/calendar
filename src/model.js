@@ -56,7 +56,7 @@ define(function(require, exports, module) {
                 }
             },
 
-            i18n: null
+            message: null
         },
 
         initialize: function(config) {
@@ -68,16 +68,10 @@ define(function(require, exports, module) {
             this.range = config.range;
             this._showTime = config.showTime;
 
-            config.i18n = config.i18n || {};
-            config.i18n.today = 'Today';
+            var message = config.message || {};
+            message.today = 'Today';
 
-            var i18n = {};
-            for (var key in config.i18n) {
-                i18n[key] = {key: config.i18n[key]};
-                i18n[key].value = translate(this._lang, config.i18n[key]);
-            }
-
-            this.set('i18n', i18n);
+            this.set('message', message);
             this.set('mode', 'date');
             this.renderData();
         },
