@@ -19,13 +19,13 @@ define(function(require, exports, module) {
 
             month: {
                 setter: function(val) {
-                    return createMonthModel(this._lang, val);
+                    return createMonthModel(val);
                 }
             },
 
             day: {
                 setter: function(val) {
-                    return createDayModel(this._lang, this._startDay);
+                    return createDayModel(this._startDay);
                 }
             },
 
@@ -60,7 +60,6 @@ define(function(require, exports, module) {
         },
 
         initialize: function(config) {
-            this._lang = config.lang || {};
             this._startDay = config.startDay;
             this._activeTime = config.focus.clone();
             dateCustomize = config.dateCustomize;
@@ -128,7 +127,6 @@ define(function(require, exports, module) {
         },
 
         range: null,
-        _lang: null,
         _activeTime: null,
         _startDay: 0,
         _showTime: false
@@ -165,7 +163,7 @@ define(function(require, exports, module) {
         return startDay;
     }
 
-    function createMonthModel(lang, month) {
+    function createMonthModel(month) {
         var items = [], current;
 
         for (i = 0; i < showMonths.length; i++) {
@@ -173,14 +171,14 @@ define(function(require, exports, module) {
 
             items.push({
                 value: i,
-                label: translate(lang, showMonths[i]),
+                label: showMonths[i],
                 current: current
             });
         }
 
         current = {
             value: month,
-            label: translate(lang, showMonths[month])
+            label: showMonths[month]
         };
 
         var list = [];
@@ -228,15 +226,15 @@ define(function(require, exports, module) {
 
     var DAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
-    function createDayModel(lang, startDay) {
+    function createDayModel(startDay) {
         // Translate startDay to number. 0 is Sunday, 6 is Saturday.
         startDay = parseStartDay(startDay);
         var items = [];
         for (var i = startDay; i < 7; i++) {
-            items.push({label: translate(lang, DAY_LABELS[i]), value: i});
+            items.push({label: DAY_LABELS[i], value: i});
         }
         for (i = 0; i < startDay; i++) {
-            items.push({label: translate(lang, DAY_LABELS[i]), value: i});
+            items.push({label: DAY_LABELS[i], value: i});
         }
         return {startDay: startDay, items: items};
     }
@@ -336,11 +334,6 @@ define(function(require, exports, module) {
             return range(time);
         }
         return true;
-    }
-
-    function translate(lang, key) {
-        lang || (lang = {});
-        return lang[key] || key;
     }
 
     module.exports = CalendarModel;

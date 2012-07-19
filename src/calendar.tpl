@@ -3,7 +3,7 @@
         <li class="ui-calendar-previous-year" data-role="prev-year">&lt;&lt;</li>
         <li class="ui-calendar-previous-month" data-role="prev-month">&lt;</li>
         <li class="ui-calendar-month-year" data-role="month-year-container">
-        <span class="month" data-role="mode-month" data-value="{{month.current.value}}">{{month.current.label}}</span>
+        <span class="month" data-role="mode-month" data-value="{{month.current.value}}">{{_ month.current.label}}</span>
         <span class="year" data-role="mode-year">{{year.current}}</span>
         </li>
         <li class="ui-calendar-next-month" data-role="next-month">&gt;</li>
@@ -13,7 +13,7 @@
     <ul class="ui-calendar-control" data-role="pannel-container">
         {{#if mode.date}}
         {{#each day.items}}
-        <li class="ui-calendar-day ui-calendar-day-{{value}}" data-role="day" data-value="{{value}}">{{label}}</li>
+        <li class="ui-calendar-day ui-calendar-day-{{value}}" data-role="day" data-value="{{value}}">{{_ label}}</li>
         {{/each}}
         {{/if}}
     </ul>
@@ -37,7 +37,7 @@
         {{#each month.items}}
         <ul class="ui-calendar-month-column">
             {{#each this}}
-            <li {{#if current}}class="focused-element"{{/if}} data-role="month" data-value="{{value}}">{{label}}</li>
+            <li {{#if current}}class="focused-element"{{/if}} data-role="month" data-value="{{value}}">{{_ label}}</li>
             {{/each}}
         </ul>
         {{/each}}
@@ -47,7 +47,7 @@
         {{#each year.items}}
         <ul class="ui-calendar-year-column">
             {{#each this}}
-            <li {{#if current}}class="focused-element"{{/if}} data-role="{{role}}" data-value="{{value}}">{{label}}</li>
+            <li {{#if current}}class="focused-element"{{/if}} data-role="{{role}}" data-value="{{value}}">{{_ label}}</li>
             {{/each}}
         </ul>
         {{/each}}
