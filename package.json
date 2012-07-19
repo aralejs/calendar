@@ -9,7 +9,7 @@
         "base": "0.9.16",
         "overlay": "0.9.16",
         "widget": "0.9.16",
-        "templatable": "widget/0.9.16/templatable",
+        "templatable": "widget/0.9.16/templatable"
     },
 
     "devDependencies": {
@@ -17,8 +17,6 @@
         "moment": "1.6.2",
         "overlay": "overlay/master/overlay",
         "templatable": "widget/master/templatable",
-
-        // extends for development
         "handlebars": "1.0.0",
         "events": "events/master/events",
         "position": "position/master/position",
