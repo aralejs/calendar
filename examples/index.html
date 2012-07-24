@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <title>Calendar</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
-        
         <link rel="stylesheet" href="http://aralejs.github.com/assets/base.css" />
         <link rel="stylesheet" href="http://aralejs.github.com/assets/style.css" />
         <link rel="stylesheet" href="http://aralejs.github.com/assets/pygments.css" />
@@ -31,11 +30,7 @@
 
         <div id="main">
             <div class="container">
-<nav id="side-nav">
-    
-    <a href="../examples/index.html">index</a>
-    
-</nav>
+
 <h1>Calendar</h1>
 
 <h2>Example</h2>
@@ -45,13 +40,13 @@
 <div class="cell">
 <input id="date-1" type="text" />
 </div>
-<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;../src/calendar&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Calendar</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;calendar&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Calendar</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">cal1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calendar</span><span class="p">({</span><span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#date-1&#39;</span><span class="p">});</span>
 <span class="p">});</span>
 </pre></div>
 
 <script type="text/javascript">
-seajs.use('../src/calendar', function(Calendar) {
+seajs.use('calendar', function(Calendar) {
     var cal1 = new Calendar({trigger: '#date-1'});
 });
 </script>
@@ -60,13 +55,13 @@ seajs.use('../src/calendar', function(Calendar) {
 <div class="cell">
 <input id="date-2" type="text" />
 </div>
-<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;../src/calendar&#39;</span><span class="p">,</span> <span class="s1">&#39;../src/i18n/zh-CN&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Calendar</span><span class="p">,</span> <span class="nx">lang</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;calendar&#39;</span><span class="p">,</span> <span class="s1">&#39;../src/i18n/zh-CN&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Calendar</span><span class="p">,</span> <span class="nx">lang</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">cal2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calendar</span><span class="p">({</span><span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#date-2&#39;</span><span class="p">,</span> <span class="nx">lang</span><span class="o">:</span> <span class="nx">lang</span><span class="p">});</span>
 <span class="p">});</span>
 </pre></div>
 
 <script type="text/javascript">
-seajs.use(['../src/calendar', '../src/i18n/zh-CN'], function(Calendar, lang) {
+seajs.use(['calendar', '../src/i18n/zh-CN'], function(Calendar, lang) {
     var cal2 = new Calendar({trigger: '#date-2', lang: lang});
 });
 </script>
@@ -76,7 +71,7 @@ seajs.use(['../src/calendar', '../src/i18n/zh-CN'], function(Calendar, lang) {
 <input id="date-3" type="text" />
 <span id="date-3-explain"></span>
 </div>
-<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;jquery&#39;</span><span class="p">,</span> <span class="s1">&#39;../src/calendar&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="nx">Calendar</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;jquery&#39;</span><span class="p">,</span> <span class="s1">&#39;calendar&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="nx">Calendar</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">range</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">time</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">day</span> <span class="o">=</span> <span class="nx">time</span><span class="p">.</span><span class="nx">day</span><span class="p">();</span>
         <span class="k">return</span> <span class="nx">day</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">;</span>
@@ -89,7 +84,7 @@ seajs.use(['../src/calendar', '../src/i18n/zh-CN'], function(Calendar, lang) {
 </pre></div>
 
 <script type="text/javascript">
-seajs.use(['jquery', '../src/calendar'], function($, Calendar) {
+seajs.use(['jquery', 'calendar'], function($, Calendar) {
     var range = function(time) {
         var day = time.day();
         return day != 2;
@@ -108,7 +103,7 @@ seajs.use(['jquery', '../src/calendar'], function($, Calendar) {
 <input id="date-5" type="text" />
 <span id="date-5-explain"></span>
 </div>
-<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;jquery&#39;</span><span class="p">,</span> <span class="s1">&#39;../src/calendar&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="nx">Calendar</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;jquery&#39;</span><span class="p">,</span> <span class="s1">&#39;calendar&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">,</span> <span class="nx">Calendar</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">cal4</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calendar</span><span class="p">({</span><span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#date-4&#39;</span><span class="p">});</span>
     <span class="kd">var</span> <span class="nx">cal5</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calendar</span><span class="p">({</span><span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#date-5&#39;</span><span class="p">});</span>
     <span class="nx">cal4</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;select-date&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
@@ -127,7 +122,7 @@ seajs.use(['jquery', '../src/calendar'], function($, Calendar) {
 </pre></div>
 
 <script type="text/javascript">
-seajs.use(['jquery', '../src/calendar'], function($, Calendar) {
+seajs.use(['jquery', 'calendar'], function($, Calendar) {
     var cal4 = new Calendar({trigger: '#date-4'});
     var cal5 = new Calendar({trigger: '#date-5'});
     cal4.on('select-date', function(date) {
@@ -149,5 +144,6 @@ seajs.use(['jquery', '../src/calendar'], function($, Calendar) {
             </div>
         </div>
         <hr class="end" />
+        <a id="github" href="https://github.com/aralejs/calendar" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:999" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
     </body>
 </html>
