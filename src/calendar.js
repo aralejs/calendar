@@ -11,7 +11,7 @@
 //     var cal = new Calendar({
 //         trigger: 'input.date-picker',
 //         format: "YYYY-MM-DD"
-//     }).render();
+//     });
 //
 // Need more complex task? Head over to Options section.
 //
@@ -241,13 +241,13 @@ define(function(require, exports, module) {
         },
 
         _keyControl: function(ev) {
+            ev.preventDefault();
             var modeMap = {
                 68: 'date',
                 77: 'month',
                 89: 'year'
             };
             if (ev.keyCode in modeMap) {
-                ev.preventDefault();
                 this.model.changeMode(modeMap[ev.keyCode]);
                 return false;
             }
@@ -286,7 +286,6 @@ define(function(require, exports, module) {
             } else if (mode.year) {
                 this._keyControlYear(keyboard);
             }
-            ev.preventDefault();
         },
 
         _keyControlDate: function(keyboard) {
