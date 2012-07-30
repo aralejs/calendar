@@ -1,6 +1,6 @@
 # Calendar
 
-日历控件。
+提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。
 
 
 ## 模块依赖
@@ -13,9 +13,23 @@
 
 ## 使用说明
 
-```javascript
-define(function(require){
-    var Calendar = require('calendar');
-    var cal = Calendar();
+```
+seajs.use(['calendar'], function(Calendar) {
+    var cal = new Calendar({
+        trigger: '#id'
+    });
 })
 ```
+
+### Options
+
+- trigger
+- triggerType
+- format
+- align
+- startDay
+- range
+
+
+## API Reference
+
