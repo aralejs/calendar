@@ -37,6 +37,9 @@
 .ui-calendar .ui-calendar-month-year {
     width: 90px;
 }
+.ui-calendar .month:hover, .ui-calendar .year:hover {
+    color: #d64;
+}
 .ui-calendar .ui-calendar-data-container {
     border-top: 1px solid #dadada;
     border-bottom: 1px solid #dadada;
