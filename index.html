@@ -31,7 +31,7 @@
             <div class="container">
 
 <h1>Calendar</h1>
-<p>日历控件。</p>
+<p>提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。</p>
 
 <h2>模块依赖</h2>
 
@@ -44,11 +44,25 @@
 </ul>
 
 <h2>使用说明</h2>
-<div class="highlight"><pre><span class="nx">define</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">require</span><span class="p">){</span>
-    <span class="kd">var</span> <span class="nx">Calendar</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;calendar&#39;</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">cal</span> <span class="o">=</span> <span class="nx">Calendar</span><span class="p">();</span>
-<span class="p">})</span>
-</pre></div>
+
+<pre><code>seajs.use(['calendar'], function(Calendar) {
+    var cal = new Calendar({
+        trigger: '#id'
+    });
+})</code></pre>
+
+<h3>Options</h3>
+
+<ul>
+<li>trigger</li>
+<li>triggerType</li>
+<li>format</li>
+<li>align</li>
+<li>startDay</li>
+<li>range</li>
+</ul>
+
+<h2>API Reference</h2>
 
 
             </div>

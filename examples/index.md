@@ -4,6 +4,13 @@
 
 <link rel="stylesheet" href="../src/themes/simple.css" />
 
+```javascript
+seajs.config({
+    locale: 'zh-cn',
+    preload: ['http://seajs.org/dist/plugin-i18n']
+});
+```
+
 Attached to a field with default options.
 
 <div class="cell">
@@ -25,8 +32,8 @@ Attached to a field with i18n support.
 </div>
 
 ```javascript
-seajs.use(['calendar', '../src/i18n/zh-CN'], function(Calendar, lang) {
-    var cal2 = new Calendar({trigger: '#date-2', lang: lang});
+seajs.use('calendar', function(Calendar, lang) {
+    var cal2 = new Calendar({trigger: '#date-2'});
 });
 ```
 

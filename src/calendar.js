@@ -23,6 +23,7 @@ define(function(require, exports, module) {
     var moment = require('moment');
     var Overlay = require('overlay');
     var Templatable = require('templatable');
+    var lang = require('i18n!lang');
 
     var template = require('./calendar.tpl');
     var CalendarModel = require('./model');
@@ -63,8 +64,6 @@ define(function(require, exports, module) {
 
         showTime: false,
 
-        lang: null,
-
         // when initialize a calendar, which date should be focused.
         // default is today.
         focus: {
@@ -91,7 +90,6 @@ define(function(require, exports, module) {
             getter: function() {
                 if (!this.hasOwnProperty('model')) {
                     var modelConfig = {
-                        lang: this.get('lang'),
                         focus: this.get('focus'),
                         range: this.get('range'),
                         showTime: this.get('showTime'),
@@ -125,6 +123,10 @@ define(function(require, exports, module) {
             'click [data-role=day]': '_selectDay',
             'click [data-role=date]': '_selectDate',
             'click [data-role=today]': '_selectToday'
+        },
+
+        templateHelpers: {
+            '_': function(key) {return lang[key] || key;}
         },
 
         setup: function() {

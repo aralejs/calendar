@@ -35,6 +35,18 @@
 
 <h2>Example</h2>
 <p><link rel="stylesheet" href="../src/themes/simple.css" /></p>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">config</span><span class="p">({</span>
+    <span class="nx">locale</span><span class="o">:</span> <span class="s1">&#39;zh-cn&#39;</span><span class="p">,</span>
+    <span class="nx">preload</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;http://seajs.org/dist/plugin-i18n&#39;</span><span class="p">]</span>
+<span class="p">});</span>
+</pre></div>
+
+<script type="text/javascript">
+seajs.config({
+    locale: 'zh-cn',
+    preload: ['http://seajs.org/dist/plugin-i18n']
+});
+</script>
 <p>Attached to a field with default options.</p>
 
 <div class="cell">
@@ -55,14 +67,14 @@ seajs.use('calendar', function(Calendar) {
 <div class="cell">
 <input id="date-2" type="text" />
 </div>
-<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;calendar&#39;</span><span class="p">,</span> <span class="s1">&#39;../src/i18n/zh-CN&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Calendar</span><span class="p">,</span> <span class="nx">lang</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">cal2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calendar</span><span class="p">({</span><span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#date-2&#39;</span><span class="p">,</span> <span class="nx">lang</span><span class="o">:</span> <span class="nx">lang</span><span class="p">});</span>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;calendar&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Calendar</span><span class="p">,</span> <span class="nx">lang</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">cal2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calendar</span><span class="p">({</span><span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#date-2&#39;</span><span class="p">});</span>
 <span class="p">});</span>
 </pre></div>
 
 <script type="text/javascript">
-seajs.use(['calendar', '../src/i18n/zh-CN'], function(Calendar, lang) {
-    var cal2 = new Calendar({trigger: '#date-2', lang: lang});
+seajs.use('calendar', function(Calendar, lang) {
+    var cal2 = new Calendar({trigger: '#date-2'});
 });
 </script>
 <p>Attached to a field with Tuesday unavailable.</p>
