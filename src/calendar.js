@@ -133,7 +133,7 @@ define(function(require, exports, module) {
             // bind trigger
             var $trigger = $(this.get('trigger'));
             $trigger.on(this.get('triggerType'), function() {
-                that.render().show();
+                that.show();
             });
             $trigger.on('keydown', function(ev) {
                 that._keyControl(ev);
@@ -241,7 +241,6 @@ define(function(require, exports, module) {
         },
 
         _keyControl: function(ev) {
-            ev.preventDefault();
             var modeMap = {
                 68: 'date',
                 77: 'month',
@@ -249,6 +248,7 @@ define(function(require, exports, module) {
             };
             if (ev.keyCode in modeMap) {
                 this.model.changeMode(modeMap[ev.keyCode]);
+                ev.preventDefault();
                 return false;
             }
             var codeMap = {
@@ -266,6 +266,8 @@ define(function(require, exports, module) {
                 75: 'up'
             };
             if (!(ev.keyCode in codeMap)) return;
+
+            ev.preventDefault();
 
             var keyboard = codeMap[ev.keyCode];
             var mode = this.model.get('mode');
