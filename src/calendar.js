@@ -24,6 +24,7 @@ define(function(require, exports, module) {
     var Overlay = require('overlay');
     var Templatable = require('templatable');
     var lang = require('i18n!lang');
+    lang = lang || {};
 
     var template = require('./calendar.tpl');
     var CalendarModel = require('./model');

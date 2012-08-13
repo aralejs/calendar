@@ -258,34 +258,29 @@ define(function(require, exports, module) {
         };
 
         // reset to the first date of the month
-        var current_month = current.clone().date(1);
-        var previous_month = current_month.clone().add('months', -1);
-        var next_month = current_month.clone().add('months', 1);
+        var currentMonth = current.clone().date(1);
+        var previousMonth = currentMonth.clone().add('months', -1);
+        var nextMonth = currentMonth.clone().add('months', 1);
 
         // Calculate days of previous month
         // that should be on current month's sheet
-        delta = current_month.day() - startDay;
+        delta = currentMonth.day() - startDay;
         if (delta < 0) delta += 7;
         if (delta != 0) {
-            daysInMonth = previous_month.daysInMonth();
+            daysInMonth = previousMonth.daysInMonth();
 
             // *delta - 1**: we need decrease it first
             for (i = delta - 1; i >= 0; i--) {
-                d = previous_month.date(daysInMonth - i);
+                d = previousMonth.date(daysInMonth - i);
                 pushData(d, 'previous-month');
             }
         }
 
         var formattedCurrent = current.format('YYYY-MM-DD');
-        daysInMonth = current_month.daysInMonth();
+        daysInMonth = currentMonth.daysInMonth();
         for (i = 1; i <= daysInMonth; i++) {
-            d = current_month.date(i);
-
-            if (d.format('YYYY-MM-DD') === formattedCurrent) {
-                pushData(d, 'focused-element');
-            } else {
-                pushData(d, '')
-            }
+            d = currentMonth.date(i);
+            pushData(d, 'current-month')
         }
 
         // Calculate days of next month
@@ -294,7 +289,7 @@ define(function(require, exports, module) {
         if (delta != 0) {
             if (delta < 0) delta += 7;
             for (i = 1; i <= delta; i++) {
-                d = next_month.date(i);
+                d = nextMonth.date(i);
                 pushData(d, 'next-month');
             }
         }
@@ -303,12 +298,7 @@ define(function(require, exports, module) {
             list.push(items.slice(i * 7, i * 7 + 7));
         }
 
-        var focus = {
-            date: current.date(),
-            day: current.day()
-        };
-
-        return {focus: focus, items: list};
+        return {items: list};
     }
 
     function createTimeModel(val) {
