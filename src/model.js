@@ -4,8 +4,6 @@ define(function(require, exports, module) {
     var Base = require('base');
     var moment = require('moment');
 
-    var dateCustomize;
-
     // Create a model data on calendar. For example, now is May, 2012.
     // And the week begin at Sunday.
     var CalendarModel = Base.extend({
@@ -37,12 +35,6 @@ define(function(require, exports, module) {
                 }
             },
 
-            time: {
-                setter: function(val) {
-                    return createTimeModel(val);
-                }
-            },
-
             mode: {
                 setter: function(current) {
                     var o = {
@@ -51,7 +43,6 @@ define(function(require, exports, module) {
                         year: false
                     };
                     o[current] = true;
-                    o.time = this._showTime;
                     return o;
                 }
             },
@@ -62,10 +53,8 @@ define(function(require, exports, module) {
         initialize: function(config) {
             this._startDay = config.startDay;
             this._activeTime = config.focus.clone();
-            dateCustomize = config.dateCustomize;
 
             this.range = config.range;
-            this._showTime = config.showTime;
 
             var message = config.message || {};
             message.today = 'Today';
@@ -80,12 +69,11 @@ define(function(require, exports, module) {
             this.set('month', this._activeTime.month());
             this.set('date', this._activeTime.clone());
             this.set('day');
-            this.set('time');
         },
 
         changeTime: function(key, number) {
             this._activeTime.add(key, number);
-            this.renderData();
+            //this.renderData();
         },
 
         changeStartDay: function(day) {
@@ -128,15 +116,14 @@ define(function(require, exports, module) {
 
         range: null,
         _activeTime: null,
-        _startDay: 0,
-        _showTime: false
+        _startDay: 0
     });
 
 
     // Helpers
     // -------
 
-    var showMonths = [
+    var MONTHS = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
         'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
@@ -164,23 +151,21 @@ define(function(require, exports, module) {
     }
 
     function createMonthModel(month) {
-        var items = [], current;
+        var items = [];
 
-        for (i = 0; i < showMonths.length; i++) {
-            current = i == month;
-
+        for (i = 0; i < MONTHS.length; i++) {
             items.push({
                 value: i,
-                label: showMonths[i],
-                current: current
+                label: MONTHS[i]
             });
         }
 
-        current = {
+        var current = {
             value: month,
-            label: showMonths[month]
+            label: MONTHS[month]
         };
 
+        // split [1, 2, .. 12] to [[1, 2, 3, 4], [5, ...]...]
         var list = [];
         for (var i = 0; i < items.length / 3; i++) {
             list.push(items.slice(i * 3, i * 3 + 3));
@@ -194,8 +179,7 @@ define(function(require, exports, module) {
             {
                 value: year - 10,
                 label: '. . .',
-                role: 'previous-10-year',
-                current: false
+                role: 'previous-10-year'
             }
         ];
 
@@ -203,16 +187,14 @@ define(function(require, exports, module) {
             items.push({
                 value: i,
                 label: i,
-                role: 'year',
-                current: false
+                role: 'year'
             });
         }
         items[7] = {value: year, label: year, role: 'year', current: true};
         items.push({
             value: year + 10,
             label: '. . .',
-            role: 'next-10-year',
-            current: false
+            role: 'next-10-year'
         });
 
         var list = [];
@@ -220,7 +202,12 @@ define(function(require, exports, module) {
             list.push(items.slice(i * 3, i * 3 + 3));
         }
 
-        return {current: year, items: list};
+        var current = {
+            value: year,
+            label: year,
+        }
+
+        return {current: current, items: list};
     }
 
 
@@ -236,7 +223,12 @@ define(function(require, exports, module) {
         for (i = 0; i < startDay; i++) {
             items.push({label: DAY_LABELS[i], value: i});
         }
-        return {startDay: startDay, items: items};
+
+        var current = {
+            value: startDay,
+            label: DAY_LABELS[startDay]
+        }
+        return {current: current, items: items};
     }
 
 
@@ -245,12 +237,10 @@ define(function(require, exports, module) {
         startDay = parseStartDay(startDay);
 
         var pushData = function(d, className) {
-            if (dateCustomize) {
-                className += ' ' + dateCustomize(d);
-            }
             items.push({
-                datetime: d.format('YYYY-MM-DD'),
-                date: d.date(),
+                value: d.format('YYYY-MM-DD'),
+                label: d.date(),
+
                 day: d.day(),
                 className: className,
                 available: isInRange(d, range)
@@ -276,7 +266,6 @@ define(function(require, exports, module) {
             }
         }
 
-        var formattedCurrent = current.format('YYYY-MM-DD');
         daysInMonth = currentMonth.daysInMonth();
         for (i = 1; i <= daysInMonth; i++) {
             d = currentMonth.date(i);
@@ -298,12 +287,12 @@ define(function(require, exports, module) {
             list.push(items.slice(i * 7, i * 7 + 7));
         }
 
-        return {items: list};
-    }
+        var _current = {
+            value: current.format('YYYY-MM-DD'),
+            label: current.date()
+        }
 
-    function createTimeModel(val) {
-        var now = moment(val);
-        return {hour: now.hours(), minute: now.minutes()};
+        return {current: _current, items: list};
     }
 
     function isInRange(time, range) {
