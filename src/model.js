@@ -52,7 +52,7 @@ define(function(require, exports, module) {
 
         initialize: function(config) {
             this._startDay = config.startDay;
-            this._activeTime = config.focus.clone();
+            this.activeTime = config.focus.clone();
 
             this.range = config.range;
 
@@ -65,38 +65,52 @@ define(function(require, exports, module) {
         },
 
         renderData: function() {
-            this.set('year', this._activeTime.year());
-            this.set('month', this._activeTime.month());
-            this.set('date', this._activeTime.clone());
+            this.set('year', this.activeTime.year());
+            this.set('month', this.activeTime.month());
+            this.set('date', this.activeTime.clone());
             this.set('day');
         },
 
         changeTime: function(key, number) {
-            this._activeTime.add(key, number);
-            //this.renderData();
+            var oldTime = this.activeTime.clone();
+            this.activeTime.add(key, number);
+            this.renderData();
+            var mode = this.get('mode');
+            if (mode.date) {
+                if (oldTime.format('YYYY-MM') != this.activeTime.format('YYYY-MM')) {
+                    this.trigger('change-months');
+                    this.trigger('change-dates');
+                }
+            } else if (key !== 'days') {
+                this.trigger('change-' + key);
+            }
         },
 
         changeStartDay: function(day) {
             this._startDay = day;
             this.renderData();
+            this.trigger('change-startday');
+            this.trigger('change-dates');
         },
 
         changeMode: function(mode, obj) {
             obj || (obj = {});
             if ('month' in obj) {
-                this._activeTime.month(obj.month);
+                this.activeTime.month(obj.month);
             }
-            if (obj.year) this._activeTime.year(obj.year);
+            if (obj.year) this.activeTime.year(obj.year);
             this.set('mode', mode);
             this.renderData();
+
+            this.trigger('change-mode');
         },
 
         selectDate: function(time) {
             if (time) {
-                this._activeTime = moment(time);
+                this.activeTime = moment(time);
                 this.renderData();
             }
-            return this._activeTime.clone();
+            return this.activeTime.clone();
         },
 
         isInRange: function(date) {
@@ -115,7 +129,7 @@ define(function(require, exports, module) {
         },
 
         range: null,
-        _activeTime: null,
+        activeTime: null,
         _startDay: 0
     });
 

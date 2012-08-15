@@ -23,8 +23,7 @@ define(function(require, exports, module) {
     var moment = require('moment');
     var Overlay = require('overlay');
     var Templatable = require('templatable');
-    var lang = require('i18n!lang');
-    lang = lang || {};
+    var lang = require('i18n!lang') || {};
 
     var template = require('./calendar.tpl');
     var CalendarModel = require('./model');
@@ -158,12 +157,12 @@ define(function(require, exports, module) {
             // bind model change event
             var model = this.model;
             var hash = {
-                'change:year change:month': '[data-role=month-year-container]',
-                'change:day': '[data-role=pannel-container]',
-                'change:date': '[data-role=data-container]',
-                'change:time': '[data-role=time-container]',
-                'change:mode': [
-                    '[data-role=data-container]', '[data-role=pannel-container]'
+                'change-months change-years': '[data-role=month-year-container]',
+                'change-dates': '[data-role=data-container]',
+                'change-startday': '[data-role=pannel-container]',
+                'change-mode': [
+                    '[data-role=data-container]', '[data-role=pannel-container]',
+                    '[data-role=month-year-container]'
                 ]
             };
 
@@ -171,6 +170,7 @@ define(function(require, exports, module) {
                 model.on(eventType, function() {
                     $.isArray(selectors) || (selectors = [selectors]);
                     $.each(selectors, function(i, selector) {
+                        console.log(selector);
                         that.renderPartial(selector);
                     });
                 });
