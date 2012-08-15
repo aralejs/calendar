@@ -26,7 +26,7 @@
             <li class="ui-calendar-day-{{day}} {{className}}
             {{#unless available}}disabled-date{{/unless}}
             "
-            data-role="date" data-datetime="{{value}}"
+            data-role="date" data-value="{{value}}"
             >{{label}}</li>
             {{/each}}
         </ul>

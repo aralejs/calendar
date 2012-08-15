@@ -136,9 +136,11 @@ define(function(require, exports, module) {
             var $trigger = $(this.get('trigger'));
             $trigger.on(this.get('triggerType'), function() {
                 that.show();
+                setFocusedElement(that.element, that.model);
             });
             $trigger.on('keydown', function(ev) {
                 that._keyControl(ev);
+                setFocusedElement(that.element, that.model);
             });
             $trigger.on('blur', function() {
                 that.hide();
@@ -172,6 +174,7 @@ define(function(require, exports, module) {
                     $.each(selectors, function(i, selector) {
                         console.log(selector);
                         that.renderPartial(selector);
+                        setFocusedElement(that.element, that.model);
                     });
                 });
             });
@@ -229,7 +232,7 @@ define(function(require, exports, module) {
 
         _selectDate: function(ev) {
             var el = $(ev.target);
-            var date = this.model.selectDate(el.data('datetime'));
+            var date = this.model.selectDate(el.data('value'));
             this._fillDate(date);
         },
 
@@ -357,6 +360,19 @@ define(function(require, exports, module) {
             $trigger.val(value);
         }
     });
+
+    function setFocusedElement(element, model) {
+        var current;
+        var mode = model.get('mode');
+        var o = ['date', 'month', 'year'];
+        for (var i = 0; i < o.length; i++) {
+            if (mode[o[i]]) current = o[i];
+        }
+        if (!current) return;
+        var selector = '[data-value=' + model.get(current).current.value + ']';
+        element.find('.focused-element').removeClass('focused-element');
+        element.find(selector).addClass('focused-element');
+    }
 
     Calendar.autoRender = function(config) {
         config.trigger = config.element;
