@@ -1,6 +1,6 @@
 define(function(require, exports, module) {
 
-    var $ = require('jquery');
+    var $ = require('$');
     var Base = require('base');
     var moment = require('moment');
 
