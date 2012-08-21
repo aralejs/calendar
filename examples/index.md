@@ -21,7 +21,7 @@ Attached to a field with i18n support.
 </div>
 
 ````javascript
-seajs.use(['calendar', '../src/i18n/zh-CN'], function(Calendar, lang) {
+seajs.use(['calendar', 'i18n/zh-CN'], function(Calendar, lang) {
     var cal2 = new Calendar({trigger: '#date-2', lang: lang});
 });
 ````
