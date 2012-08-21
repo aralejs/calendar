@@ -19,7 +19,7 @@
 define(function(require, exports, module) {
 
     // Calendar is designed for desktop, we don't need to consider ``zepto``.
-    var $ = require('jquery');
+    var $ = require('$');
     var moment = require('moment');
     var Overlay = require('overlay');
     var Templatable = require('templatable');

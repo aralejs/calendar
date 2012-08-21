@@ -1,15 +1,11 @@
-# Calendar
-
-## Example
-
 <link rel="stylesheet" href="../src/themes/simple.css" />
 
-```javascript
+````javascript
 seajs.config({
     locale: 'zh-cn',
     preload: ['http://seajs.org/dist/plugin-i18n']
 });
-```
+````
 
 Attached to a field with default options.
 
@@ -18,11 +14,11 @@ Attached to a field with default options.
 </div>
 
 
-```javascript
+````javascript
 seajs.use('calendar', function(Calendar) {
     var cal1 = new Calendar({trigger: '#date-1'});
 });
-```
+````
 
 
 Attached to a field with i18n support.
@@ -31,11 +27,11 @@ Attached to a field with i18n support.
 <input id="date-2" type="text" />
 </div>
 
-```javascript
-seajs.use('calendar', function(Calendar, lang) {
+````javascript
+seajs.use('calendar', function(Calendar) {
     var cal2 = new Calendar({trigger: '#date-2'});
 });
-```
+````
 
 Attached to a field with Tuesday unavailable.
 
@@ -44,7 +40,7 @@ Attached to a field with Tuesday unavailable.
 <span id="date-3-explain"></span>
 </div>
 
-```javascript
+````javascript
 seajs.use(['jquery', 'calendar'], function($, Calendar) {
     var range = function(time) {
         var day = time.day();
@@ -55,7 +51,7 @@ seajs.use(['jquery', 'calendar'], function($, Calendar) {
         $('#date-3-explain').text('you select a disabled date');
     });
 });
-```
+````
 
 
 Related calendars, set range dynamicly.
@@ -67,7 +63,7 @@ Related calendars, set range dynamicly.
 <span id="date-5-explain"></span>
 </div>
 
-```javascript
+````javascript
 seajs.use(['jquery', 'calendar'], function($, Calendar) {
     var cal4 = new Calendar({trigger: '#date-4'});
     var cal5 = new Calendar({trigger: '#date-5'});
@@ -84,4 +80,4 @@ seajs.use(['jquery', 'calendar'], function($, Calendar) {
         $('#date-5-explain').text('not available');
     });;
 });
-```
+````
