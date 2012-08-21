@@ -1,37 +1,42 @@
-<!DOCTYPE HTML>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Calendar</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
-        <link rel="stylesheet" href="http://aralejs.github.com/assets/base.css" />
-        <link rel="stylesheet" href="http://aralejs.github.com/assets/style.css" />
-        <link rel="stylesheet" href="http://aralejs.github.com/assets/pygments.css" />
-        <script src="https://a.alipayobjects.com/static/arale/seajs/1.2.0/sea.js"></script>
-        
-        
-        <!--[if lt IE 9]>
-        <script type="text/javascript" src="http://aralejs.github.com/assets/html5shiv.js"></script>
-        <![endif]-->
-    </head>
-    <body>
-        <header id="header">
-            <h1 id="brand"><a href="http://aralejs.org/">Arale</a></h1>
-            <nav id="nav" role="navigation">
-                <a href="./">Calendar</a>
-                <a href="./examples/">Examples</a>
-                
-                
-                <a id="nav-test" href="./tests/runner.html">Tests</a>
-                
-            </nav>
-        </header>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+<title>Calendar</title>
+<link rel="stylesheet" href="http://aralejs.org/assets/base.css">
+<link rel="stylesheet" href="http://aralejs.org/assets/style.css">
 
-        <div id="main">
-            <div class="container">
 
-<h1>Calendar</h1>
-<p>日历控件。</p>
+<!--[if lt IE 9]>
+<script src="http://aralejs.org/assets/html5shiv.js"></script>
+<![endif]-->
+</head>
+<body>
+<header id="header">
+    <div class="container fn-clear">
+
+    <a href="./"  class="current">Calendar</a>
+    <a href="./examples/" >Examples</a>
+    
+    
+    <a id="nav-test" href="./tests/runner.html">Tests</a>
+    
+
+
+        <nav role="navigation" id="nav">
+            <a class="icon-home" title="Home" href="/" id="logo">Home</a>
+            <a class="icon-github" href="https://github.com/aralejs/calendar">Code</a>
+        </nav>
+    </div>
+</header>
+
+<div id="main">
+    <div class="container">
+
+<div class="markdown-body">
+    <h1>Calendar</h1>
+<p>提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。</p>
 
 <h2>模块依赖</h2>
 
@@ -44,16 +49,32 @@
 </ul>
 
 <h2>使用说明</h2>
-<div class="highlight"><pre><span class="nx">define</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">require</span><span class="p">){</span>
-    <span class="kd">var</span> <span class="nx">Calendar</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;calendar&#39;</span><span class="p">);</span>
-    <span class="kd">var</span> <span class="nx">cal</span> <span class="o">=</span> <span class="nx">Calendar</span><span class="p">();</span>
-<span class="p">})</span>
-</pre></div>
 
+<pre><code>seajs.use(['calendar'], function(Calendar) {
+    var cal = new Calendar({
+        trigger: '#id'
+    });
+})</code></pre>
 
-            </div>
-        </div>
-        <hr class="end" />
-        <a id="github" href="https://github.com/aralejs/calendar" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0; z-index:999" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
-    </body>
+<h3>Options</h3>
+
+<ul>
+<li>trigger</li>
+<li>triggerType</li>
+<li>format</li>
+<li>align</li>
+<li>startDay</li>
+<li>range</li>
+</ul>
+
+<h2>API Reference</h2>
+
+</div>
+
+    </div>
+</div>
+<hr class="end">
+<link rel="stylesheet" href="http://aralejs.org/assets/pygments.css">
+<link rel="stylesheet" href="http://aralejs.org/assets/fontawesome/css/font-awesome.css">
+</body>
 </html>
