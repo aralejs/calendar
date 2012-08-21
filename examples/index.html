@@ -60,11 +60,11 @@ seajs.use('calendar', function(Calendar) {
 </div>
 
 <script>
-seajs.use(['calendar', '../src/i18n/zh-CN'], function(Calendar, lang) {
+seajs.use(['calendar', 'i18n/zh-CN'], function(Calendar, lang) {
     var cal2 = new Calendar({trigger: '#date-2', lang: lang});
 });
 </script>
-<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;calendar&#39;</span><span class="p">,</span> <span class="s1">&#39;../src/i18n/zh-CN&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Calendar</span><span class="p">,</span> <span class="nx">lang</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;calendar&#39;</span><span class="p">,</span> <span class="s1">&#39;i18n/zh-CN&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Calendar</span><span class="p">,</span> <span class="nx">lang</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">cal2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calendar</span><span class="p">({</span><span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#date-2&#39;</span><span class="p">,</span> <span class="nx">lang</span><span class="o">:</span> <span class="nx">lang</span><span class="p">});</span>
 <span class="p">});</span>
 </pre></div>
