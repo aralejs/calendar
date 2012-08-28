@@ -23,14 +23,14 @@ define(function(require, exports, module) {
 
             day: {
                 setter: function(val) {
-                    return createDayModel(this._startDay);
+                    return createDayModel(this.startDay);
                 }
             },
 
             date: {
                 setter: function(val) {
                     return createDateModel(
-                        val, this._startDay, this.range
+                        val, this.startDay, this.range
                     );
                 }
             },
@@ -51,7 +51,7 @@ define(function(require, exports, module) {
         },
 
         initialize: function(config) {
-            this._startDay = config.startDay;
+            this.startDay = config.startDay;
             this.activeTime = config.focus.clone();
 
             this.range = config.range;
@@ -61,54 +61,57 @@ define(function(require, exports, module) {
 
             this.set('message', message);
             this.set('mode', 'date');
-            this.renderData();
+            this._refresh();
         },
 
-        renderData: function() {
-            this.set('year', this.activeTime.year());
-            this.set('month', this.activeTime.month());
-            this.set('date', this.activeTime.clone());
-            this.set('day');
+        changeYear: function(number) {
+            this.activeTime.add('years', number);
+            this._refresh();
+            this.trigger('change-years');
         },
 
-        changeTime: function(key, number) {
-            var oldTime = this.activeTime.clone();
-            this.activeTime.add(key, number);
-            this.renderData();
-            var mode = this.get('mode');
-            if (mode.date) {
-                if (oldTime.format('YYYY-MM') != this.activeTime.format('YYYY-MM')) {
-                    this.trigger('change-months');
-                    this.trigger('change-dates');
-                }
-            } else if (key !== 'days') {
-                this.trigger('change-' + key);
+        changeMonth: function(number) {
+            this.activeTime.add('months', number);
+            this._refresh();
+            this.trigger('change-months');
+        },
+
+        changeDate: function(number) {
+            var oldTime = this.activeTime.format('YYYY-MM');
+            this.activeTime.add('days', number);
+            this._refresh();
+            var newTime = this.activeTime.format('YYYY-MM');
+            if (oldTime != newTime && this.get('mode').date) {
+                this.trigger('change-months');
             }
         },
 
         changeStartDay: function(day) {
-            this._startDay = day;
-            this.renderData();
+            this.startDay = day;
+            this._refresh();
             this.trigger('change-startday');
-            this.trigger('change-dates');
         },
 
         changeMode: function(mode, obj) {
             obj || (obj = {});
-            if ('month' in obj) {
-                this.activeTime.month(obj.month);
-            }
-            if (obj.year) this.activeTime.year(obj.year);
-            this.set('mode', mode);
-            this.renderData();
+            if ('month' in obj) this.activeTime.month(obj.month);
+            if ('year' in obj) this.activeTime.year(obj.year);
 
+            this.set('mode', mode);
+            this._refresh();
             this.trigger('change-mode');
+        },
+
+        changeRange: function(range) {
+            this.range = range;
+            this._refresh();
+            this.trigger('change-range');
         },
 
         selectDate: function(time) {
             if (time) {
                 this.activeTime = moment(time);
-                this.renderData();
+                this._refresh();
             }
             return this.activeTime.clone();
         },
@@ -128,9 +131,17 @@ define(function(require, exports, module) {
             return object;
         },
 
+        _refresh: function() {
+            this.set('year', this.activeTime.year());
+            this.set('month', this.activeTime.month());
+            this.set('date', this.activeTime.clone());
+            this.set('day');
+            this.trigger('refresh');
+        },
+
         range: null,
         activeTime: null,
-        _startDay: 0
+        startDay: 0
     });
 
 
