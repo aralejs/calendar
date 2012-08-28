@@ -130,22 +130,22 @@ define(function(require, exports, module) {
         },
 
         setup: function() {
-            var that = this;
+            var self = this;
 
             // bind trigger
             var $trigger = $(this.get('trigger'));
             $trigger.on(this.get('triggerType'), function() {
-                that.show();
-                setFocusedElement(that.element, that.model);
+                self.show();
+                setFocusedElement(self.element, self.model);
             });
             $trigger.on('keydown', function(ev) {
-                that._keyControl(ev);
-                setFocusedElement(that.element, that.model);
+                self._keyControl(ev);
             });
             $trigger.on('blur', function() {
-                that.hide();
+                self.hide();
             });
-            that.element.on('mousedown', function(ev) {
+
+            self.element.on('mousedown', function(ev) {
                 if ($.browser.msie && parseInt($.browser.version) < 9) {
                     var trigger = $trigger[0];
                     trigger.onbeforedeactivate = function() {
@@ -158,57 +158,43 @@ define(function(require, exports, module) {
 
             // bind model change event
             var model = this.model;
-            var hash = {
-                'change-months change-years': '[data-role=month-year-container]',
-                'change-dates': '[data-role=data-container]',
-                'change-startday': '[data-role=pannel-container]',
-                'change-mode': [
-                    '[data-role=data-container]', '[data-role=pannel-container]',
-                    '[data-role=month-year-container]'
-                ]
-            };
-
-            $.each(hash, function(eventType, selectors) {
-                model.on(eventType, function() {
-                    $.isArray(selectors) || (selectors = [selectors]);
-                    $.each(selectors, function(i, selector) {
-                        console.log(selector);
-                        that.renderPartial(selector);
-                        setFocusedElement(that.element, that.model);
-                    });
-                });
+            model.on('change-startday change-mode', function() {
+                self.renderPartial('[data-role=data-container]');
+                self.renderPartial('[data-role=pannel-container]');
+                self.renderPartial('[data-role=month-year-container]');
+                setFocusedElement(self.element, self.model);
             });
-
-            if (that.get('showTime')) {
-                setInterval(function() {
-                    model.set('time');
-                }, 1000);
-            }
+            model.on('change-months change-years', function() {
+                var mode = model.get('mode');
+                if (mode.date || mode.year) {
+                    self.renderPartial('[data-role=data-container]');
+                }
+                self.renderPartial('[data-role=month-year-container]');
+                setFocusedElement(self.element, self.model);
+            });
+            model.on('refresh', function() {
+                setFocusedElement(self.element, self.model);
+            });
         },
 
         range: function(range) {
-            this.model.range = range;
-            this.model.renderData();
+            this.model.changeRange(range);
         },
 
         prevYear: function() {
-            this.model.changeTime('years', -1);
-            return this;
+            this.model.changeYear(-1);
         },
 
         nextYear: function() {
-            this.model.changeTime('years', 1);
-            return this;
+            this.model.changeYear(1);
         },
 
         prevMonth: function() {
-            this.model.changeTime('months', -1);
-            return this;
+            this.model.changeMonth(-1);
         },
 
         nextMonth: function() {
-            this.model.changeTime('months', 1);
-            return this;
+            this.model.changeMonth(1);
         },
 
         _selectYear: function(ev) {
@@ -308,7 +294,7 @@ define(function(require, exports, module) {
                 'up': -7,
                 'down': 7
             };
-            this.model.changeTime('days', moves[keyboard]);
+            this.model.changeDate(moves[keyboard]);
         },
 
         _keyControlMonth: function(keyboard) {
@@ -323,7 +309,7 @@ define(function(require, exports, module) {
                 'up': -3,
                 'down': 3
             };
-            this.model.changeTime('months', moves[keyboard]);
+            this.model.changeMonth(moves[keyboard]);
         },
 
         _keyControlYear: function(keyboard) {
@@ -338,7 +324,7 @@ define(function(require, exports, module) {
                 'up': -3,
                 'down': 3
             };
-            this.model.changeTime('years', moves[keyboard]);
+            this.model.changeYear(moves[keyboard]);
         },
 
         _fillDate: function(date) {
