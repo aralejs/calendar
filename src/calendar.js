@@ -365,6 +365,6 @@ define(function(require, exports, module) {
         config.element = '';
         new Calendar(config);
     }
-    
+
     module.exports = Calendar;
 });

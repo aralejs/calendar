@@ -229,8 +229,8 @@ define(function(require, exports, module) {
 
         var current = {
             value: year,
-            label: year,
-        }
+            label: year
+        };
 
         return {current: current, items: list};
     }
@@ -252,7 +252,7 @@ define(function(require, exports, module) {
         var current = {
             value: startDay,
             label: DAY_LABELS[startDay]
-        }
+        };
         return {current: current, items: items};
     }
 
@@ -294,7 +294,7 @@ define(function(require, exports, module) {
         daysInMonth = currentMonth.daysInMonth();
         for (i = 1; i <= daysInMonth; i++) {
             d = currentMonth.date(i);
-            pushData(d, 'current-month')
+            pushData(d, 'current-month');
         }
 
         // Calculate days of next month
@@ -315,7 +315,7 @@ define(function(require, exports, module) {
         var _current = {
             value: current.format('YYYY-MM-DD'),
             label: current.date()
-        }
+        };
 
         return {current: _current, items: list};
     }
