@@ -28,12 +28,16 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 
-周二不可选：
+不可选：
 
 ````html
 <div class="cell">
     <input id="date-2" type="text" />
     <span id="date-2-explain"></span>
+</div>
+<div class="cell">
+    <input type="text" id="date-3">
+    <span id="date-3-explain"></span>
 </div>
 ````
 
@@ -43,10 +47,12 @@ seajs.use(['jquery', 'calendar'], function($, Calendar) {
         var day = time.day();
         return day != 2;
     };
-    var cal3 = new Calendar({trigger: '#date-2', range: range});
-    cal3.on('select-disabled-date', function(date) {
+    var cal2 = new Calendar({trigger: '#date-2', range: range});
+    cal2.on('select-disabled-date', function(date) {
         $('#date-2-explain').text('you select a disabled date');
     });
+
+    var cal3 = new Calendar({trigger: '#date-3', range: ['2012-12-12', null]});
 });
 ````
 

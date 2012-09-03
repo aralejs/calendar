@@ -146,7 +146,7 @@ define(function(require, exports, module) {
             });
 
             self.element.on('mousedown', function(ev) {
-                if ($.browser.msie && parseInt($.browser.version) < 9) {
+                if ($.browser.msie && parseInt($.browser.version, 10) < 9) {
                     var trigger = $trigger[0];
                     trigger.onbeforedeactivate = function() {
                         window.event.returnValue = false;
@@ -171,6 +171,9 @@ define(function(require, exports, module) {
                 }
                 self.renderPartial('[data-role=month-year-container]');
                 setFocusedElement(self.element, self.model);
+            });
+            model.on('change-range', function() {
+                self.renderPartial('[data-role=data-container]');
             });
             model.on('refresh', function() {
                 setFocusedElement(self.element, self.model);
@@ -364,7 +367,7 @@ define(function(require, exports, module) {
         config.trigger = config.element;
         config.element = '';
         new Calendar(config);
-    }
+    };
 
     module.exports = Calendar;
 });
