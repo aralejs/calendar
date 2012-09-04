@@ -158,13 +158,13 @@ define(function(require, exports, module) {
 
             // bind model change event
             var model = this.model;
-            model.on('change-startday change-mode', function() {
+            model.on('changeStartday changeMode', function() {
                 self.renderPartial('[data-role=data-container]');
                 self.renderPartial('[data-role=pannel-container]');
                 self.renderPartial('[data-role=month-year-container]');
                 setFocusedElement(self.element, self.model);
             });
-            model.on('change-months change-years', function() {
+            model.on('changeMonths changeYears', function() {
                 var mode = model.get('mode');
                 if (mode.date || mode.year) {
                     self.renderPartial('[data-role=data-container]');
@@ -172,7 +172,7 @@ define(function(require, exports, module) {
                 self.renderPartial('[data-role=month-year-container]');
                 setFocusedElement(self.element, self.model);
             });
-            model.on('change-range', function() {
+            model.on('changeRange', function() {
                 self.renderPartial('[data-role=data-container]');
             });
             model.on('refresh', function() {
@@ -332,10 +332,10 @@ define(function(require, exports, module) {
 
         _fillDate: function(date) {
             if (!this.model.isInRange(date)) {
-                this.trigger('select-disabled-date', date);
+                this.trigger('selectDisabledDate', date);
                 return this;
             }
-            this.trigger('select-date', date);
+            this.trigger('selectDate', date);
 
             var trigger = this.get('trigger');
             if (!trigger) {

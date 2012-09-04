@@ -48,7 +48,7 @@ seajs.use(['jquery', 'calendar'], function($, Calendar) {
         return day != 2;
     };
     var cal2 = new Calendar({trigger: '#date-2', range: range});
-    cal2.on('select-disabled-date', function(date) {
+    cal2.on('selectDisabledDate', function(date) {
         $('#date-2-explain').text('you select a disabled date');
     });
 
@@ -72,16 +72,16 @@ seajs.use(['jquery', 'calendar'], function($, Calendar) {
 seajs.use(['jquery', 'calendar'], function($, Calendar) {
     var cal4 = new Calendar({trigger: '#date-4'});
     var cal5 = new Calendar({trigger: '#date-5'});
-    cal4.on('select-date', function(date) {
+    cal4.on('selectDate', function(date) {
         $('#date-4-explain').text('');
         cal5.range([date, null]);
-    }).on('select-disabled-date', function(date) {
+    }).on('selectDisabledDate', function(date) {
         $('#date-4-explain').text('not available');
     });
-    cal5.on('select-date', function(date) {
+    cal5.on('selectDate', function(date) {
         $('#date-5-explain').text('');
         cal4.range([null, date]);
-    }).on('select-disabled-date', function(date) {
+    }).on('selectDisabledDate', function(date) {
         $('#date-5-explain').text('not available');
     });;
 });
