@@ -4,8 +4,6 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
     var Base = require('#base/1.0.0/base-debug');
     var moment = require('#moment/1.6.2/moment-debug');
 
-    var dateCustomize;
-
     // Create a model data on calendar. For example, now is May, 2012.
     // And the week begin at Sunday.
     var CalendarModel = Base.extend({
@@ -25,21 +23,15 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
 
             day: {
                 setter: function(val) {
-                    return createDayModel(this._startDay);
+                    return createDayModel(this.startDay);
                 }
             },
 
             date: {
                 setter: function(val) {
                     return createDateModel(
-                        val, this._startDay, this.range
+                        val, this.startDay, this.range
                     );
-                }
-            },
-
-            time: {
-                setter: function(val) {
-                    return createTimeModel(val);
                 }
             },
 
@@ -51,7 +43,6 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
                         year: false
                     };
                     o[current] = true;
-                    o.time = this._showTime;
                     return o;
                 }
             },
@@ -60,55 +51,69 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
         },
 
         initialize: function(config) {
-            this._startDay = config.startDay;
-            this._activeTime = config.focus.clone();
-            dateCustomize = config.dateCustomize;
+            this.startDay = config.startDay;
+            this.activeTime = config.focus.clone();
 
             this.range = config.range;
-            this._showTime = config.showTime;
 
             var message = config.message || {};
             message.today = 'Today';
 
             this.set('message', message);
             this.set('mode', 'date');
-            this.renderData();
+            this._refresh();
         },
 
-        renderData: function() {
-            this.set('year', this._activeTime.year());
-            this.set('month', this._activeTime.month());
-            this.set('date', this._activeTime.clone());
-            this.set('day');
-            this.set('time');
+        changeYear: function(number) {
+            this.activeTime.add('years', number);
+            this._refresh();
+            this.trigger('change-years');
         },
 
-        changeTime: function(key, number) {
-            this._activeTime.add(key, number);
-            this.renderData();
+        changeMonth: function(number) {
+            this.activeTime.add('months', number);
+            this._refresh();
+            this.trigger('change-months');
+        },
+
+        changeDate: function(number) {
+            var oldTime = this.activeTime.format('YYYY-MM');
+            this.activeTime.add('days', number);
+            this._refresh();
+            var newTime = this.activeTime.format('YYYY-MM');
+            if (oldTime != newTime && this.get('mode').date) {
+                this.trigger('change-months');
+            }
         },
 
         changeStartDay: function(day) {
-            this._startDay = day;
-            this.renderData();
+            this.startDay = day;
+            this._refresh();
+            this.trigger('change-startday');
         },
 
         changeMode: function(mode, obj) {
             obj || (obj = {});
-            if ('month' in obj) {
-                this._activeTime.month(obj.month);
-            }
-            if (obj.year) this._activeTime.year(obj.year);
+            if ('month' in obj) this.activeTime.month(obj.month);
+            if ('year' in obj) this.activeTime.year(obj.year);
+
             this.set('mode', mode);
-            this.renderData();
+            this._refresh();
+            this.trigger('change-mode');
+        },
+
+        changeRange: function(range) {
+            this.range = range;
+            this._refresh();
+            this.trigger('change-range');
         },
 
         selectDate: function(time) {
             if (time) {
-                this._activeTime = moment(time);
-                this.renderData();
+                this.activeTime = moment(time);
+                this._refresh();
             }
-            return this._activeTime.clone();
+            return this.activeTime.clone();
         },
 
         isInRange: function(date) {
@@ -126,17 +131,24 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
             return object;
         },
 
+        _refresh: function() {
+            this.set('year', this.activeTime.year());
+            this.set('month', this.activeTime.month());
+            this.set('date', this.activeTime.clone());
+            this.set('day');
+            this.trigger('refresh');
+        },
+
         range: null,
-        _activeTime: null,
-        _startDay: 0,
-        _showTime: false
+        activeTime: null,
+        startDay: 0
     });
 
 
     // Helpers
     // -------
 
-    var showMonths = [
+    var MONTHS = [
         'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
         'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ];
@@ -164,23 +176,21 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
     }
 
     function createMonthModel(month) {
-        var items = [], current;
+        var items = [];
 
-        for (i = 0; i < showMonths.length; i++) {
-            current = i == month;
-
+        for (i = 0; i < MONTHS.length; i++) {
             items.push({
                 value: i,
-                label: showMonths[i],
-                current: current
+                label: MONTHS[i]
             });
         }
 
-        current = {
+        var current = {
             value: month,
-            label: showMonths[month]
+            label: MONTHS[month]
         };
 
+        // split [1, 2, .. 12] to [[1, 2, 3, 4], [5, ...]...]
         var list = [];
         for (var i = 0; i < items.length / 3; i++) {
             list.push(items.slice(i * 3, i * 3 + 3));
@@ -194,8 +204,7 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
             {
                 value: year - 10,
                 label: '. . .',
-                role: 'previous-10-year',
-                current: false
+                role: 'previous-10-year'
             }
         ];
 
@@ -203,16 +212,14 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
             items.push({
                 value: i,
                 label: i,
-                role: 'year',
-                current: false
+                role: 'year'
             });
         }
         items[7] = {value: year, label: year, role: 'year', current: true};
         items.push({
             value: year + 10,
             label: '. . .',
-            role: 'next-10-year',
-            current: false
+            role: 'next-10-year'
         });
 
         var list = [];
@@ -220,7 +227,12 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
             list.push(items.slice(i * 3, i * 3 + 3));
         }
 
-        return {current: year, items: list};
+        var current = {
+            value: year,
+            label: year
+        };
+
+        return {current: current, items: list};
     }
 
 
@@ -236,7 +248,12 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
         for (i = 0; i < startDay; i++) {
             items.push({label: DAY_LABELS[i], value: i});
         }
-        return {startDay: startDay, items: items};
+
+        var current = {
+            value: startDay,
+            label: DAY_LABELS[startDay]
+        };
+        return {current: current, items: items};
     }
 
 
@@ -245,12 +262,10 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
         startDay = parseStartDay(startDay);
 
         var pushData = function(d, className) {
-            if (dateCustomize) {
-                className += ' ' + dateCustomize(d);
-            }
             items.push({
-                datetime: d.format('YYYY-MM-DD'),
-                date: d.date(),
+                value: d.format('YYYY-MM-DD'),
+                label: d.date(),
+
                 day: d.day(),
                 className: className,
                 available: isInRange(d, range)
@@ -258,34 +273,28 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
         };
 
         // reset to the first date of the month
-        var current_month = current.clone().date(1);
-        var previous_month = current_month.clone().add('months', -1);
-        var next_month = current_month.clone().add('months', 1);
+        var currentMonth = current.clone().date(1);
+        var previousMonth = currentMonth.clone().add('months', -1);
+        var nextMonth = currentMonth.clone().add('months', 1);
 
         // Calculate days of previous month
         // that should be on current month's sheet
-        delta = current_month.day() - startDay;
+        delta = currentMonth.day() - startDay;
         if (delta < 0) delta += 7;
         if (delta != 0) {
-            daysInMonth = previous_month.daysInMonth();
+            daysInMonth = previousMonth.daysInMonth();
 
             // *delta - 1**: we need decrease it first
             for (i = delta - 1; i >= 0; i--) {
-                d = previous_month.date(daysInMonth - i);
+                d = previousMonth.date(daysInMonth - i);
                 pushData(d, 'previous-month');
             }
         }
 
-        var formattedCurrent = current.format('YYYY-MM-DD');
-        daysInMonth = current_month.daysInMonth();
+        daysInMonth = currentMonth.daysInMonth();
         for (i = 1; i <= daysInMonth; i++) {
-            d = current_month.date(i);
-
-            if (d.format('YYYY-MM-DD') === formattedCurrent) {
-                pushData(d, 'focused-element');
-            } else {
-                pushData(d, '')
-            }
+            d = currentMonth.date(i);
+            pushData(d, 'current-month');
         }
 
         // Calculate days of next month
@@ -294,7 +303,7 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
         if (delta != 0) {
             if (delta < 0) delta += 7;
             for (i = 1; i <= delta; i++) {
-                d = next_month.date(i);
+                d = nextMonth.date(i);
                 pushData(d, 'next-month');
             }
         }
@@ -303,17 +312,12 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
             list.push(items.slice(i * 7, i * 7 + 7));
         }
 
-        var focus = {
-            date: current.date(),
-            day: current.day()
+        var _current = {
+            value: current.format('YYYY-MM-DD'),
+            label: current.date()
         };
 
-        return {focus: focus, items: list};
-    }
-
-    function createTimeModel(val) {
-        var now = moment(val);
-        return {hour: now.hours(), minute: now.minutes()};
+        return {current: _current, items: list};
     }
 
     function isInRange(time, range) {
@@ -349,7 +353,7 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
 //
 // ## Syntax Overview:
 //
-//     var Calendar = require('undefined-debug');
+//     var Calendar = require('calendar-debug');
 //     var cal = new Calendar({
 //         trigger: 'input.date-picker',
 //         format: "YYYY-MM-DD"
@@ -358,15 +362,16 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
 // Need more complex task? Head over to Options section.
 //
 
-define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1.6.2/moment-debug", "#overlay/0.9.9/overlay-debug", "#position/1.0.0/position-debug", "#iframe-shim/1.0.0/iframe-shim-debug", "#widget/1.0.0/widget-debug", "#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug", "#widget/1.0.0/templatable-debug", "#handlebars/1.0.0/handlebars-debug"], function(require, exports, module) {
+define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1.6.2/moment-debug", "#overlay/0.9.9/overlay-debug", "#position/0.9.2/position-debug", "#iframe-shim/0.9.3/iframe-shim-debug", "#widget/0.9.16/widget-debug", "#base/0.9.16/base-debug", "#events/0.9.1/events-debug", "#class/0.9.2/class-debug", "#widget/1.0.0/templatable-debug", "#handlebars/1.0.0/handlebars-debug", "i18n!lang-debug", "#base/1.0.0/base-debug", "#class/1.0.0/class-debug", "#events/1.0.0/events-debug"], function(require, exports, module) {
 
     // Calendar is designed for desktop, we don't need to consider ``zepto``.
     var $ = require('$-debug');
     var moment = require('#moment/1.6.2/moment-debug');
     var Overlay = require('#overlay/0.9.9/overlay-debug');
     var Templatable = require('#widget/1.0.0/templatable-debug');
+    var lang = require('i18n!lang-debug') || {};
 
-    var template = '<div class="ui-calendar"><ul class="ui-calendar-navigation" data-role="navigation-container"><li class="ui-calendar-previous-year" data-role="prev-year">&lt;&lt;</li><li class="ui-calendar-previous-month" data-role="prev-month">&lt;</li><li class="ui-calendar-month-year" data-role="month-year-container"><span class="month" data-role="mode-month" data-value="{{month.current.value}}">{{_ month.current.label}}</span><span class="year" data-role="mode-year">{{year.current}}</span></li><li class="ui-calendar-next-month" data-role="next-month">&gt;</li><li class="ui-calendar-next-year" data-role="next-year">&gt;&gt;</li></ul><ul class="ui-calendar-control" data-role="pannel-container">{{#if mode.date}}{{#each day.items}}<li class="ui-calendar-day ui-calendar-day-{{value}}" data-role="day" data-value="{{value}}">{{_ label}}</li>{{/each}}{{/if}}</ul><div class="ui-calendar-data-container" data-role="data-container">{{#if mode.date}}{{#each date.items}}<ul class="ui-calendar-date-column">{{#each this}}<li class="ui-calendar-day-{{day}} {{className}}{{#unless available}}disabled-date{{/unless}}"data-role="date" data-datetime="{{datetime}}">{{date}}</li>{{/each}}</ul>{{/each}}{{/if}}{{#if mode.month}}{{#each month.items}}<ul class="ui-calendar-month-column">{{#each this}}<li {{#if current}}class="focused-element"{{/if}} data-role="month" data-value="{{value}}">{{_ label}}</li>{{/each}}</ul>{{/each}}{{/if}}{{#if mode.year}}{{#each year.items}}<ul class="ui-calendar-year-column">{{#each this}}<li {{#if current}}class="focused-element"{{/if}} data-role="{{role}}" data-value="{{value}}">{{_ label}}</li>{{/each}}</ul>{{/each}}{{/if}}</div><ul class="ui-calendar-footer" data-role="time-container"><li class="ui-calendar-today" data-role="today">{{_ message.today}}</li>{{#if mode.time}}<li class="ui-calendar-time" colspan="2" data-role="time"><span class="ui-calendar-hour">{{time.hour}}</span> : {{time.minute}}</li>{{/if}}</ul></div>';
+    var template = '<div class="ui-calendar"><ul class="ui-calendar-navigation" data-role="navigation-container"><li class="ui-calendar-previous-year" data-role="prev-year">&lt;&lt;</li><li class="ui-calendar-previous-month" data-role="prev-month">&lt;</li><li class="ui-calendar-month-year" data-role="month-year-container"><span class="month" data-role="mode-month" data-value="{{month.current.value}}">{{_ month.current.label}}</span><span class="year" data-role="mode-year">{{year.current.label}}</span></li><li class="ui-calendar-next-month" data-role="next-month">&gt;</li><li class="ui-calendar-next-year" data-role="next-year">&gt;&gt;</li></ul><ul class="ui-calendar-control" data-role="pannel-container">{{#if mode.date}}{{#each day.items}}<li class="ui-calendar-day ui-calendar-day-{{value}}" data-role="day" data-value="{{value}}">{{_ label}}</li>{{/each}}{{/if}}</ul><div class="ui-calendar-data-container" data-role="data-container">{{#if mode.date}}{{#each date.items}}<ul class="ui-calendar-date-column">{{#each this}}<li class="ui-calendar-day-{{day}} {{className}}{{#unless available}}disabled-date{{/unless}}"data-role="date" data-value="{{value}}">{{label}}</li>{{/each}}</ul>{{/each}}{{/if}}{{#if mode.month}}{{#each month.items}}<ul class="ui-calendar-month-column">{{#each this}}<li data-role="month" data-value="{{value}}">{{_ label}}</li>{{/each}}</ul>{{/each}}{{/if}}{{#if mode.year}}{{#each year.items}}<ul class="ui-calendar-year-column">{{#each this}}<li data-role="{{role}}" data-value="{{value}}">{{_ label}}</li>{{/each}}</ul>{{/each}}{{/if}}</div><ul class="ui-calendar-footer" data-role="time-container"><li class="ui-calendar-today" data-role="today">{{_ message.today}}</li>{{#if mode.time}}<li class="ui-calendar-time" colspan="2" data-role="time"><span class="ui-calendar-hour">{{time.hour}}</span> : {{time.minute}}</li>{{/if}}</ul></div>';
     var CalendarModel = require('./model-debug');
 
     // ## Options
@@ -405,8 +410,6 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
 
         showTime: false,
 
-        lang: null,
-
         // when initialize a calendar, which date should be focused.
         // default is today.
         focus: {
@@ -433,7 +436,6 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
             getter: function() {
                 if (!this.hasOwnProperty('model')) {
                     var modelConfig = {
-                        lang: this.get('lang'),
                         focus: this.get('focus'),
                         range: this.get('range'),
                         showTime: this.get('showTime'),
@@ -469,22 +471,28 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
             'click [data-role=today]': '_selectToday'
         },
 
+        templateHelpers: {
+            '_': function(key) {return lang[key] || key;}
+        },
+
         setup: function() {
-            var that = this;
+            var self = this;
 
             // bind trigger
             var $trigger = $(this.get('trigger'));
             $trigger.on(this.get('triggerType'), function() {
-                that.render().show();
+                self.show();
+                setFocusedElement(self.element, self.model);
             });
             $trigger.on('keydown', function(ev) {
-                that._keyControl(ev);
+                self._keyControl(ev);
             });
             $trigger.on('blur', function() {
-                that.hide();
+                self.hide();
             });
-            that.element.on('mousedown', function(ev) {
-                if ($.browser.msie && parseInt($.browser.version) < 9) {
+
+            self.element.on('mousedown', function(ev) {
+                if ($.browser.msie && parseInt($.browser.version, 10) < 9) {
                     var trigger = $trigger[0];
                     trigger.onbeforedeactivate = function() {
                         window.event.returnValue = false;
@@ -496,55 +504,46 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
 
             // bind model change event
             var model = this.model;
-            var hash = {
-                'change:year change:month': '[data-role=month-year-container]',
-                'change:day': '[data-role=pannel-container]',
-                'change:date': '[data-role=data-container]',
-                'change:time': '[data-role=time-container]',
-                'change:mode': [
-                    '[data-role=data-container]', '[data-role=pannel-container]'
-                ]
-            };
-
-            $.each(hash, function(eventType, selectors) {
-                model.on(eventType, function() {
-                    $.isArray(selectors) || (selectors = [selectors]);
-                    $.each(selectors, function(i, selector) {
-                        that.renderPartial(selector);
-                    });
-                });
+            model.on('change-startday change-mode', function() {
+                self.renderPartial('[data-role=data-container]');
+                self.renderPartial('[data-role=pannel-container]');
+                self.renderPartial('[data-role=month-year-container]');
+                setFocusedElement(self.element, self.model);
             });
-
-            if (that.get('showTime')) {
-                setInterval(function() {
-                    model.set('time');
-                }, 1000);
-            }
+            model.on('change-months change-years', function() {
+                var mode = model.get('mode');
+                if (mode.date || mode.year) {
+                    self.renderPartial('[data-role=data-container]');
+                }
+                self.renderPartial('[data-role=month-year-container]');
+                setFocusedElement(self.element, self.model);
+            });
+            model.on('change-range', function() {
+                self.renderPartial('[data-role=data-container]');
+            });
+            model.on('refresh', function() {
+                setFocusedElement(self.element, self.model);
+            });
         },
 
         range: function(range) {
-            this.model.range = range;
-            this.model.renderData();
+            this.model.changeRange(range);
         },
 
         prevYear: function() {
-            this.model.changeTime('years', -1);
-            return this;
+            this.model.changeYear(-1);
         },
 
         nextYear: function() {
-            this.model.changeTime('years', 1);
-            return this;
+            this.model.changeYear(1);
         },
 
         prevMonth: function() {
-            this.model.changeTime('months', -1);
-            return this;
+            this.model.changeMonth(-1);
         },
 
         nextMonth: function() {
-            this.model.changeTime('months', 1);
-            return this;
+            this.model.changeMonth(1);
         },
 
         _selectYear: function(ev) {
@@ -568,7 +567,7 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
 
         _selectDate: function(ev) {
             var el = $(ev.target);
-            var date = this.model.selectDate(el.data('datetime'));
+            var date = this.model.selectDate(el.data('value'));
             this._fillDate(date);
         },
 
@@ -583,7 +582,6 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
         },
 
         _keyControl: function(ev) {
-            ev.preventDefault();
             var modeMap = {
                 68: 'date',
                 77: 'month',
@@ -591,6 +589,7 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
             };
             if (ev.keyCode in modeMap) {
                 this.model.changeMode(modeMap[ev.keyCode]);
+                ev.preventDefault();
                 return false;
             }
             var codeMap = {
@@ -608,6 +607,8 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
                 75: 'up'
             };
             if (!(ev.keyCode in codeMap)) return;
+
+            ev.preventDefault();
 
             var keyboard = codeMap[ev.keyCode];
             var mode = this.model.get('mode');
@@ -642,7 +643,7 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
                 'up': -7,
                 'down': 7
             };
-            this.model.changeTime('days', moves[keyboard]);
+            this.model.changeDate(moves[keyboard]);
         },
 
         _keyControlMonth: function(keyboard) {
@@ -657,7 +658,7 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
                 'up': -3,
                 'down': 3
             };
-            this.model.changeTime('months', moves[keyboard]);
+            this.model.changeMonth(moves[keyboard]);
         },
 
         _keyControlYear: function(keyboard) {
@@ -672,7 +673,7 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
                 'up': -3,
                 'down': 3
             };
-            this.model.changeTime('years', moves[keyboard]);
+            this.model.changeYear(moves[keyboard]);
         },
 
         _fillDate: function(date) {
@@ -695,11 +696,24 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
         }
     });
 
+    function setFocusedElement(element, model) {
+        var current;
+        var mode = model.get('mode');
+        var o = ['date', 'month', 'year'];
+        for (var i = 0; i < o.length; i++) {
+            if (mode[o[i]]) current = o[i];
+        }
+        if (!current) return;
+        var selector = '[data-value=' + model.get(current).current.value + ']';
+        element.find('.focused-element').removeClass('focused-element');
+        element.find(selector).addClass('focused-element');
+    }
+
     Calendar.autoRender = function(config) {
         config.trigger = config.element;
         config.element = '';
         new Calendar(config);
-    }
-    
+    };
+
     module.exports = Calendar;
 });
