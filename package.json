@@ -22,6 +22,8 @@
     ],
 
     "output": {
-        "calendar.js": "."
+        "calendar.js": ".",
+        "i18n": "i18n/*",
+        "i18n": "i18n/*/*.js"
     }
 }

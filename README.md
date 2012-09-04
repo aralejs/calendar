@@ -35,6 +35,10 @@ seajs.use(['calendar'], function(Calendar) {
 
     唤出日历的事件，默认为 click
 
+- focus
+
+    日历初始聚焦的日期，默认为今天。接受任何 moment 支持的参数，推荐使用 ``YYYY-MM-DD`` 格式。
+
 - format
 
     输出日期格式，默认为 ``YYYY-MM-DD``
