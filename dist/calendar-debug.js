@@ -67,13 +67,13 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
         changeYear: function(number) {
             this.activeTime.add('years', number);
             this._refresh();
-            this.trigger('change-years');
+            this.trigger('changeYears');
         },
 
         changeMonth: function(number) {
             this.activeTime.add('months', number);
             this._refresh();
-            this.trigger('change-months');
+            this.trigger('changeMonths');
         },
 
         changeDate: function(number) {
@@ -82,14 +82,14 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
             this._refresh();
             var newTime = this.activeTime.format('YYYY-MM');
             if (oldTime != newTime && this.get('mode').date) {
-                this.trigger('change-months');
+                this.trigger('changeMonths');
             }
         },
 
         changeStartDay: function(day) {
             this.startDay = day;
             this._refresh();
-            this.trigger('change-startday');
+            this.trigger('changeStartday');
         },
 
         changeMode: function(mode, obj) {
@@ -99,13 +99,13 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
 
             this.set('mode', mode);
             this._refresh();
-            this.trigger('change-mode');
+            this.trigger('changeMode');
         },
 
         changeRange: function(range) {
             this.range = range;
             this._refresh();
-            this.trigger('change-range');
+            this.trigger('changeRange');
         },
 
         selectDate: function(time) {
@@ -504,13 +504,13 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
 
             // bind model change event
             var model = this.model;
-            model.on('change-startday change-mode', function() {
+            model.on('changeStartday changeMode', function() {
                 self.renderPartial('[data-role=data-container]');
                 self.renderPartial('[data-role=pannel-container]');
                 self.renderPartial('[data-role=month-year-container]');
                 setFocusedElement(self.element, self.model);
             });
-            model.on('change-months change-years', function() {
+            model.on('changeMonths changeYears', function() {
                 var mode = model.get('mode');
                 if (mode.date || mode.year) {
                     self.renderPartial('[data-role=data-container]');
@@ -518,7 +518,7 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
                 self.renderPartial('[data-role=month-year-container]');
                 setFocusedElement(self.element, self.model);
             });
-            model.on('change-range', function() {
+            model.on('changeRange', function() {
                 self.renderPartial('[data-role=data-container]');
             });
             model.on('refresh', function() {
@@ -678,10 +678,10 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
 
         _fillDate: function(date) {
             if (!this.model.isInRange(date)) {
-                this.trigger('select-disabled-date', date);
+                this.trigger('selectDisabledDate', date);
                 return this;
             }
-            this.trigger('select-date', date);
+            this.trigger('selectDate', date);
 
             var trigger = this.get('trigger');
             if (!trigger) {
