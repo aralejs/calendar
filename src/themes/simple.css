@@ -13,6 +13,7 @@
     margin: 0;
     padding: 0;
     clear: both;
+    width: 210px;
     zoom: 1;
 }
 .ui-calendar ul:after {
