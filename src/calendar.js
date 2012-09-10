@@ -228,6 +228,7 @@ define(function(require, exports, module) {
         _selectToday: function() {
             var today = moment();
             this.model.selectDate(today);
+            this.trigger('selectToday');
         },
 
         _changeMode: function(ev) {

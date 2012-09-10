@@ -110,8 +110,13 @@ define(function(require, exports, module) {
 
         selectDate: function(time) {
             if (time) {
+                var oldTime = this.activeTime.format('YYYY-MM');
                 this.activeTime = moment(time);
                 this._refresh();
+                var newTime = this.activeTime.format('YYYY-MM');
+                if (oldTime != newTime && this.get('mode').date) {
+                   this.trigger('changeMonths');
+                }
             }
             return this.activeTime.clone();
         },
