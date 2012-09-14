@@ -1,27 +1,47 @@
 # Calendar
 
-提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。
+-------------
 
 
-## 模块依赖
+## 演示
 
-+ seajs
-+ jquery
-+ overlay
-+ events
-+ moment
 
-## 使用说明
+首先需要引入样式文件，默认提供了一个 simple 主题。
 
-```javascript
-seajs.use(['calendar'], function(Calendar) {
-    var cal = new Calendar({
-        trigger: '#id'
-    });
-})
-```
+````html
+<link rel="stylesheet" href="../src/themes/simple.css" />
+````
 
-### Options
+设置国际化支持
+
+````javascript
+seajs.config({
+    locale: 'zh-cn',
+    preload: ['http://seajs.org/dist/plugin-i18n']
+});
+````
+
+````html
+<div class="cell">
+    <input id="date-1" type="text" />
+</div>
+````
+
+````javascript
+seajs.use('calendar', function(Calendar) {
+    new Calendar({trigger: '#date-1'});
+});
+````
+
+### 更多演示
+
+- [[双日历]]
+
+
+### API
+
+
+#### 属性
 
 - trigger
 
@@ -77,6 +97,45 @@ seajs.use(['calendar'], function(Calendar) {
     }
     ```
 
+    更多内容见 [[range 详解]]。 
 
-## API Reference
+
+#### 方法
+
+一般情况下，你不需要使用下面的方法。
+
+- range(aRange)
+
+    修改日历的 range
+
+    ```javascript
+    cal.range(['2012-10-10', '2012-10-19'])
+    ```
+
+- prevYear
+
+- nextYear
+
+- prevMonth
+
+- nextMonth
+
+
+#### 事件
+
+
+```
+instance.on(eventName, function(value) {
+})
+```
+
+- selectDate
+
+    ```javascript
+    .on('selectDate', function(date) {
+        // date is a moment instance
+    })
+    ```
+
+- selectDisabledDate
 
