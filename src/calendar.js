@@ -69,6 +69,7 @@ define(function(require, exports, module) {
         focus: {
             value: '',
             getter: function(val) {
+                val = val ? val : $(this.get('trigger')).val();
                 return moment(val ? val : undefined);
             }
         },
