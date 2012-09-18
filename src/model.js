@@ -51,6 +51,8 @@ define(function(require, exports, module) {
         },
 
         initialize: function(config) {
+            CalendarModel.superclass.initialize.call(this);
+
             this.startDay = config.startDay;
             this.activeTime = config.focus.clone();
 
