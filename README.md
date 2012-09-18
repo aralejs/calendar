@@ -6,31 +6,22 @@
 ## 演示
 
 
-首先需要引入样式文件，默认提供了一个 simple 主题。
+### 最简单的日历
 
 ````html
-<link rel="stylesheet" href="../src/themes/simple.css" />
-````
-
-设置国际化支持
-
-````javascript
+<link rel="stylesheet" href="src/themes/simple.css" />
+<div class="cell">
+    <input id="date-1" type="text" />
+</div>
+<script type="text/javascript">
 seajs.config({
     locale: 'zh-cn',
     preload: ['http://seajs.org/dist/plugin-i18n']
 });
-````
-
-````html
-<div class="cell">
-    <input id="date-1" type="text" />
-</div>
-````
-
-````javascript
 seajs.use('calendar', function(Calendar) {
     new Calendar({trigger: '#date-1'});
 });
+</script>
 ````
 
 ### 更多演示
@@ -38,10 +29,10 @@ seajs.use('calendar', function(Calendar) {
 - [[双日历]]
 
 
-### API
+## API
 
 
-#### 属性
+### 属性
 
 - trigger
 
@@ -100,7 +91,7 @@ seajs.use('calendar', function(Calendar) {
     更多内容见 [[range 详解]]。 
 
 
-#### 方法
+### 方法
 
 一般情况下，你不需要使用下面的方法。
 
@@ -121,7 +112,7 @@ seajs.use('calendar', function(Calendar) {
 - nextMonth
 
 
-#### 事件
+### 事件
 
 
 ```
