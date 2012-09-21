@@ -51,6 +51,8 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
         },
 
         initialize: function(config) {
+            CalendarModel.superclass.initialize.call(this);
+
             this.startDay = config.startDay;
             this.activeTime = config.focus.clone();
 
@@ -110,8 +112,13 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
 
         selectDate: function(time) {
             if (time) {
+                var oldTime = this.activeTime.format('YYYY-MM');
                 this.activeTime = moment(time);
                 this._refresh();
+                var newTime = this.activeTime.format('YYYY-MM');
+                if (oldTime != newTime && this.get('mode').date) {
+                   this.trigger('changeMonths');
+                }
             }
             return this.activeTime.clone();
         },
@@ -353,7 +360,7 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
 //
 // ## Syntax Overview:
 //
-//     var Calendar = require('calendar-debug');
+//     var Calendar = require('undefined-debug');
 //     var cal = new Calendar({
 //         trigger: 'input.date-picker',
 //         format: "YYYY-MM-DD"
@@ -380,11 +387,19 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
         // ### trigger and input
         // element, usually input[type=date], or date icon
         trigger: null,
-
         triggerType: 'click',
 
         // output format
         format: 'YYYY-MM-DD',
+
+        // output field
+        output: {
+            value: '',
+            getter: function(val) {
+                val = val ? val: this.get('trigger');
+                return $(val);
+            }
+        },
 
         // ### overlay
         align: {
@@ -407,27 +422,18 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
         // ### display
         // start of a week, default is Sunday.
         startDay: 'Sun',
-
         showTime: false,
+        hideOnSelect: true,
 
         // when initialize a calendar, which date should be focused.
         // default is today.
         focus: {
             value: '',
             getter: function(val) {
+                val = val ? val : $(this.get('trigger')).val();
                 return moment(val ? val : undefined);
             }
         },
-
-        // ### range for selecting
-        //
-        // determine if a date is available for selecting, accept:
-        //
-        // - list: [start, end]. ``start`` and ``end`` can be anything
-        //   that moment.parse accepts.
-        // - function: a function return ``true`` or ``false``, the function
-        //   accepts a moment date, and it determines if this date is available
-        //   for selecting.
         range: null,
 
         template: template,
@@ -574,6 +580,7 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
         _selectToday: function() {
             var today = moment();
             this.model.selectDate(today);
+            this.trigger('selectToday');
         },
 
         _changeMode: function(ev) {
@@ -687,12 +694,15 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
             if (!trigger) {
                 return this;
             }
-            var $trigger = $(trigger);
-            if (typeof $trigger[0].value === 'undefined') {
+            var $output = this.get('output');
+            if (typeof $output[0].value === 'undefined') {
                 return this;
             }
             var value = date.format(this.get('format'));
-            $trigger.val(value);
+            $output.val(value);
+            if (this.get('hideOnSelect')) {
+              this.hide();
+            }
         }
     });
 

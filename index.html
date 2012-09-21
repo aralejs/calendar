@@ -1,84 +1,83 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
-<title>Calendar</title>
-<link rel="stylesheet" href="http://aralejs.org/assets/base.css">
-<link rel="stylesheet" href="http://aralejs.org/assets/style.css">
-<link rel="stylesheet" href="http://aralejs.org/assets/pygments.css">
-<script src="http://seajs.org/dist/sea.js"></script>
-<script src="http://aralejs.org/tools/seajs-helper.js"></script>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <title>Calendar</title><link rel="stylesheet" href="http://aralejs.org/assets/app.min.css">
+    <script src="http://seajs.org/dist/sea.js"></script>
+    <script src="http://aralejs.org/tools/arale-helper.js"></script>
+    <!--[if lt IE 9]>
+      <script src="http://aralejs.org/assets/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <header id="header">
+      <div class="container">
+        <a title="Home" class="icon-home" href="/" id="logo">Arale</a>
+        <div class="wrapper fn-clear">
+          
+          <nav class="global-nav" role="navigation">
+            <ul class="fn-clear">
+              <li class="user-guides"><a href="/user-guides/">User Guides</a></li>
+              <li class="developer-guides"><a href="/developer-guides/">Developer Guides</a></li>
+            </ul>
+          </nav>
+          <nav class="top-nav" role="navigation">
+            <ul class="fn-clear">
+              <li class="first"><a href="#">Community</a></li>
+              <li><a href="#">Contribution</a></li>
+              <li class="last"><a href="#">Related Projects ▼</a>
+              <ul>
+                <li><a href="http://seajs.org">seajs</a></li>
+                <li><a href="https://github.com/seajs/spm">spm</a></li>
+              </ul>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </header>
 
+    <div id="main">
+      <div class="container fn-clear">
+<div class="markdown-body">
+  <h1 class="entry-title">Calendar</h1>
+  <p class="entry-description">提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。</p>
+  <hr />
 
-<!--[if lt IE 9]>
-<script src="http://aralejs.org/assets/html5shiv.js"></script>
-<![endif]-->
-</head>
-<body>
-<header id="header">
-    <div class="container fn-clear">
-
-    <a href="./"  class="current">Calendar</a>
-    <a href="./examples/" >演示</a>
-    
-    
-    <a id="nav-test" href="./tests/runner.html">用例</a>
-    
-
-
-        <nav role="navigation" id="nav">
-            <a title="Home" class="icon-home" href="/" id="logo">首页</a>
-            <a id="code-link" class="icon-github" href="https://github.com/aralejs/calendar">源码</a>
-        </nav>
-    </div>
-</header>
-
-<div id="main">
-    <div class="container">
-<div class="document-body">
   
-
-  <div class="markdown-body">
-    <h1>Calendar</h1>
-<p>提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。</p>
-
-<h2>模块依赖</h2>
-
+<h2>Examples</h2>
 <ul>
-<li>seajs</li>
-<li>jquery</li>
-<li>overlay</li>
-<li>events</li>
-<li>moment</li>
+  <li><a href="/examples/basic.html">基本用法</a></li>
+  <li><a href="/examples/double.html">双日历</a></li>
 </ul>
-
-<h2>使用说明</h2>
-<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;calendar&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Calendar</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">cal</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calendar</span><span class="p">({</span>
-        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#id&#39;</span>
-    <span class="p">});</span>
-<span class="p">})</span>
-</pre></div>
-
-<h3>Options</h3>
-
+<h2>See also</h2>
 <ul>
-<li><p>trigger</p>
+  <li><a href="/docs/range.html">Range 详解</a></li>
+</ul><h2 id="toc_0">API</h2>
+
+<h3 id="toc_1">Attributes</h3>
+
+<h4 id="toc_2">trigger <em>element</em></h4>
 <p>trigger 唤出日历的元素，可以是：</p>
 
 <ul>
 <li>选择器</li>
 <li>element</li>
 <li>jQuery Object</li>
-</ul></li>
-<li><p>triggerType</p>
-<p>唤出日历的事件，默认为 click</p></li>
-<li><p>focus</p>
-<p>日历初始聚焦的日期，默认为今天。接受任何 moment 支持的参数，推荐使用 <code>YYYY-MM-DD</code> 格式。</p></li>
-<li><p>format</p>
-<p>输出日期格式，默认为 <code>YYYY-MM-DD</code></p></li>
-<li><p>align</p>
+</ul>
+
+<h4 id="toc_3">triggerType <em>event</em></h4>
+<p>唤出日历的事件，默认为 click</p>
+
+<h4 id="toc_4">focus <em>moment</em></h4>
+<p>日历初始聚焦的日期，默认为今天。接受任何 moment 支持的参数，推荐使用 <code>YYYY-MM-DD</code> 格式。</p>
+
+<h4 id="toc_5">format <em>string</em></h4>
+<p>输出日期格式，默认为 <code>YYYY-MM-DD</code></p>
+
+<h4 id="toc_6">align <em>overlay.align</em></h4>
 <p>同 Overlay 的设置，一般不用处理，如需了解详情，请参考 arale.position 的 pin 方法。</p>
 <p>基本设置方法：</p>
 <div class="highlight"><pre><span class="p">{</span>
@@ -86,28 +85,86 @@
     <span class="nx">baseElement</span><span class="o">:</span> <span class="nx">Position</span><span class="p">.</span><span class="nx">VIEWPORT</span><span class="p">,</span>     <span class="c1">// 基准定位元素，默认为当前可视区域</span>
     <span class="nx">baseXY</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>      <span class="c1">// 基准定位元素的定位点，默认为左上角</span>
 <span class="p">}</span>
-</pre></div></li>
-<li><p>startDay</p>
+</pre></div>
+
+<h4 id="toc_7">startDay <em>string|number</em></h4>
 <p>一周从哪一天开始，默认周日是一周的开始。</p>
-<p>可使用数字 0-6，可使用 &#39;Sun&#39;, &#39;Tue&#39; 等简写，还可以使用 &#39;Sunday&#39;, &#39;Thursday&#39; 等全称。</p></li>
-<li><p>range</p>
+<p>可使用数字 0-6，可使用 &#39;Sun&#39;, &#39;Tue&#39; 等简写，还可以使用 &#39;Sunday&#39;, &#39;Thursday&#39; 等全称。</p>
+
+<h4 id="toc_8">range <em>array|function</em></h4>
 <p>设置可选范围，可接受数组与函数。例如 [startDate, endDate]，其中 startDate 与 endDate 支持所有 moment 支持的写法。</p>
 <p>推荐使用： <code>[&quot;2012-12-12&quot;, &quot;2014-01-01&quot;]</code> 这种写法，方便阅读。</p>
 <p>函数示例：</p>
 <div class="highlight"><pre><span class="nx">range</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">time</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">time</span><span class="p">.</span><span class="nx">day</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">;</span>
 <span class="p">}</span>
-</pre></div></li>
-</ul>
+</pre></div>
+<p>更多内容见 <span class="no-reference">range 详解</span>。 </p>
 
-<h2>API Reference</h2>
+<h3 id="toc_9">Methods</h3>
+<p>一般情况下，你不需要使用下面的方法。</p>
 
-  </div>
+<h4 id="toc_10">range(aRange)</h4>
+<p>修改日历的 range</p>
+<div class="highlight"><pre><span class="nx">cal</span><span class="p">.</span><span class="nx">range</span><span class="p">([</span><span class="s1">&#39;2012-10-10&#39;</span><span class="p">,</span> <span class="s1">&#39;2012-10-19&#39;</span><span class="p">])</span>
+</pre></div>
+
+<h4 id="toc_11">prevYear</h4>
+
+<h4 id="toc_12">nextYear</h4>
+
+<h4 id="toc_13">prevMonth</h4>
+
+<h4 id="toc_14">nextMonth</h4>
+
+<h3 id="toc_15">Events</h3>
+
+<h4 id="toc_16">selectDate</h4>
+<div class="highlight"><pre><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;selectDate&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// date is a moment instance</span>
+<span class="p">})</span>
+</pre></div>
+
+<h4 id="toc_17">selectDisabledDate</h4>
+
+
+  <h2>Tests</h2>
+  <p><a href="./tests/runner.html">测试用例</a></p>
+
+  <h2>Support</h2>
+  <p>有任何疑问，欢迎发送邮件到 <a href="https://groups.google.com/forum/?fromgroups#!forum/aralejs">aralejs@googlegroups.com</a></p>
+  <p>发现 bug？请提交 <a href="https://github.com/aralejs/calendar/issues/new">Issue</a></p>
+
+  <div id="disqus_thread"></div>
 </div>
+<script type="text/javascript">
+  var disqus_shortname = 'aralejs';
+  var disqus_title = 'calendar';
+  
+    var disqus_identifier = '#calendar';
+    var disqus_url = 'http://aralejs.org/calendar/';
+  
+  (function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
 
+      </div>
     </div>
-</div>
-<hr class="end">
-<script src="http://aralejs.org/tools/nico-helper.js"></script>
-</body>
+
+    <footer id="footer">
+      <div class="container">
+        <div class="contact">
+          <p>旺旺群：66486486</p>
+          <p>QQ 群：59443088</p>
+        </div>
+        <div class="copyright">
+          <p>&copy; 2012 aralejs.org</p>
+          <p>除非另有声明，本站所有代码遵循 MIT 协议</p>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>
