@@ -1,6 +1,7 @@
 {
     "name": "calendar",
     "version": "0.8.0",
+    "description": "提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。",
     "author": "Hsiaoming Yang <lepture@me.com>",
     "homepage": "http://aralejs.github.com/calednar/",
 
