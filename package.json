@@ -4,6 +4,7 @@
   "author": "Hsiaoming Yang <lepture@me.com>",
   "homepage": "http://aralejs.github.com/calednar/",
   "description": "提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。",
+  "tag": "widget",
   "dependencies": {
     "$": "$",
     "moment": "1.6.2",
