@@ -51,6 +51,8 @@ define(function(require, exports, module) {
         },
 
         initialize: function(config) {
+            CalendarModel.superclass.initialize.call(this);
+
             this.startDay = config.startDay;
             this.activeTime = config.focus.clone();
 
@@ -67,13 +69,13 @@ define(function(require, exports, module) {
         changeYear: function(number) {
             this.activeTime.add('years', number);
             this._refresh();
-            this.trigger('change-years');
+            this.trigger('changeYears');
         },
 
         changeMonth: function(number) {
             this.activeTime.add('months', number);
             this._refresh();
-            this.trigger('change-months');
+            this.trigger('changeMonths');
         },
 
         changeDate: function(number) {
@@ -82,14 +84,14 @@ define(function(require, exports, module) {
             this._refresh();
             var newTime = this.activeTime.format('YYYY-MM');
             if (oldTime != newTime && this.get('mode').date) {
-                this.trigger('change-months');
+                this.trigger('changeMonths');
             }
         },
 
         changeStartDay: function(day) {
             this.startDay = day;
             this._refresh();
-            this.trigger('change-startday');
+            this.trigger('changeStartday');
         },
 
         changeMode: function(mode, obj) {
@@ -99,19 +101,24 @@ define(function(require, exports, module) {
 
             this.set('mode', mode);
             this._refresh();
-            this.trigger('change-mode');
+            this.trigger('changeMode');
         },
 
         changeRange: function(range) {
             this.range = range;
             this._refresh();
-            this.trigger('change-range');
+            this.trigger('changeRange');
         },
 
         selectDate: function(time) {
             if (time) {
+                var oldTime = this.activeTime.format('YYYY-MM');
                 this.activeTime = moment(time);
                 this._refresh();
+                var newTime = this.activeTime.format('YYYY-MM');
+                if (oldTime != newTime && this.get('mode').date) {
+                   this.trigger('changeMonths');
+                }
             }
             return this.activeTime.clone();
         },

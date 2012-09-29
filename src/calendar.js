@@ -34,11 +34,19 @@ define(function(require, exports, module) {
         // ### trigger and input
         // element, usually input[type=date], or date icon
         trigger: null,
-
         triggerType: 'click',
 
         // output format
         format: 'YYYY-MM-DD',
+
+        // output field
+        output: {
+            value: '',
+            getter: function(val) {
+                val = val ? val: this.get('trigger');
+                return $(val);
+            }
+        },
 
         // ### overlay
         align: {
@@ -61,27 +69,18 @@ define(function(require, exports, module) {
         // ### display
         // start of a week, default is Sunday.
         startDay: 'Sun',
-
         showTime: false,
+        hideOnSelect: true,
 
         // when initialize a calendar, which date should be focused.
         // default is today.
         focus: {
             value: '',
             getter: function(val) {
+                val = val ? val : $(this.get('trigger')).val();
                 return moment(val ? val : undefined);
             }
         },
-
-        // ### range for selecting
-        //
-        // determine if a date is available for selecting, accept:
-        //
-        // - list: [start, end]. ``start`` and ``end`` can be anything
-        //   that moment.parse accepts.
-        // - function: a function return ``true`` or ``false``, the function
-        //   accepts a moment date, and it determines if this date is available
-        //   for selecting.
         range: null,
 
         template: template,
@@ -158,13 +157,13 @@ define(function(require, exports, module) {
 
             // bind model change event
             var model = this.model;
-            model.on('change-startday change-mode', function() {
+            model.on('changeStartday changeMode', function() {
                 self.renderPartial('[data-role=data-container]');
                 self.renderPartial('[data-role=pannel-container]');
                 self.renderPartial('[data-role=month-year-container]');
                 setFocusedElement(self.element, self.model);
             });
-            model.on('change-months change-years', function() {
+            model.on('changeMonths changeYears', function() {
                 var mode = model.get('mode');
                 if (mode.date || mode.year) {
                     self.renderPartial('[data-role=data-container]');
@@ -172,7 +171,7 @@ define(function(require, exports, module) {
                 self.renderPartial('[data-role=month-year-container]');
                 setFocusedElement(self.element, self.model);
             });
-            model.on('change-range', function() {
+            model.on('changeRange', function() {
                 self.renderPartial('[data-role=data-container]');
             });
             model.on('refresh', function() {
@@ -228,6 +227,7 @@ define(function(require, exports, module) {
         _selectToday: function() {
             var today = moment();
             this.model.selectDate(today);
+            this.trigger('selectToday');
         },
 
         _changeMode: function(ev) {
@@ -332,21 +332,24 @@ define(function(require, exports, module) {
 
         _fillDate: function(date) {
             if (!this.model.isInRange(date)) {
-                this.trigger('select-disabled-date', date);
+                this.trigger('selectDisabledDate', date);
                 return this;
             }
-            this.trigger('select-date', date);
+            this.trigger('selectDate', date);
 
             var trigger = this.get('trigger');
             if (!trigger) {
                 return this;
             }
-            var $trigger = $(trigger);
-            if (typeof $trigger[0].value === 'undefined') {
+            var $output = this.get('output');
+            if (typeof $output[0].value === 'undefined') {
                 return this;
             }
             var value = date.format(this.get('format'));
-            $trigger.val(value);
+            $output.val(value);
+            if (this.get('hideOnSelect')) {
+              this.hide();
+            }
         }
     });
 

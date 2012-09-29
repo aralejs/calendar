@@ -51,6 +51,8 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
         },
 
         initialize: function(config) {
+            CalendarModel.superclass.initialize.call(this);
+
             this.startDay = config.startDay;
             this.activeTime = config.focus.clone();
 
@@ -67,13 +69,13 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
         changeYear: function(number) {
             this.activeTime.add('years', number);
             this._refresh();
-            this.trigger('change-years');
+            this.trigger('changeYears');
         },
 
         changeMonth: function(number) {
             this.activeTime.add('months', number);
             this._refresh();
-            this.trigger('change-months');
+            this.trigger('changeMonths');
         },
 
         changeDate: function(number) {
@@ -82,14 +84,14 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
             this._refresh();
             var newTime = this.activeTime.format('YYYY-MM');
             if (oldTime != newTime && this.get('mode').date) {
-                this.trigger('change-months');
+                this.trigger('changeMonths');
             }
         },
 
         changeStartDay: function(day) {
             this.startDay = day;
             this._refresh();
-            this.trigger('change-startday');
+            this.trigger('changeStartday');
         },
 
         changeMode: function(mode, obj) {
@@ -99,19 +101,24 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
 
             this.set('mode', mode);
             this._refresh();
-            this.trigger('change-mode');
+            this.trigger('changeMode');
         },
 
         changeRange: function(range) {
             this.range = range;
             this._refresh();
-            this.trigger('change-range');
+            this.trigger('changeRange');
         },
 
         selectDate: function(time) {
             if (time) {
+                var oldTime = this.activeTime.format('YYYY-MM');
                 this.activeTime = moment(time);
                 this._refresh();
+                var newTime = this.activeTime.format('YYYY-MM');
+                if (oldTime != newTime && this.get('mode').date) {
+                   this.trigger('changeMonths');
+                }
             }
             return this.activeTime.clone();
         },
@@ -353,7 +360,7 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.0/base-debug", "#cl
 //
 // ## Syntax Overview:
 //
-//     var Calendar = require('calendar-debug');
+//     var Calendar = require('undefined-debug');
 //     var cal = new Calendar({
 //         trigger: 'input.date-picker',
 //         format: "YYYY-MM-DD"
@@ -380,11 +387,19 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
         // ### trigger and input
         // element, usually input[type=date], or date icon
         trigger: null,
-
         triggerType: 'click',
 
         // output format
         format: 'YYYY-MM-DD',
+
+        // output field
+        output: {
+            value: '',
+            getter: function(val) {
+                val = val ? val: this.get('trigger');
+                return $(val);
+            }
+        },
 
         // ### overlay
         align: {
@@ -407,27 +422,18 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
         // ### display
         // start of a week, default is Sunday.
         startDay: 'Sun',
-
         showTime: false,
+        hideOnSelect: true,
 
         // when initialize a calendar, which date should be focused.
         // default is today.
         focus: {
             value: '',
             getter: function(val) {
+                val = val ? val : $(this.get('trigger')).val();
                 return moment(val ? val : undefined);
             }
         },
-
-        // ### range for selecting
-        //
-        // determine if a date is available for selecting, accept:
-        //
-        // - list: [start, end]. ``start`` and ``end`` can be anything
-        //   that moment.parse accepts.
-        // - function: a function return ``true`` or ``false``, the function
-        //   accepts a moment date, and it determines if this date is available
-        //   for selecting.
         range: null,
 
         template: template,
@@ -504,13 +510,13 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
 
             // bind model change event
             var model = this.model;
-            model.on('change-startday change-mode', function() {
+            model.on('changeStartday changeMode', function() {
                 self.renderPartial('[data-role=data-container]');
                 self.renderPartial('[data-role=pannel-container]');
                 self.renderPartial('[data-role=month-year-container]');
                 setFocusedElement(self.element, self.model);
             });
-            model.on('change-months change-years', function() {
+            model.on('changeMonths changeYears', function() {
                 var mode = model.get('mode');
                 if (mode.date || mode.year) {
                     self.renderPartial('[data-role=data-container]');
@@ -518,7 +524,7 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
                 self.renderPartial('[data-role=month-year-container]');
                 setFocusedElement(self.element, self.model);
             });
-            model.on('change-range', function() {
+            model.on('changeRange', function() {
                 self.renderPartial('[data-role=data-container]');
             });
             model.on('refresh', function() {
@@ -574,6 +580,7 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
         _selectToday: function() {
             var today = moment();
             this.model.selectDate(today);
+            this.trigger('selectToday');
         },
 
         _changeMode: function(ev) {
@@ -678,21 +685,24 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
 
         _fillDate: function(date) {
             if (!this.model.isInRange(date)) {
-                this.trigger('select-disabled-date', date);
+                this.trigger('selectDisabledDate', date);
                 return this;
             }
-            this.trigger('select-date', date);
+            this.trigger('selectDate', date);
 
             var trigger = this.get('trigger');
             if (!trigger) {
                 return this;
             }
-            var $trigger = $(trigger);
-            if (typeof $trigger[0].value === 'undefined') {
+            var $output = this.get('output');
+            if (typeof $output[0].value === 'undefined') {
                 return this;
             }
             var value = date.format(this.get('format'));
-            $trigger.val(value);
+            $output.val(value);
+            if (this.get('hideOnSelect')) {
+              this.hide();
+            }
         }
     });
 

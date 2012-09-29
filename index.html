@@ -42,42 +42,38 @@
   
   <hr />
 
-  <h2 id="toc_0">模块依赖</h2>
-
+  
+<h2>Examples</h2>
 <ul>
-<li>seajs</li>
-<li>jquery</li>
-<li>overlay</li>
-<li>events</li>
-<li>moment</li>
+  <li><a href="./examples/basic.html">基本用法</a></li>
+  <li><a href="./examples/double.html">双日历</a></li>
 </ul>
-
-<h2 id="toc_1">使用说明</h2>
-<div class="highlight"><pre><span class="nx">seajs</span><span class="p">.</span><span class="nx">use</span><span class="p">([</span><span class="s1">&#39;calendar&#39;</span><span class="p">],</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Calendar</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">var</span> <span class="nx">cal</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Calendar</span><span class="p">({</span>
-        <span class="nx">trigger</span><span class="o">:</span> <span class="s1">&#39;#id&#39;</span>
-    <span class="p">});</span>
-<span class="p">})</span>
-</pre></div>
-
-<h3 id="toc_2">Options</h3>
-
+<h2>See also</h2>
 <ul>
-<li><p>trigger</p>
+  <li><a href="./docs/range.html">Range 详解</a></li>
+</ul><h2 id="toc_0">API</h2>
+
+<h3 id="toc_1">Attributes</h3>
+
+<h4 id="toc_2">trigger <em>element</em></h4>
 <p>trigger 唤出日历的元素，可以是：</p>
 
 <ul>
 <li>选择器</li>
 <li>element</li>
 <li>jQuery Object</li>
-</ul></li>
-<li><p>triggerType</p>
-<p>唤出日历的事件，默认为 click</p></li>
-<li><p>focus</p>
-<p>日历初始聚焦的日期，默认为今天。接受任何 moment 支持的参数，推荐使用 <code>YYYY-MM-DD</code> 格式。</p></li>
-<li><p>format</p>
-<p>输出日期格式，默认为 <code>YYYY-MM-DD</code></p></li>
-<li><p>align</p>
+</ul>
+
+<h4 id="toc_3">triggerType <em>event</em></h4>
+<p>唤出日历的事件，默认为 click</p>
+
+<h4 id="toc_4">focus <em>moment</em></h4>
+<p>日历初始聚焦的日期，默认为今天。接受任何 moment 支持的参数，推荐使用 <code>YYYY-MM-DD</code> 格式。</p>
+
+<h4 id="toc_5">format <em>string</em></h4>
+<p>输出日期格式，默认为 <code>YYYY-MM-DD</code></p>
+
+<h4 id="toc_6">align <em>overlay.align</em></h4>
 <p>同 Overlay 的设置，一般不用处理，如需了解详情，请参考 arale.position 的 pin 方法。</p>
 <p>基本设置方法：</p>
 <div class="highlight"><pre><span class="p">{</span>
@@ -85,21 +81,47 @@
     <span class="nx">baseElement</span><span class="o">:</span> <span class="nx">Position</span><span class="p">.</span><span class="nx">VIEWPORT</span><span class="p">,</span>     <span class="c1">// 基准定位元素，默认为当前可视区域</span>
     <span class="nx">baseXY</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>      <span class="c1">// 基准定位元素的定位点，默认为左上角</span>
 <span class="p">}</span>
-</pre></div></li>
-<li><p>startDay</p>
+</pre></div>
+
+<h4 id="toc_7">startDay <em>string|number</em></h4>
 <p>一周从哪一天开始，默认周日是一周的开始。</p>
-<p>可使用数字 0-6，可使用 &#39;Sun&#39;, &#39;Tue&#39; 等简写，还可以使用 &#39;Sunday&#39;, &#39;Thursday&#39; 等全称。</p></li>
-<li><p>range</p>
+<p>可使用数字 0-6，可使用 &#39;Sun&#39;, &#39;Tue&#39; 等简写，还可以使用 &#39;Sunday&#39;, &#39;Thursday&#39; 等全称。</p>
+
+<h4 id="toc_8">range <em>array|function</em></h4>
 <p>设置可选范围，可接受数组与函数。例如 [startDate, endDate]，其中 startDate 与 endDate 支持所有 moment 支持的写法。</p>
 <p>推荐使用： <code>[&quot;2012-12-12&quot;, &quot;2014-01-01&quot;]</code> 这种写法，方便阅读。</p>
 <p>函数示例：</p>
 <div class="highlight"><pre><span class="nx">range</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">time</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">time</span><span class="p">.</span><span class="nx">day</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">;</span>
 <span class="p">}</span>
-</pre></div></li>
-</ul>
+</pre></div>
+<p>更多内容见 <span class="no-reference">range 详解</span>。 </p>
 
-<h2 id="toc_3">API Reference</h2>
+<h3 id="toc_9">Methods</h3>
+<p>一般情况下，你不需要使用下面的方法。</p>
+
+<h4 id="toc_10">range(aRange)</h4>
+<p>修改日历的 range</p>
+<div class="highlight"><pre><span class="nx">cal</span><span class="p">.</span><span class="nx">range</span><span class="p">([</span><span class="s1">&#39;2012-10-10&#39;</span><span class="p">,</span> <span class="s1">&#39;2012-10-19&#39;</span><span class="p">])</span>
+</pre></div>
+
+<h4 id="toc_11">prevYear</h4>
+
+<h4 id="toc_12">nextYear</h4>
+
+<h4 id="toc_13">prevMonth</h4>
+
+<h4 id="toc_14">nextMonth</h4>
+
+<h3 id="toc_15">Events</h3>
+
+<h4 id="toc_16">selectDate</h4>
+<div class="highlight"><pre><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;selectDate&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">date</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// date is a moment instance</span>
+<span class="p">})</span>
+</pre></div>
+
+<h4 id="toc_17">selectDisabledDate</h4>
 
 
   <h2>Tests</h2>

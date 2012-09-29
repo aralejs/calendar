@@ -1,30 +1,30 @@
 {
-    "name": "calendar",
-    "version": "0.8.0",
-    "description": "提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。",
-    "author": "Hsiaoming Yang <lepture@me.com>",
-    "homepage": "http://aralejs.github.com/calednar/",
+  "name": "calendar",
+  "version": "0.8.0",
+  "author": "Hsiaoming Yang <lepture@me.com>",
+  "homepage": "http://aralejs.github.com/calednar/",
+  "description": "提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。",
+  "dependencies": {
+    "$": "$",
+    "moment": "1.6.2",
+    "base": "1.0.0",
+    "overlay": "0.9.9",
+    "widget": "1.0.0",
+    "templatable": "widget/1.0.0/templatable"
+  },
 
-    "dependencies": {
-        "$": "$",
-        "moment": "1.6.2",
-        "base": "1.0.0",
-        "overlay": "0.9.9",
-        "widget": "1.0.0",
-        "templatable": "widget/1.0.0/templatable"
-    },
+  "devDependencies": {
+  },
 
-    "devDependencies": {
-    },
+  "tests": [
+    "calendar",
+    "model"
+  ],
 
-    "tests": [
-        "calendar",
-        "model"
-    ],
+  "output": {
+    "calendar.js": ".",
 
-    "output": {
-        "calendar.js": ".",
-        "i18n": "i18n/*",
-        "i18n": "i18n/*/*.js"
-    }
+    "i18n/lang.js": ".",
+    "i18n/zh-cn/lang.js": "."
+  }
 }
