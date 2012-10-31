@@ -8,10 +8,10 @@
   "dependencies": {
     "$": "$",
     "moment": "1.6.2",
-    "base": "1.0.0",
-    "overlay": "0.9.9",
-    "widget": "1.0.0",
-    "templatable": "widget/1.0.0/templatable"
+    "base": "1.0.1",
+    "overlay": "0.9.11",
+    "widget": "1.0.2",
+    "templatable": "widget/1.0.2/templatable"
   },
 
   "devDependencies": {
