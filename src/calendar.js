@@ -225,8 +225,7 @@ define(function(require, exports, module) {
         },
 
         _selectToday: function() {
-            var today = moment();
-            this.model.selectDate(today);
+            this.model.selectToday();
             this.trigger('selectToday');
         },
 

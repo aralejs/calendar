@@ -123,6 +123,11 @@ define(function(require, exports, module) {
             return this.activeTime.clone();
         },
 
+        selectToday: function() {
+            this.selectDate(moment());
+            this.trigger('changeYears');
+        },
+
         isInRange: function(date) {
             return isInRange(date, this.range);
         },
