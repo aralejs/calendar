@@ -18,3 +18,4 @@ Thumbs.db
 *.pyo
 build
 node_modules
+_site
