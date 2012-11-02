@@ -41,13 +41,18 @@
 .ui-calendar .month:hover, .ui-calendar .year:hover {
     color: #d64;
 }
+.ui-calendar .ui-calendar-previous-year:hover,
+.ui-calendar .ui-calendar-previous-month:hover,
+.ui-calendar .ui-calendar-next-month:hover,
+.ui-calendar .ui-calendar-next-year:hover {
+    color: #d64;
+}
 .ui-calendar .ui-calendar-data-container {
     border-top: 1px solid #dadada;
     border-bottom: 1px solid #dadada;
 }
 .ui-calendar .ui-calendar-date-column .previous-month,
 .ui-calendar .ui-calendar-date-column .next-month {
-    background: #eee;
     color: #ccc;
 }
 .ui-calendar .ui-calendar-date-column .disabled-date {
