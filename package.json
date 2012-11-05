@@ -23,6 +23,7 @@
 
   "output": {
     "calendar.js": ".",
+    "calendar.css": ".",
 
     "i18n/lang.js": ".",
     "i18n/zh-cn/lang.js": "."
