@@ -123,6 +123,11 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.1/base-debug", "#cl
             return this.activeTime.clone();
         },
 
+        selectToday: function() {
+            this.selectDate(moment());
+            this.trigger('changeYears');
+        },
+
         isInRange: function(date) {
             return isInRange(date, this.range);
         },
@@ -349,7 +354,6 @@ define("#calendar/0.8.0/model-debug", ["$-debug", "#base/1.0.1/base-debug", "#cl
 
     module.exports = CalendarModel;
 });
-
 
 // # Calendar
 //
@@ -578,8 +582,7 @@ define("#calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "#moment/1
         },
 
         _selectToday: function() {
-            var today = moment();
-            this.model.selectDate(today);
+            this.model.selectToday();
             this.trigger('selectToday');
         },
 
