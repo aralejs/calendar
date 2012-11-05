@@ -7,7 +7,7 @@
 首先需要引入样式文件，默认提供了一个 simple 主题。
 
 ````html
-<link rel="stylesheet" href="../src/themes/simple.css" />
+<link rel="stylesheet" href="../src/calendar.css" />
 ````
 
 设置国际化支持：

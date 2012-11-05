@@ -5,7 +5,7 @@
 提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。
 
 `````html
-<link rel="stylesheet" href="src/themes/simple.css" />
+<link rel="stylesheet" href="src/calendar.css" />
 <input id="date-1" type="text" />
 <script>
 seajs.config({

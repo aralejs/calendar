@@ -6,7 +6,7 @@
 
 
 `````html
-<link rel="stylesheet" href="../src/themes/simple.css" />
+<link rel="stylesheet" href="../src/calendar.css" />
 `````
 
 `````javascript
