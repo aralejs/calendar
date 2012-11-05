@@ -1,8 +1,16 @@
 {
   "name": "calendar",
   "version": "0.8.0",
+  "description": "Moment supported calendar",
   "author": "Hsiaoming Yang <lepture@me.com>",
-  "homepage": "http://aralejs.github.com/calednar/",
+  "homepage": "http://aralejs.org/calendar",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aralejs/calendar"
+  },
+  "bugs": {
+    "url": "https://github.com/aralejs/issues"
+  },
   "tag": "widget",
   "dependencies": {
     "$": "$",
