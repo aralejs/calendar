@@ -1,4 +1,4 @@
-define("#calendar/0.8.0/i18n/zh-cn/lang-debug", [], {
+define("arale/calendar/0.8.0/i18n/zh-cn/lang-debug", [], {
     'Su': '日',
     'Mo': '一',
     'Tu': '二',

@@ -1,24 +1,25 @@
 {
   "name": "calendar",
   "version": "0.8.0",
+  "root": "arale",
   "description": "Moment supported calendar",
   "author": "Hsiaoming Yang <lepture@me.com>",
   "homepage": "http://aralejs.org/calendar",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aralejs/calendar"
+    "url": "https://github.com/aralejs/calendar.git"
   },
   "bugs": {
-    "url": "https://github.com/aralejs/issues"
+    "url": "https://github.com/aralejs/calendar/issues"
   },
   "tag": "widget",
   "dependencies": {
     "$": "$",
-    "moment": "moment/1.6.2/moment",
-    "base": "base/1.0.1/base",
-    "overlay": "overlay/0.9.11/overlay",
-    "widget": "widget/1.0.2/widget",
-    "templatable": "widget/1.0.2/templatable"
+    "moment": "gallery/moment/1.6.2/moment",
+    "base": "arale/base/1.0.1/base",
+    "overlay": "arale/overlay/0.9.12/overlay",
+    "widget": "arale/widget/1.0.2/widget",
+    "templatable": "arale/widget/1.0.2/templatable"
   },
 
   "devDependencies": {
