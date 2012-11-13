@@ -1,6 +1,6 @@
 {
   "name": "calendar",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "root": "arale",
   "description": "Moment supported calendar",
   "author": "Hsiaoming Yang <lepture@me.com>",

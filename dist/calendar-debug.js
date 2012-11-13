@@ -1,4 +1,4 @@
-define("arale/calendar/0.8.0/model-debug", ["$-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "gallery/moment/1.6.2/moment-debug"], function(require, exports, module) {
+define("arale/calendar/0.8.1/model-debug", ["$-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "gallery/moment/1.6.2/moment-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
     var Base = require('arale/base/1.0.1/base-debug');
@@ -373,7 +373,7 @@ define("arale/calendar/0.8.0/model-debug", ["$-debug", "arale/base/1.0.1/base-de
 // Need more complex task? Head over to Options section.
 //
 
-define("arale/calendar/0.8.0/calendar-debug", ["./model-debug", "$-debug", "gallery/moment/1.6.2/moment-debug", "arale/overlay/0.9.12/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug", "i18n!lang-debug"], function(require, exports, module) {
+define("arale/calendar/0.8.1/calendar-debug", ["./model-debug", "$-debug", "gallery/moment/1.6.2/moment-debug", "arale/overlay/0.9.12/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug", "i18n!lang-debug"], function(require, exports, module) {
 
     // Calendar is designed for desktop, we don't need to consider ``zepto``.
     var $ = require('$-debug');
