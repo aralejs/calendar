@@ -435,7 +435,8 @@ define("arale/calendar/0.8.1/calendar-debug", ["./model-debug", "$-debug", "gall
             value: '',
             getter: function(val) {
                 val = val ? val : $(this.get('trigger')).val();
-                return moment(val ? val : undefined);
+                if (!val) return moment();
+                return moment(val, this.get('format'));
             }
         },
         range: null,
