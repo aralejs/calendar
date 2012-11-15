@@ -1,6 +1,6 @@
 .ui-calendar {
     position: absolute;
-    font: 16px 'Xin Gothic', 'PT Sans', 'Hiragino Sans GB', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font: 16px/20px 'Xin Gothic', 'PT Sans', 'Hiragino Sans GB', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background: #f9f9f9;
     border-collapse: collapse;
     border-spacing: 0;
@@ -14,6 +14,7 @@
     padding: 0;
     clear: both;
     width: 210px;
+    color: #333;
     zoom: 1;
 }
 .ui-calendar ul:after {

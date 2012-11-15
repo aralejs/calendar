@@ -10,6 +10,8 @@
 
 - ``[bugfix]`` fix initialize focus bug.
 
+- ``[enhancement]`` css enhancement.
+
 
 ## 0.8.0
 
