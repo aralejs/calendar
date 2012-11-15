@@ -78,7 +78,8 @@ define(function(require, exports, module) {
             value: '',
             getter: function(val) {
                 val = val ? val : $(this.get('trigger')).val();
-                return moment(val ? val : undefined);
+                if (!val) return moment();
+                return moment(val, this.get('format'));
             }
         },
         range: null,
