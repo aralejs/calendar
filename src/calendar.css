@@ -56,10 +56,6 @@
 .ui-calendar .ui-calendar-date-column .next-month {
     color: #ccc;
 }
-.ui-calendar .ui-calendar-date-column .disabled-date {
-    background: #eee;
-    color: #bbb;
-}
 .ui-calendar .ui-calendar-year-column li,
 .ui-calendar .ui-calendar-month-column li {
     width: 65px;
@@ -76,6 +72,11 @@
 .ui-calendar .ui-calendar-date-column li:hover {
     color: #333;
     background: #dadada;
+}
+.ui-calendar .ui-calendar-date-column li.disabled-date {
+    background: #eee;
+    color: #bbb;
+    cursor: not-allowed;
 }
 .ui-calendar .ui-calendar-year-column li.focused-element,
 .ui-calendar .ui-calendar-month-column li.focused-element,
