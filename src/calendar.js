@@ -141,8 +141,20 @@ define(function(require, exports, module) {
             $trigger.on('keydown', function(ev) {
                 self._keyControl(ev);
             });
+            $trigger.on('blur', function() {
+                self.hide();
+            });
 
-            this._blurHide([this.get('trigger')]);
+            self.element.on('mousedown', function(ev) {
+                if ($.browser.msie && parseInt($.browser.version, 10) < 9) {
+                    var trigger = $trigger[0];
+                    trigger.onbeforedeactivate = function() {
+                        window.event.returnValue = false;
+                        trigger.onbeforedeactivate = null;
+                    };
+                }
+                ev.preventDefault();
+            });
 
             // bind model change event
             var model = this.model;
