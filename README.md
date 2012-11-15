@@ -83,16 +83,14 @@ range: function(time) {
 }
 ```
 
-更多内容见 [[range 详解]]。 
-
 
 ## Methods
 
 一般情况下，你不需要使用下面的方法。
 
-### range(aRange) `range`
+### range(aRange)
 
-修改日历的 range
+动态修改日历的 range，参考双日历演示。
 
 ```javascript
 cal.range(['2012-10-10', '2012-10-19'])
@@ -138,3 +136,13 @@ cal.on('..event..', function(param){
 ### selectDisabledDate `moment`
 
 当用户选择了不可用的日期时。
+
+```javascript
+.on('selectDisabledDate', function(date) {
+    // date is a moment instance
+})
+```
+
+## More information
+
+该日历大量使用 [moment](http://momentjs.com)，请查看 moment 官网，获取更多帮助。
