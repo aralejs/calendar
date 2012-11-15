@@ -1,3 +1,57 @@
+// # calendar model's job
+// ----------------------
+//
+// initialize model with startDay, focus, and range in an object. Which means:
+//
+// var m = Model({startDay: 0, focus: '2012-12-12', range: null})
+//
+// and it will create the model for template, the result should be
+// ``m.toJSON()``:
+//
+// {
+//  year: {
+//    current: {value: 2012, label: 2012},
+//    items: [{value: 2002, label: 2002, role: 'previous-10-year'}, ...]
+//  },
+//  month: {
+//    current: {value: 12, label: 12},
+//    items: [
+//      [{value: 1, label: 1}, ... {value: 3, label: 3}],
+//      [...], [...], [...]
+//    ]
+//  },
+//  date: {
+//    current: {value: '2012-12-12', label: 12},
+//    items: [
+//      [
+//        {
+//          value: '2012-11-25',
+//          label: 25,
+//          day: 0,
+//          className: 'previous-month',
+//          available: True
+//        },
+//        {..}, {..}, ...
+//      ],
+//      [..],
+//      [..],
+//      ...
+//    ]
+//  },
+//  day: {
+//    current: {value: 0, label: 'Su'},
+//    items: [
+//      {value: 0, label: 'Su'}, {value: 1, label: 'Mo'}, ....
+//    ]
+//  },
+//  mode: {
+//    date: true,
+//    month: false,
+//    year: false
+//  }
+// }
+//
+
 define(function(require, exports, module) {
 
     var $ = require('$');
