@@ -43,7 +43,7 @@ define(function(require, exports, module) {
         output: {
             value: '',
             getter: function(val) {
-                val = val ? val: this.get('trigger');
+                val = val ? val : this.get('trigger');
                 return $(val);
             }
         },
@@ -164,7 +164,7 @@ define(function(require, exports, module) {
                 self.renderPartial('[data-role=month-year-container]');
                 setFocusedElement(self.element, self.model);
             });
-            model.on('changeMonths changeYears', function() {
+            model.on('changeMonth changeYear selectToday', function() {
                 var mode = model.get('mode');
                 if (mode.date || mode.year) {
                     self.renderPartial('[data-role=data-container]');

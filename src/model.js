@@ -69,13 +69,13 @@ define(function(require, exports, module) {
         changeYear: function(number) {
             this.activeTime.add('years', number);
             this._refresh();
-            this.trigger('changeYears');
+            this.trigger('changeYear');
         },
 
         changeMonth: function(number) {
             this.activeTime.add('months', number);
             this._refresh();
-            this.trigger('changeMonths');
+            this.trigger('changeMonth');
         },
 
         changeDate: function(number) {
@@ -84,7 +84,7 @@ define(function(require, exports, module) {
             this._refresh();
             var newTime = this.activeTime.format('YYYY-MM');
             if (oldTime != newTime && this.get('mode').date) {
-                this.trigger('changeMonths');
+                this.trigger('changeMonth');
             }
         },
 
@@ -117,7 +117,7 @@ define(function(require, exports, module) {
                 this._refresh();
                 var newTime = this.activeTime.format('YYYY-MM');
                 if (oldTime != newTime && this.get('mode').date) {
-                   this.trigger('changeMonths');
+                   this.trigger('changeMonth');
                 }
             }
             return this.activeTime.clone();
@@ -125,7 +125,7 @@ define(function(require, exports, module) {
 
         selectToday: function() {
             this.selectDate(moment());
-            this.trigger('changeYears');
+            this.trigger('selectToday');
         },
 
         isInRange: function(date) {
