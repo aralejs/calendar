@@ -148,3 +148,50 @@ seajs.use('calendar', function(Calendar) {
     new Calendar({trigger: '#date-startday', startDay: 'Wednesday'});
 });
 ````
+
+
+## Don't be smart
+
+当用户选择了日期后，日历会自动隐藏。也许这并不是你想要的。
+
+````html
+<input id="date-not-hide" type="text" />
+````
+
+````javascript
+seajs.use('calendar', function(Calendar) {
+    new Calendar({trigger: '#date-not-hide', hideOnSelect: false});
+});
+````
+
+
+## It's too complicated
+
+输入框不是触发点。
+
+````html
+<input id="date-output" type="text" />
+<a id="date-trigger" href="javascript:;">点这里出现日历</a>
+````
+
+````javascript
+seajs.use('calendar', function(Calendar) {
+    new Calendar({trigger: '#date-trigger', output: "#date-output"});
+});
+````
+
+甚至都没有输入框。
+
+````html
+<span id="date-output-2">这里显示日期</span>
+<a id="date-trigger-2" href="javascript:;">点这里出现日历</a>
+````
+
+````javascript
+seajs.use(['jquery', 'calendar'], function($, Calendar) {
+    new Calendar({trigger: '#date-trigger-2'}).on('selectDate', function(date) {
+        $('#date-output-2').text(date.format('YYYY-MM-DD'));
+        this.hide();
+    });
+});
+````
