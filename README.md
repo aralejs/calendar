@@ -2,21 +2,10 @@
 
 -------------
 
-提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。
+[![Build Status](https://secure.travis-ci.org/aralejs/calendar.png)](https://travis-ci.org/aralejs/calendar)
 
-`````html
-<link rel="stylesheet" href="src/calendar.css" />
-<input id="date-1" type="text" />
-<script>
-seajs.config({
-    locale: 'zh-cn',
-    preload: ['seajs/plugin-i18n']
-});
-seajs.use('calendar', function(Calendar) {
-    var cal1 = new Calendar({trigger: '#date-1'});
-});
-</script>
-`````
+
+提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。
 
 ------------
 
