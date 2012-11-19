@@ -130,6 +130,8 @@ define(function(require, exports, module) {
         },
 
         setup: function() {
+            Calendar.superclass.setup.call(this);
+
             var self = this;
 
             // bind trigger
