@@ -10,7 +10,7 @@
 <script>
 seajs.config({
     locale: 'zh-cn',
-    preload: ['http://seajs.org/dist/plugin-i18n']
+    preload: ['seajs/plugin-i18n']
 });
 seajs.use('calendar', function(Calendar) {
     var cal1 = new Calendar({trigger: '#date-1'});
