@@ -77,6 +77,14 @@ range: function(time) {
 
 一般情况下，你不需要使用下面的方法。
 
+### show()
+
+显示日历。继承自 [Overlay](http://aralejs.org/overlay/)。
+
+### hide()
+
+隐藏日历。继承自 [Overlay](http://aralejs.org/overlay/)。
+
 ### range(aRange)
 
 动态修改日历的 range，参考双日历演示。
