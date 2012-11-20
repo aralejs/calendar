@@ -1,7 +1,6 @@
 define(function(require) {
   var Model = require('../src/model');
   var moment = require('moment');
-  var expect = chai.expect;
 
   var m;
 
