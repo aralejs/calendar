@@ -110,6 +110,12 @@ define(function(require) {
       expect(m.get('date').current.value).to.equal('2012-12-25');
     });
 
+    it('should change to 2013-01-01', function() {
+      m = new Model({focus: '2012-12-12'});
+      m.changeDate(20);
+      expect(m.get('date').current.value).to.equal('2013-01-01');
+    });
+
     it('should be at 3x4 point', function() {
       m = new Model({focus: '2012-12-12'});
       var today = m.get('date').items[2][3];
@@ -121,7 +127,10 @@ define(function(require) {
 
     it('should not be available', function() {
       m = new Model({focus: '2012-12-12', range: ['2012-12-10', null]});
-      expect(m.get('date').items[2][0].available).to.equal(false);
+      expect(m.get('date').items[2][0].available).to.not.be.ok();
+
+      m.range(['2012-11-10', null]);
+      expect(m.get('date').items[2][0].available).to.be.ok();
     });
   });
 });
