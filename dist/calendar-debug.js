@@ -1,4 +1,58 @@
-define("arale/calendar/0.8.1/model-debug", ["$-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "gallery/moment/1.6.2/moment-debug"], function(require, exports, module) {
+// # calendar model's job
+// ----------------------
+//
+// initialize model with startDay, focus, and range in an object. Which means:
+//
+// var m = Model({startDay: 0, focus: '2012-12-12', range: null})
+//
+// and it will create the model for template, the result should be
+// ``m.toJSON()``:
+//
+// {
+//  year: {
+//    current: {value: 2012, label: 2012},
+//    items: [{value: 2002, label: 2002, role: 'previous-10-year'}, ...]
+//  },
+//  month: {
+//    current: {value: 12, label: 12},
+//    items: [
+//      [{value: 1, label: 1}, ... {value: 3, label: 3}],
+//      [...], [...], [...]
+//    ]
+//  },
+//  date: {
+//    current: {value: '2012-12-12', label: 12},
+//    items: [
+//      [
+//        {
+//          value: '2012-11-25',
+//          label: 25,
+//          day: 0,
+//          className: 'previous-month',
+//          available: True
+//        },
+//        {..}, {..}, ...
+//      ],
+//      [..],
+//      [..],
+//      ...
+//    ]
+//  },
+//  day: {
+//    current: {value: 0, label: 'Su'},
+//    items: [
+//      {value: 0, label: 'Su'}, {value: 1, label: 'Mo'}, ....
+//    ]
+//  },
+//  mode: {
+//    date: true,
+//    month: false,
+//    year: false
+//  }
+// }
+//
+
+define("arale/calendar/0.8.2/model-debug", ["$-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "gallery/moment/1.6.2/moment-debug"], function(require, exports, module) {
 
     var $ = require('$-debug');
     var Base = require('arale/base/1.0.1/base-debug');
@@ -53,10 +107,10 @@ define("arale/calendar/0.8.1/model-debug", ["$-debug", "arale/base/1.0.1/base-de
         initialize: function(config) {
             CalendarModel.superclass.initialize.call(this);
 
-            this.startDay = config.startDay;
-            this.activeTime = config.focus.clone();
+            this.startDay = config.startDay || 0;
+            this.activeTime = moment(config.focus).clone();
 
-            this.range = config.range;
+            this.range = config.range || null;
 
             var message = config.message || {};
             message.today = 'Today';
@@ -69,13 +123,13 @@ define("arale/calendar/0.8.1/model-debug", ["$-debug", "arale/base/1.0.1/base-de
         changeYear: function(number) {
             this.activeTime.add('years', number);
             this._refresh();
-            this.trigger('changeYears');
+            this.trigger('changeYear');
         },
 
         changeMonth: function(number) {
             this.activeTime.add('months', number);
             this._refresh();
-            this.trigger('changeMonths');
+            this.trigger('changeMonth');
         },
 
         changeDate: function(number) {
@@ -84,7 +138,7 @@ define("arale/calendar/0.8.1/model-debug", ["$-debug", "arale/base/1.0.1/base-de
             this._refresh();
             var newTime = this.activeTime.format('YYYY-MM');
             if (oldTime != newTime && this.get('mode').date) {
-                this.trigger('changeMonths');
+                this.trigger('changeMonth');
             }
         },
 
@@ -117,7 +171,7 @@ define("arale/calendar/0.8.1/model-debug", ["$-debug", "arale/base/1.0.1/base-de
                 this._refresh();
                 var newTime = this.activeTime.format('YYYY-MM');
                 if (oldTime != newTime && this.get('mode').date) {
-                   this.trigger('changeMonths');
+                   this.trigger('changeMonth');
                 }
             }
             return this.activeTime.clone();
@@ -125,7 +179,7 @@ define("arale/calendar/0.8.1/model-debug", ["$-debug", "arale/base/1.0.1/base-de
 
         selectToday: function() {
             this.selectDate(moment());
-            this.trigger('changeYears');
+            this.trigger('selectToday');
         },
 
         isInRange: function(date) {
@@ -373,7 +427,7 @@ define("arale/calendar/0.8.1/model-debug", ["$-debug", "arale/base/1.0.1/base-de
 // Need more complex task? Head over to Options section.
 //
 
-define("arale/calendar/0.8.1/calendar-debug", ["./model-debug", "$-debug", "gallery/moment/1.6.2/moment-debug", "arale/overlay/0.9.12/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug", "i18n!lang-debug"], function(require, exports, module) {
+define("arale/calendar/0.8.2/calendar-debug", ["./model-debug", "$-debug", "gallery/moment/1.6.2/moment-debug", "arale/overlay/0.9.12/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug", "i18n!lang-debug"], function(require, exports, module) {
 
     // Calendar is designed for desktop, we don't need to consider ``zepto``.
     var $ = require('$-debug');
@@ -400,7 +454,7 @@ define("arale/calendar/0.8.1/calendar-debug", ["./model-debug", "$-debug", "gall
         output: {
             value: '',
             getter: function(val) {
-                val = val ? val: this.get('trigger');
+                val = val ? val : this.get('trigger');
                 return $(val);
             }
         },
@@ -487,6 +541,8 @@ define("arale/calendar/0.8.1/calendar-debug", ["./model-debug", "$-debug", "gall
         },
 
         setup: function() {
+            Calendar.superclass.setup.call(this);
+
             var self = this;
 
             // bind trigger
@@ -521,7 +577,7 @@ define("arale/calendar/0.8.1/calendar-debug", ["./model-debug", "$-debug", "gall
                 self.renderPartial('[data-role=month-year-container]');
                 setFocusedElement(self.element, self.model);
             });
-            model.on('changeMonths changeYears', function() {
+            model.on('changeMonth changeYear selectToday', function() {
                 var mode = model.get('mode');
                 if (mode.date || mode.year) {
                     self.renderPartial('[data-role=data-container]');
