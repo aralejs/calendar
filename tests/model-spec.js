@@ -129,7 +129,7 @@ define(function(require) {
       m = new Model({focus: '2012-12-12', range: ['2012-12-10', null]});
       expect(m.get('date').items[2][0].available).to.not.be.ok();
 
-      m.range(['2012-11-10', null]);
+      m.changeRange(['2012-11-10', null]);
       expect(m.get('date').items[2][0].available).to.be.ok();
     });
   });
