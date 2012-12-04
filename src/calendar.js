@@ -228,8 +228,8 @@ define(function(require, exports, module) {
         },
 
         _selectToday: function() {
-            this.model.selectToday();
-            this.trigger('selectToday');
+            var date = this.model.selectToday();
+            this._fillDate(date);
         },
 
         _changeMode: function(ev) {
@@ -349,6 +349,7 @@ define(function(require, exports, module) {
             }
             var value = date.format(this.get('format'));
             $output.val(value);
+
             if (this.get('hideOnSelect')) {
               this.hide();
             }
