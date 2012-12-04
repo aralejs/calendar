@@ -176,14 +176,20 @@ define(function(require, exports, module) {
         },
 
         selectDate: function(time) {
-            if (time) {
-                var oldTime = this.activeTime.format('YYYY-MM');
-                this.activeTime = moment(time);
-                this._refresh();
-                var newTime = this.activeTime.format('YYYY-MM');
-                if (oldTime != newTime && this.get('mode').date) {
-                   this.trigger('changeMonth');
-                }
+            if (!time) {
+                return this.activeTime.clone();
+            }
+
+            var oldTime = this.activeTime.format('YYYY-MM');
+            var newTime = moment(time);
+
+            this.activeTime.year(newTime.year());
+            this.activeTime.month(newTime.month());
+            this.activeTime.date(newTime.date());
+
+            this._refresh();
+            if (this.activeTime.format('YYYY-MM') !== oldTime && this.get('mode').date) {
+               this.trigger('changeMonth');
             }
             return this.activeTime.clone();
         },
