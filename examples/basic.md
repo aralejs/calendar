@@ -121,7 +121,7 @@ seajs.use('calendar', function(Calendar) {
 ## Format of ouput
 
 默认的输入输出格式为 ``YYYY-MM-DD``，你可以设置为任何自己想要的格式，比如：
-``MM-DD YYYY``。
+``YYYY MM-DD HH:mm:ss``。
 
 ````html
 <input id="date-format" type="text" />
@@ -129,7 +129,7 @@ seajs.use('calendar', function(Calendar) {
 
 ````javascript
 seajs.use('calendar', function(Calendar) {
-    new Calendar({trigger: '#date-format', format: 'MM-DD YYYY'});
+    new Calendar({trigger: '#date-format', format: 'YYYY MM-DD HH:mm:ss'});
 });
 ````
 
