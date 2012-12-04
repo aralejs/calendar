@@ -8,6 +8,7 @@ define(function(require, exports, module) {
 
   var Month = Overlay.extend({
     Implements: [Templatable],
+
     attrs: {
       focus: moment(),
       range: null,
@@ -18,13 +19,44 @@ define(function(require, exports, module) {
         }
       }
     },
+
+    events: {
+      'click [data-role=month]': 'selectMonth'
+    },
+
     templateHelpers: {
       '_': function(key) {return lang[key] || key;}
     },
+
     initialize: function(config) {
       Month.superclass.initialize.call(this);
       var focus = moment(config.focus);
       this.set('focus', focus);
+    },
+
+    show: function() {
+      Month.superclass.show.call(this);
+      this.setFocus();
+    },
+
+    changeMonth: function(value) {
+      this.get('focus').month(value);
+      this.setFocus();
+      return value;
+    },
+
+    selectMonth: function(ev) {
+      var el = $(ev.target);
+      var value = el.data('value');
+      this.changeMonth(value);
+      this.trigger('selectMonth', value);
+      return value;
+    },
+
+    setFocus: function() {
+      var selector = '[data-value=' + this.get('focus').month() + ']';
+      this.element.find('.focused-element').removeClass('focused-element');
+      this.element.find(selector).addClass('focused-element');
     }
   });
 
