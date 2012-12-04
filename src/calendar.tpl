@@ -56,8 +56,12 @@
 
     <ul class="ui-calendar-footer" data-role="time-container">
         <li class="ui-calendar-today" data-role="today">{{_ message.today}}</li>
-        {{#if mode.time}}
-        <li class="ui-calendar-time" colspan="2" data-role="time"><span class="ui-calendar-hour">{{time.hour}}</span> : {{time.minute}}</li>
+        {{#if time.hour}}
+        <li class="ui-calendar-time" data-role="time">
+        <span data-role="time-hour">{{time.hour}}</span> :
+        <span data-role="time-minute">{{time.minute}}</span> :
+        <span data-role="time-second">{{time.second}}</span>
+        </li>
         {{/if}}
     </ul>
 </div>

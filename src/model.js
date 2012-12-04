@@ -89,6 +89,12 @@ define(function(require, exports, module) {
                 }
             },
 
+            time: {
+                setter: function(val) {
+                    return createTimeModel(val);
+                }
+            },
+
             mode: {
                 setter: function(current) {
                     var o = {
@@ -111,6 +117,11 @@ define(function(require, exports, module) {
             this.activeTime = moment(config.focus).clone();
 
             this.range = config.range || null;
+
+            var format = config.format || '';
+            if (format.indexOf('H') !== -1 || format.indexOf('h') !== -1) {
+                this.set('time', this.activeTime);
+            }
 
             var message = config.message || {};
             message.today = 'Today';
@@ -169,14 +180,20 @@ define(function(require, exports, module) {
         },
 
         selectDate: function(time) {
-            if (time) {
-                var oldTime = this.activeTime.format('YYYY-MM');
-                this.activeTime = moment(time);
-                this._refresh();
-                var newTime = this.activeTime.format('YYYY-MM');
-                if (oldTime != newTime && this.get('mode').date) {
-                   this.trigger('changeMonth');
-                }
+            if (!time) {
+                return this.activeTime.clone();
+            }
+
+            var oldTime = this.activeTime.format('YYYY-MM');
+            var newTime = moment(time);
+
+            this.activeTime.year(newTime.year());
+            this.activeTime.month(newTime.month());
+            this.activeTime.date(newTime.date());
+
+            this._refresh();
+            if (this.activeTime.format('YYYY-MM') !== oldTime && this.get('mode').date) {
+               this.trigger('changeMonth');
             }
             return this.activeTime.clone();
         },
@@ -391,6 +408,21 @@ define(function(require, exports, module) {
         };
 
         return {current: _current, items: list};
+    }
+
+    function createTimeModel(time) {
+        if (time) {
+          return {
+            hour: time.format('HH'),
+            minute: time.format('mm'),
+            second: time.format('ss')
+          }
+        }
+        return {
+          hour: null,
+          minute: null,
+          second: null
+        }
     }
 
     function isInRange(time, range) {
