@@ -153,7 +153,11 @@ define(function(require, exports, module) {
             if ('month' in obj) this.activeTime.month(obj.month);
             if ('year' in obj) this.activeTime.year(obj.year);
 
-            this.set('mode', mode);
+            if (this.get('mode')[mode]) {
+              this.set('mode', 'date');
+            } else {
+              this.set('mode', mode);
+            }
             this._refresh();
             this.trigger('changeMode');
         },
