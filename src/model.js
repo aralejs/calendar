@@ -89,6 +89,12 @@ define(function(require, exports, module) {
                 }
             },
 
+            time: {
+                setter: function(val) {
+                    return createTimeModel(val);
+                }
+            },
+
             mode: {
                 setter: function(current) {
                     var o = {
@@ -116,6 +122,7 @@ define(function(require, exports, module) {
             message.today = 'Today';
 
             this.set('message', message);
+            this.set('time', this.activeTime);
             this.set('mode', 'date');
             this._refresh();
         },
@@ -384,6 +391,21 @@ define(function(require, exports, module) {
         };
 
         return {current: _current, items: list};
+    }
+
+    function createTimeModel(time) {
+        if (time) {
+          return {
+            hour: time.format('HH'),
+            minute: time.format('mm'),
+            second: time.format('ss')
+          }
+        }
+        return {
+          hour: null,
+          minute: null,
+          second: null
+        }
     }
 
     function isInRange(time, range) {
