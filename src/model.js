@@ -118,11 +118,15 @@ define(function(require, exports, module) {
 
             this.range = config.range || null;
 
+            var format = config.format || '';
+            if (format.indexOf('H') !== -1 || format.indexOf('h') !== -1) {
+                this.set('time', this.activeTime);
+            }
+
             var message = config.message || {};
             message.today = 'Today';
 
             this.set('message', message);
-            this.set('time', this.activeTime);
             this.set('mode', 'date');
             this._refresh();
         },

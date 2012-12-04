@@ -69,7 +69,6 @@ define(function(require, exports, module) {
         // ### display
         // start of a week, default is Sunday.
         startDay: 'Sun',
-        showTime: false,
         hideOnSelect: true,
 
         // when initialize a calendar, which date should be focused.
@@ -92,7 +91,7 @@ define(function(require, exports, module) {
                     var modelConfig = {
                         focus: this.get('focus'),
                         range: this.get('range'),
-                        showTime: this.get('showTime'),
+                        format: this.get('format'),
                         startDay: this.get('startDay')
                     };
                     this.model = new CalendarModel(modelConfig);
