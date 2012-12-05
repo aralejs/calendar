@@ -21,9 +21,9 @@ define(function(require, exports, module) {
     },
 
     events: {
-      'click [data-role=year]': 'selectYear',
-      'click [data-role=previous-10-year]': '_renderYear',
-      'click [data-role=next-10-year]': '_renderYear'
+      'click [data-role=year]': 'select',
+      'click [data-role=previous-10-year]': 'select',
+      'click [data-role=next-10-year]': 'select'
     },
 
     templateHelpers: {
@@ -38,49 +38,52 @@ define(function(require, exports, module) {
 
     show: function() {
       Year.superclass.show.call(this);
-      this.setFocus();
+      this.focus();
     },
 
-    prevYear: function() {
+    prev: function() {
       this.get('focus').add('years', -1);
-      this.setFocus();
+      this.refresh();
+      this.focus();
       return this.get('focus');
     },
 
-    nextYear: function() {
+    next: function() {
       this.get('focus').add('years', 1);
-      this.setFocus();
+      this.refresh();
+      this.focus();
       return this.get('focus');
     },
 
-    changeYear: function(value) {
+    to: function(value) {
       this.get('focus').year(value);
-      this.setFocus();
+      this.refresh();
+      this.focus();
       return value;
     },
 
-    selectYear: function(ev) {
+    select: function(ev) {
       var el = $(ev.target);
       var value = el.data('value');
-      this.changeYear(value);
-      this.trigger('selectYear', value);
+      this.to(value);
+      this.trigger('select', value);
       return value;
     },
 
-    setFocus: function() {
+    focus: function() {
       var selector = '[data-value=' + this.get('focus').year() + ']';
       this.element.find('.focused-element').removeClass('focused-element');
       this.element.find(selector).addClass('focused-element');
     },
 
-    _renderYear: function(ev) {
-      var el = $(ev.target);
-      var value = el.data('value');
-      this.get('focus').year(value);
-      var template = this.get('template');
-      var model = this.get('model');
-      this.element.html(this.compile(template, model));
-      this.setFocus();
+    refresh: function() {
+      var focus = this.get('focus').year();
+      var years = this.element.find('[data-role=year]');
+      if (focus < years.first().data('value') || focus > years.last().data('value')) {
+        var model = this.get('model');
+        var template = this.get('template');
+        this.element.html(this.compile(template, model));
+      }
     }
   });
 
