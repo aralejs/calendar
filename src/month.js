@@ -21,7 +21,7 @@ define(function(require, exports, module) {
     },
 
     events: {
-      'click [data-role=month]': 'selectMonth'
+      'click [data-role=month]': 'select'
     },
 
     templateHelpers: {
@@ -36,24 +36,36 @@ define(function(require, exports, module) {
 
     show: function() {
       Month.superclass.show.call(this);
-      this.setFocus();
+      this.focus();
     },
 
-    changeMonth: function(value) {
+    prev: function() {
+      this.get('focus').add('months', -1);
+      this.focus();
+      return this.get('focus');
+    },
+
+    next: function() {
+      this.get('focus').add('months', 1);
+      this.focus();
+      return this.get('focus');
+    },
+
+    to: function(value) {
       this.get('focus').month(value);
-      this.setFocus();
+      this.focus();
       return value;
     },
 
-    selectMonth: function(ev) {
+    select: function(ev) {
       var el = $(ev.target);
       var value = el.data('value');
-      this.changeMonth(value);
-      this.trigger('selectMonth', value);
+      this.to(value);
+      this.trigger('select', value);
       return value;
     },
 
-    setFocus: function() {
+    focus: function() {
       var selector = '[data-value=' + this.get('focus').month() + ']';
       this.element.find('.focused-element').removeClass('focused-element');
       this.element.find(selector).addClass('focused-element');
