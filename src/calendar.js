@@ -23,7 +23,8 @@ define(function(require, exports, module) {
     var moment = require('moment');
     var Overlay = require('overlay');
     var Templatable = require('templatable');
-    var lang = require('i18n!lang') || {};
+    var i18nlang = 'i18n!lang';
+    var lang = require(i18nlang) || {};
 
     var template = require('./calendar.tpl');
     var CalendarModel = require('./model');
