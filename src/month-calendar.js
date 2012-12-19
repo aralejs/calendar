@@ -3,10 +3,9 @@ define(function(require, exports, module) {
   var moment = require('moment');
   var Templatable = require('templatable');
   var Overlay = require('overlay');
-  var lang = require('i18n!lang') || {};
-  var template = require('./month.tpl');
+  var template = require('./templates/month.tpl');
 
-  var Month = Overlay.extend({
+  var MonthCalendar = Overlay.extend({
     Implements: [Templatable],
 
     attrs: {
@@ -24,18 +23,18 @@ define(function(require, exports, module) {
       'click [data-role=month]': 'select'
     },
 
-    templateHelpers: {
-      '_': function(key) {return lang[key] || key;}
-    },
-
     initialize: function(config) {
-      Month.superclass.initialize.call(this);
+      MonthCalendar.superclass.initialize.call(this);
       var focus = moment(config.focus);
       this.set('focus', focus);
+
+      this.templateHelpers['_'] = function(key) {
+        return config.lang[key] || key;
+      };
     },
 
     show: function() {
-      Month.superclass.show.call(this);
+      MonthCalendar.superclass.show.call(this);
       this.focus();
     },
 
@@ -72,7 +71,7 @@ define(function(require, exports, module) {
     }
   });
 
-  module.exports = Month;
+  module.exports = MonthCalendar;
 
   // helpers
   var MONTHS = [

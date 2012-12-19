@@ -3,10 +3,9 @@ define(function(require, exports, module) {
   var moment = require('moment');
   var Templatable = require('templatable');
   var Overlay = require('overlay');
-  var lang = require('i18n!lang') || {};
-  var template = require('./year.tpl');
+  var template = require('./templates/year.tpl');
 
-  var Year = Overlay.extend({
+  var YearCalendar = Overlay.extend({
     Implements: [Templatable],
 
     attrs: {
@@ -26,18 +25,19 @@ define(function(require, exports, module) {
       'click [data-role=next-10-year]': 'select'
     },
 
-    templateHelpers: {
-      '_': function(key) {return lang[key] || key;}
-    },
-
     initialize: function(config) {
-      Year.superclass.initialize.call(this);
+      YearCalendar.superclass.initialize.call(this);
+
       var focus = moment(config.focus);
       this.set('focus', focus);
+
+      this.templateHelpers['_'] = function(key) {
+        return config.lang[key] || key;
+      };
     },
 
     show: function() {
-      Year.superclass.show.call(this);
+      YearCalendar.superclass.show.call(this);
       this.focus();
     },
 
@@ -87,7 +87,7 @@ define(function(require, exports, module) {
     }
   });
 
-  module.exports = Year;
+  module.exports = YearCalendar;
 
   // helpers
   function createYearModel(time, range) {
