@@ -23,14 +23,17 @@ define(function(require, exports, module) {
       'click [data-role=month]': 'select'
     },
 
+    templateHelpers: {},
+
     initialize: function(config) {
+      this.templateHelpers['_'] = function(key) {
+        var lang = config.lang || {};
+        return lang[key] || key;
+      };
+
       MonthCalendar.superclass.initialize.call(this);
       var focus = moment(config.focus);
       this.set('focus', focus);
-
-      this.templateHelpers['_'] = function(key) {
-        return config.lang[key] || key;
-      };
     },
 
     show: function() {

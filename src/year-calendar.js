@@ -25,15 +25,18 @@ define(function(require, exports, module) {
       'click [data-role=next-10-year]': 'select'
     },
 
+    templateHelpers: {},
+
     initialize: function(config) {
+      this.templateHelpers['_'] = function(key) {
+        var lang = config.lang || {};
+        return lang[key] || key;
+      };
+
       YearCalendar.superclass.initialize.call(this);
 
       var focus = moment(config.focus);
       this.set('focus', focus);
-
-      this.templateHelpers['_'] = function(key) {
-        return config.lang[key] || key;
-      };
     },
 
     show: function() {
