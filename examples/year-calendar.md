@@ -1,4 +1,4 @@
-# 月例
+# 年历
 
 - order: 2
 
@@ -10,19 +10,10 @@
 <link rel="stylesheet" href="../src/calendar.css" />
 ````
 
-设置国际化支持：
-
-````javascript
-seajs.config({
-    locale: 'zh-cn',
-    preload: ['seajs/plugin-i18n']
-});
-````
-
 ## There is nothing to do
 
 ````javascript
-seajs.use('year', function(Year) {
+seajs.use('year-calendar', function(Year) {
     var year = new Year({});
     year.show();
 });
