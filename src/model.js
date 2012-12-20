@@ -181,14 +181,6 @@ define(function(require, exports, module) {
             return this.activeTime.clone();
         },
 
-        selectToday: function() {
-            this.set('mode', 'date');
-            this.trigger('selectToday');
-            var today = moment();
-            this.selectDate(today);
-            return today;
-        },
-
         isInRange: function(date) {
             return isInRange(date, this.range);
         },

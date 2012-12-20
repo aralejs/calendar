@@ -167,7 +167,7 @@ define(function(require, exports, module) {
                 self.renderPartial('[data-role=month-year-container]');
                 setFocusedElement(self.element, self.model);
             });
-            model.on('changeMonth changeYear selectToday', function() {
+            model.on('changeMonth changeYear', function() {
                 var mode = model.get('mode');
                 if (mode.date || mode.year) {
                     self.renderPartial('[data-role=data-container]');
@@ -242,9 +242,9 @@ define(function(require, exports, module) {
             this._fillDate(date);
         },
 
-        _selectToday: function() {
-            var date = this.model.selectToday();
-            this.model.changeMode('date');
+        _selectToday: function(ev) {
+            var today = moment().format('YYYY-MM-DD');
+            var date = this.model.selectDate(today);
             this._fillDate(date);
         },
 

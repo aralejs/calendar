@@ -72,7 +72,7 @@ seajs.use('calendar', function(Calendar) {
 seajs.use('calendar', function(Calendar) {
     var cal = new Calendar({
         trigger: '#date-disable-1',
-        range: ['2012-12-06', '2012-12-25']
+        range: ['2012-12-06', '2012-12-20']
     });
     cal.on('selectDisabledDate', function(date) {
         alert('you selected a disabled date ' + date.format('YYYY-MM-DD'));
