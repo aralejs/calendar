@@ -256,13 +256,7 @@ define(function(require, exports, module) {
                 37: 'left',
                 38: 'up',
                 39: 'right',
-                40: 'down',
-
-                // vim bind
-                72: 'left',
-                76: 'right',
-                74: 'down',
-                75: 'up'
+                40: 'down'
             };
             if (!(ev.keyCode in codeMap)) return;
 
