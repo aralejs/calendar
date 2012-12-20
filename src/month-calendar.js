@@ -20,12 +20,17 @@ define(function(require, exports, module) {
     },
 
     events: {
-      'click [data-role=month]': 'select'
+      'click [data-role=month]': function(ev) {
+        var el = $(ev.target);
+        var value = el.data('value');
+        this.select(value);
+      }
     },
 
     templateHelpers: {},
 
     initialize: function(config) {
+      config = config || {};
       this.templateHelpers['_'] = function(key) {
         var lang = config.lang || {};
         return lang[key] || key;
@@ -53,16 +58,9 @@ define(function(require, exports, module) {
       return this.get('focus');
     },
 
-    to: function(value) {
+    select: function(value) {
       this.get('focus').month(value);
       this.focus();
-      return value;
-    },
-
-    select: function(ev) {
-      var el = $(ev.target);
-      var value = el.data('value');
-      this.to(value);
       this.trigger('select', value);
       return value;
     },
