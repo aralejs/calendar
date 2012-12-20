@@ -203,6 +203,12 @@ define(function(require, exports, module) {
             this.model.changeMonth(1);
         },
 
+        setFocus: function(date) {
+            this.model.selectDate(date);
+            this.model.changeMode('date');
+            setFocusedElement(this.element, this.model);
+        },
+
         _selectYear: function(ev) {
             var el = $(ev.target);
             if (el.data('role') === 'year') {
