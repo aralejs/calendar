@@ -15,4 +15,4 @@ before_script:
   - cp ../nico-arale/test-travis.js tests/
   - nohup node tests/test-travis.js &
 
-script: ./node_modules/.bin/mocha-phantomjs --timeout=80000 http://127.0.0.1:8000/tests/runner.html
+script: ./node_modules/.bin/mocha-phantomjs --timeout=10000 http://127.0.0.1:8000/tests/runner.html
