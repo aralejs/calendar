@@ -183,6 +183,14 @@ define(function(require, exports, module) {
             });
         },
 
+        show: function() {
+            Calendar.superclass.show.call(this);
+
+            var $output = this.get('output');
+            var date = $output.val();
+            if (date) this.setFocus(date);
+        },
+
         range: function(range) {
             this.model.changeRange(range);
         },
