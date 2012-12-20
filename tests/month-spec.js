@@ -11,7 +11,7 @@ define(function(require) {
     it('will not focus when render', function() {
       cal = new MonthCalendar({focus: '2012-08-11'});
       cal.render();
-      expect(cal.element.find('.focused-element')).to.have.length(0);
+      expect(cal.element.find('.focused-element')).to.be.empty();
       cal.destroy();
     });
 
