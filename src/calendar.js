@@ -230,6 +230,7 @@ define(function(require, exports, module) {
 
         _selectToday: function() {
             var date = this.model.selectToday();
+            this.model.changeMode('date');
             this._fillDate(date);
         },
 
