@@ -188,7 +188,7 @@ define(function(require, exports, module) {
 
             var $output = this.get('output');
             var date = $output.val();
-            if (date) this.setFocus(date);
+            if (date) this.setFocus(moment(date, this.get('format')));
         },
 
         range: function(range) {
