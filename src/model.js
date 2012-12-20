@@ -182,11 +182,11 @@ define(function(require, exports, module) {
         },
 
         selectToday: function() {
-            this.activeTime = moment();
             this.set('mode', 'date');
-            this._refresh();
             this.trigger('selectToday');
-            return this.activeTime.clone();
+            var today = moment();
+            this.selectDate(today);
+            return today;
         },
 
         isInRange: function(date) {
