@@ -35,8 +35,10 @@ define(function(require, exports, module) {
         var lang = config.lang || {};
         return lang[key] || key;
       };
+      this.set('range', config.range || null);
 
       MonthCalendar.superclass.initialize.call(this);
+      // set focus after initialize
       var focus = moment(config.focus);
       this.set('focus', focus);
     },
