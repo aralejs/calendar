@@ -30,13 +30,14 @@ define(function(require, exports, module) {
     templateHelpers: {},
 
     initialize: function(config) {
+      config = config || {};
       this.templateHelpers['_'] = function(key) {
         var lang = config.lang || {};
         return lang[key] || key;
       };
+      this.set('range', config.range || null);
 
       YearCalendar.superclass.initialize.call(this);
-
       var focus = moment(config.focus);
       this.set('focus', focus);
     },
@@ -91,25 +92,25 @@ define(function(require, exports, module) {
   function createYearModel(time, range) {
     var year = time.year();
 
-    var items = [
-      {
+    var items = [{
       value: year - 10,
       label: '. . .',
+      available: true,
       role: 'previous-10-year'
-    }
-    ];
+    }];
 
     for (var i = year - 6; i < year + 4; i++) {
       items.push({
         value: i,
         label: i,
+        available: isInRange(i, range),
         role: 'year'
       });
     }
-    items[7] = {value: year, label: year, role: 'year', current: true};
     items.push({
       value: year + 10,
       label: '. . .',
+      available: true,
       role: 'next-10-year'
     });
 
@@ -126,22 +127,22 @@ define(function(require, exports, module) {
     return {current: current, items: list};
   }
 
-  function isInRange(month, range) {
+  function isInRange(year, range) {
     if (range == null) return true;
     if ($.isArray(range)) {
       var start = range[0];
       var end = range[1];
       var result = true;
       if (start) {
-        result = result && month >= start;
+        result = result && year >= start;
       }
       if (end) {
-        result = result && month <= end;
+        result = result && year <= end;
       }
       return result;
     }
     if ($.isFunction(range)) {
-      return range(month);
+      return range(year);
     }
     return true;
   }

@@ -2,7 +2,7 @@
   {{#each items}}
   <ul class="ui-calendar-year-column">
     {{#each this}}
-    <li data-role="{{role}}" data-value="{{value}}">{{_ label}}</li>
+    <li {{#unless available}}class="disabled-element"{{/unless}} data-role="{{role}}" data-value="{{value}}">{{_ label}}</li>
     {{/each}}
   </ul>
   {{/each}}
