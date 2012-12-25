@@ -1,4 +1,4 @@
-# 月例
+# 年例
 
 - order: 2
 
@@ -18,7 +18,7 @@ margin-left: -100px;
 
 ````javascript
 seajs.use('year-calendar', function(Year) {
-    var year = new Year({});
+    var year = new Year({range: [2012]});
     year.show();
 });
 ````
