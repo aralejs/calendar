@@ -1,16 +1,20 @@
-# 年历
+# 月例
 
 - order: 2
 
 ------------
 
-首先需要引入样式文件，默认提供了一个 simple 主题。
+<link rel="stylesheet" href="../src/css/year.css" />
 
-````html
-<link rel="stylesheet" href="../src/calendar.css" />
-````
+<style type="text/css">
+.ui-calendar-year {
+position: absolute;
+top: 240px;
+left: 50%;
+margin-left: -100px;
+}
+</style>
 
-## There is nothing to do
 
 ````javascript
 seajs.use('year-calendar', function(Year) {

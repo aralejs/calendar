@@ -1,4 +1,4 @@
-<div class="ui-calendar-year">
+<div class="ui-calendar-year" data-role="month-table">
   {{#each items}}
   <ul class="ui-calendar-year-column">
     {{#each this}}

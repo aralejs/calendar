@@ -2,10 +2,10 @@ define(function(require, exports, module) {
   var $ = require('$');
   var moment = require('moment');
   var Templatable = require('templatable');
-  var Overlay = require('overlay');
+  var Widget = require('widget');
   var template = require('./templates/year.tpl');
 
-  var YearCalendar = Overlay.extend({
+  var YearCalendar = Widget.extend({
     Implements: [Templatable],
 
     attrs: {
@@ -40,7 +40,7 @@ define(function(require, exports, module) {
     },
 
     show: function() {
-      YearCalendar.superclass.show.call(this);
+      this.render();
       this.focus();
     },
 
@@ -85,7 +85,7 @@ define(function(require, exports, module) {
       if (focus < years.first().data('value') || focus > years.last().data('value')) {
         var model = this.get('model');
         var template = this.get('template');
-        this.element.html(this.compile(template, model));
+        this.element.html($(this.compile(template, model)).html());
       }
     }
   });
