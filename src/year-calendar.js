@@ -20,9 +20,11 @@ define(function(require, exports, module) {
     },
 
     events: {
-      'click [data-role=year]': 'select',
-      'click [data-role=previous-10-year]': 'select',
-      'click [data-role=next-10-year]': 'select'
+      'click [data-role=year],[data-role=previous-10-year],[data-role=next-10-year]': function(ev) {
+        var el = $(ev.target);
+        var value = el.data('value');
+        this.select(value);
+      }
     },
 
     templateHelpers: {},
@@ -58,17 +60,10 @@ define(function(require, exports, module) {
       return this.get('focus');
     },
 
-    to: function(value) {
+    select: function(value) {
       this.get('focus').year(value);
       this.refresh();
       this.focus();
-      return value;
-    },
-
-    select: function(ev) {
-      var el = $(ev.target);
-      var value = el.data('value');
-      this.to(value);
       this.trigger('select', value);
       return value;
     },
