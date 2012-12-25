@@ -2,10 +2,10 @@ define(function(require, exports, module) {
   var $ = require('$');
   var moment = require('moment');
   var Templatable = require('templatable');
-  var Overlay = require('overlay');
+  var Widget = require('widget');
   var template = require('./templates/month.tpl');
 
-  var MonthCalendar = Overlay.extend({
+  var MonthCalendar = Widget.extend({
     Implements: [Templatable],
 
     attrs: {
@@ -42,7 +42,7 @@ define(function(require, exports, module) {
     },
 
     show: function() {
-      MonthCalendar.superclass.show.call(this);
+      this.render();
       this.focus();
     },
 
