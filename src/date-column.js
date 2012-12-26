@@ -9,14 +9,23 @@ define(function(require, exports, module) {
     Implements: [Templatable],
 
     attrs: {
-      focus: moment(),
+      focus: {
+        value: moment(),
+        setter: function(val) {
+          if (!val) return moment();
+          return moment(val, this.get('format'));
+        }
+      },
+      startDay: 'Sun',
       range: null,
       format: 'YYYY-MM-DD',
+      lang: {},
       template: template,
       model: {
         getter: function() {
-          var focus = moment(this.get('focus'), this.get('format'));
-          return createDateModel(focus, this.get('range'));
+          var date = createDateModel(this.get('focus'), this.get('range'));
+          var day = createDayModel(this.get('startDay'));
+          return {date: date, day: day};
         }
       }
     },
@@ -31,18 +40,13 @@ define(function(require, exports, module) {
 
     templateHelpers: {},
 
-    initialize: function(config) {
-      config = config || {};
+    parseElement: function() {
+      var self = this;
       this.templateHelpers['_'] = function(key) {
-        var lang = config.lang || {};
+        var lang = self.get('lang') || {};
         return lang[key] || key;
       };
-      this.set('range', config.range || null);
-      this.set('format', config.format || 'YYYY-MM-DD');
-
-      DateColumn.superclass.initialize.call(this);
-      var focus = moment(config.focus, this.get('format'));
-      this.set('focus', focus);
+      DateColumn.superclass.parseElement.call(this);
     },
 
     show: function() {
@@ -63,7 +67,7 @@ define(function(require, exports, module) {
     },
 
     select: function(value) {
-      this.get('focus').date(value);
+      this.set('focus', value);
       this.focus();
       this.trigger('select', value);
       return value;
