@@ -57,7 +57,7 @@ define(function(require) {
       cal = new DateColumn({focus: '2012-08-11'});
       cal.show();
       expect(cal.element.find('.focused-element').text()).to.equal('11');
-      cal.select('2012-08-02');
+      cal.select('2012-12-02');
       expect(cal.element.find('.focused-element').text()).to.equal('2');
       cal.element.remove();
       cal.destroy();
@@ -101,10 +101,11 @@ define(function(require) {
     });
 
     it('can start week at Friday', function() {
-      cal = new DateColumn({
-        focus: '2012-12-21',
-        startDay: 'Friday'
-      });
+      cal = new DateColumn({focus: '2012-12-21', startDay: 'Friday'});
+      expect(cal.element.find('li').eq(0).text()).to.be('Fr');
+      cal.destroy();
+
+      cal = new DateColumn({focus: '2012-12-21', startDay: 5});
       expect(cal.element.find('li').eq(0).text()).to.be('Fr');
       cal.destroy();
     });
