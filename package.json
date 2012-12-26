@@ -26,7 +26,7 @@
   },
 
   "tests": [
-    "month", "year"
+    "date", "month", "year"
   ],
 
   "output": {

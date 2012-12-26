@@ -48,3 +48,8 @@
     color: #fff;
     background: #d64;
 }
+.ui-calendar-date .ui-calendar-date-column li.disabled-element {
+    background: #eee;
+    color: #bbb;
+    cursor: not-allowed;
+}

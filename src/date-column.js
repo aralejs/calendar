@@ -17,13 +17,31 @@ define(function(require, exports, module) {
         }
       },
       startDay: 'Sun',
-      range: null,
+      range: {
+        value: null,
+        setter: function(val) {
+          if ($.isArray(val)) {
+            var format = this.get('format');
+            var range = [];
+            $.each(val, function(i, date) {
+              date = date === null ? null : moment(date, format);
+              range.push(date);
+            });
+            return range;
+          }
+          return val;
+        }
+      },
       format: 'YYYY-MM-DD',
       lang: {},
       template: template,
       model: {
         getter: function() {
-          var date = createDateModel(this.get('focus'), this.get('range'));
+          var date = createDateModel(
+            this.get('focus'),
+            this.get('startDay'),
+            this.get('range')
+          );
           var day = createDayModel(this.get('startDay'));
           return {date: date, day: day};
         }
@@ -56,7 +74,7 @@ define(function(require, exports, module) {
 
     prev: function() {
       var pre = this.get('focus').month();
-      this.get('focus').add('dates', -1);
+      this.get('focus').add('days', -1);
       var post = this.get('focus').month();
       if (pre !== post) this.refresh();
       this.focus();
@@ -65,7 +83,7 @@ define(function(require, exports, module) {
 
     next: function() {
       var pre = this.get('focus').month();
-      this.get('focus').add('dates', 1);
+      this.get('focus').add('days', 1);
       var post = this.get('focus').month();
       if (pre !== post) this.refresh();
       this.focus();
