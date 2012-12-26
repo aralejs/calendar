@@ -1,6 +1,6 @@
 {
   "name": "calendar",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "root": "arale",
   "description": "Moment supported calendar",
   "author": "Hsiaoming Yang <lepture@me.com>",
@@ -31,9 +31,10 @@
 
   "output": {
     "calendar.js": ".",
-    "calendar.css": ".",
+    "date-column.js": ".",
+    "month-column.js": ".",
+    "year-column.js": ".",
 
-    "i18n/lang.js": ".",
-    "i18n/zh-cn/lang.js": "."
+    "i18n/*": "*"
   }
 }
