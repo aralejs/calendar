@@ -55,19 +55,28 @@ define(function(require, exports, module) {
     },
 
     prev: function() {
+      var pre = this.get('focus').month();
       this.get('focus').add('dates', -1);
+      var post = this.get('focus').month();
+      if (pre !== post) this.refresh();
       this.focus();
       return this.get('focus');
     },
 
     next: function() {
+      var pre = this.get('focus').month();
       this.get('focus').add('dates', 1);
+      var post = this.get('focus').month();
+      if (pre !== post) this.refresh();
       this.focus();
       return this.get('focus');
     },
 
     select: function(value) {
+      var pre = this.get('focus').month();
       this.set('focus', value);
+      var post = this.get('focus').month();
+      if (pre !== post) this.refresh();
       this.focus();
       this.trigger('select', value);
       return value;
@@ -77,6 +86,12 @@ define(function(require, exports, module) {
       var selector = '[data-value=' + this.get('focus').format('YYYY-MM-DD') + ']';
       this.element.find('.focused-element').removeClass('focused-element');
       this.element.find(selector).addClass('focused-element');
+    },
+
+    refresh: function() {
+      var model = this.get('model');
+      var template = this.get('template');
+      this.element.html($(this.compile(template, model)).html());
     }
   });
 

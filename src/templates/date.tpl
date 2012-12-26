@@ -7,7 +7,7 @@
   {{#each date.items}}
   <ul class="ui-calendar-date-column">
     {{#each this}}
-    <li class="ui-calendar-day-{{day}}
+    <li class="ui-calendar-day-{{day}} {{className}}
     {{#unless available}}disabled-date{{/unless}}
     "
     data-role="date" data-value="{{value}}"
