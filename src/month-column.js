@@ -3,23 +3,13 @@ define(function(require, exports, module) {
   var moment = require('moment');
   var Templatable = require('templatable');
   var Widget = require('widget');
+  var BaseColumn = require('./base-column');
   var template = require('./templates/month.tpl');
 
-  var MonthColumn = Widget.extend({
-    Implements: [Templatable],
-
+  var MonthColumn = BaseColumn.extend({
     attrs: {
-      focus: {
-        value: moment(),
-        setter: function(val) {
-          if (!val) return moment();
-          return moment(val, this.get('format'));
-        }
-      },
-      format: 'YYYY-MM-DD',
-      range: null,
-      lang: {},
       template: template,
+      range: null,
       model: {
         getter: function() {
           return createMonthModel(this.get('focus'), this.get('range'));
@@ -33,22 +23,6 @@ define(function(require, exports, module) {
         var value = el.data('value');
         this.select(value);
       }
-    },
-
-    templateHelpers: {},
-
-    parseElement: function() {
-      var self = this;
-      this.templateHelpers['_'] = function(key) {
-        var lang = self.get('lang') || {};
-        return lang[key] || key;
-      };
-      MonthColumn.superclass.parseElement.call(this);
-    },
-
-    show: function() {
-      this.render();
-      this.focus();
     },
 
     prev: function() {

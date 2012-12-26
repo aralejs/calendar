@@ -3,20 +3,13 @@ define(function(require, exports, module) {
   var moment = require('moment');
   var Templatable = require('templatable');
   var Widget = require('widget');
+  var BaseColumn = require('./base-column');
   var template = require('./templates/date.tpl');
 
-  var DateColumn = Widget.extend({
-    Implements: [Templatable],
-
+  var DateColumn = BaseColumn.extend({
     attrs: {
-      focus: {
-        value: moment(),
-        setter: function(val) {
-          if (!val) return moment();
-          return moment(val, this.get('format'));
-        }
-      },
       startDay: 'Sun',
+      template: template,
       range: {
         value: null,
         setter: function(val) {
@@ -32,9 +25,6 @@ define(function(require, exports, module) {
           return val;
         }
       },
-      format: 'YYYY-MM-DD',
-      lang: {},
-      template: template,
       model: {
         getter: function() {
           var date = createDateModel(
@@ -57,20 +47,6 @@ define(function(require, exports, module) {
     },
 
     templateHelpers: {},
-
-    parseElement: function() {
-      var self = this;
-      this.templateHelpers['_'] = function(key) {
-        var lang = self.get('lang') || {};
-        return lang[key] || key;
-      };
-      DateColumn.superclass.parseElement.call(this);
-    },
-
-    show: function() {
-      this.render();
-      this.focus();
-    },
 
     prev: function() {
       var pre = this.get('focus').month();
@@ -104,12 +80,6 @@ define(function(require, exports, module) {
       var selector = '[data-value=' + this.get('focus').format('YYYY-MM-DD') + ']';
       this.element.find('.focused-element').removeClass('focused-element');
       this.element.find(selector).addClass('focused-element');
-    },
-
-    refresh: function() {
-      var model = this.get('model');
-      var template = this.get('template');
-      this.element.html($(this.compile(template, model)).html());
     }
   });
 
@@ -243,4 +213,3 @@ define(function(require, exports, module) {
     return true;
   }
 });
-

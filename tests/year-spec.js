@@ -3,7 +3,7 @@ define(function(require) {
   var moment = require('moment');
   var cal;
 
-  describe('Year Calendar', function() {
+  describe('Year Column', function() {
     it('can initialize without options', function() {
       cal = new YearColumn();
     });

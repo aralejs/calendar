@@ -2,23 +2,12 @@ define(function(require, exports, module) {
   var $ = require('$');
   var moment = require('moment');
   var Templatable = require('templatable');
-  var Widget = require('widget');
+  var BaseColumn = require('./base-column');
   var template = require('./templates/year.tpl');
 
-  var YearColumn = Widget.extend({
-    Implements: [Templatable],
-
+  var YearColumn = BaseColumn.extend({
     attrs: {
-      focus: {
-        value: moment(),
-        setter: function(val) {
-          if (!val) return moment();
-          return moment(val, this.get('format'));
-        }
-      },
-      format: 'YYYY-MM-DD',
       range: null,
-      lang: {},
       template: template,
       model: {
         getter: function() {
@@ -36,20 +25,6 @@ define(function(require, exports, module) {
     },
 
     templateHelpers: {},
-
-    parseElement: function(config) {
-      var self = this;
-      this.templateHelpers['_'] = function(key) {
-        var lang = self.get('lang') || {};
-        return lang[key] || key;
-      };
-      YearColumn.superclass.parseElement.call(this);
-    },
-
-    show: function() {
-      this.render();
-      this.focus();
-    },
 
     prev: function() {
       this.get('focus').add('years', -1);
