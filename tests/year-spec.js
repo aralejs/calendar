@@ -1,15 +1,15 @@
 define(function(require) {
-  var YearCalendar = require('../src/year-calendar');
+  var YearColumn = require('../src/year-column');
   var moment = require('moment');
   var cal;
 
   describe('Year Calendar', function() {
     it('can initialize without options', function() {
-      cal = new YearCalendar();
+      cal = new YearColumn();
     });
 
     it('will not focus when render', function() {
-      cal = new YearCalendar({focus: '2012-08-11'});
+      cal = new YearColumn({focus: '2012-08-11'});
       cal.render();
       expect(cal.element.find('.focused-element')).to.be.empty();
       cal.element.remove();
@@ -17,14 +17,14 @@ define(function(require) {
     });
 
     it('can focus on 2012', function() {
-      cal = new YearCalendar({focus: '2012-08-11'});
+      cal = new YearColumn({focus: '2012-08-11'});
       cal.focus();
       expect(cal.element.find('.focused-element').text()).to.equal('2012');
       cal.destroy();
     });
 
     it('should focus on 2012 when show', function() {
-      cal = new YearCalendar({focus: '2012-08-11'});
+      cal = new YearColumn({focus: '2012-08-11'});
       cal.show();
       expect(cal.element.find('.focused-element').text()).to.equal('2012');
       cal.element.remove();
@@ -32,7 +32,7 @@ define(function(require) {
     });
 
     it('focus on 2012, then focus on 2011', function() {
-      cal = new YearCalendar({focus: '2012-08-11'});
+      cal = new YearColumn({focus: '2012-08-11'});
       cal.show();
       expect(cal.element.find('.focused-element').text()).to.equal('2012');
       cal.prev();
@@ -42,7 +42,7 @@ define(function(require) {
     });
 
     it('focus on 2012, then focus on 2013', function() {
-      cal = new YearCalendar({focus: '2012-08-11'});
+      cal = new YearColumn({focus: '2012-08-11'});
       cal.show();
       expect(cal.element.find('.focused-element').text()).to.equal('2012');
       cal.next();
@@ -52,7 +52,7 @@ define(function(require) {
     });
 
     it('focus on 2012, then focus on 1989', function() {
-      cal = new YearCalendar({focus: '2012-08-11'});
+      cal = new YearColumn({focus: '2012-08-11'});
       cal.show();
       expect(cal.element.find('.focused-element').text()).to.equal('2012');
       cal.select(1989);
@@ -62,7 +62,7 @@ define(function(require) {
     });
 
     it('can click on 2006', function() {
-      cal = new YearCalendar({focus: '2012-08-11'});
+      cal = new YearColumn({focus: '2012-08-11'});
       var spy = sinon.spy(cal, 'select');
       cal.show();
       cal.element.find('li').eq(1).click();
@@ -74,19 +74,19 @@ define(function(require) {
     });
 
     it('should disable on 2011', function() {
-      cal = new YearCalendar({focus: '2012-08-11', range: [2012]});
+      cal = new YearColumn({focus: '2012-08-11', range: [2012]});
       expect(cal.element.find('[data-value=2011]').hasClass('disabled-element')).to.be.ok();
       cal.destroy();
 
-      cal = new YearCalendar({focus: '2012-08-11', range: [2012, 2014]});
+      cal = new YearColumn({focus: '2012-08-11', range: [2012, 2014]});
       expect(cal.element.find('[data-value=2011]').hasClass('disabled-element')).to.be.ok();
       cal.destroy();
 
-      cal = new YearCalendar({focus: '2012-08-11', range: [null, 2000]});
+      cal = new YearColumn({focus: '2012-08-11', range: [null, 2000]});
       expect(cal.element.find('[data-value=2011]').hasClass('disabled-element')).to.be.ok();
       cal.destroy();
 
-      cal = new YearCalendar({
+      cal = new YearColumn({
         focus: '2012-08-11',
         range: function(value) {
           return value !== 2011;
@@ -97,7 +97,7 @@ define(function(require) {
     });
 
     it('should not disable on 2011', function() {
-      cal = new YearCalendar({
+      cal = new YearColumn({
         focus: '2012-08-11',
         range: 'hello'
       });

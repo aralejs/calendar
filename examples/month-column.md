@@ -1,4 +1,4 @@
-# 月例
+# 月份表
 
 - order: 2
 
@@ -17,7 +17,7 @@ margin-left: -100px;
 
 
 ````javascript
-seajs.use('month-calendar', function(Month) {
+seajs.use('month-column', function(Month) {
     var month = new Month({});
     month.show();
 });

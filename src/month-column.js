@@ -3,9 +3,9 @@ define(function(require, exports, module) {
   var moment = require('moment');
   var Templatable = require('templatable');
   var Widget = require('widget');
-  var template = require('./templates/year.tpl');
+  var template = require('./templates/month.tpl');
 
-  var YearCalendar = Widget.extend({
+  var MonthColumn = Widget.extend({
     Implements: [Templatable],
 
     attrs: {
@@ -14,13 +14,13 @@ define(function(require, exports, module) {
       template: template,
       model: {
         getter: function() {
-          return createYearModel(this.get('focus'), this.get('range'));
+          return createMonthModel(this.get('focus'), this.get('range'));
         }
       }
     },
 
     events: {
-      'click [data-role=year],[data-role=previous-10-year],[data-role=next-10-year]': function(ev) {
+      'click [data-role=month]': function(ev) {
         var el = $(ev.target);
         var value = el.data('value');
         this.select(value);
@@ -37,7 +37,8 @@ define(function(require, exports, module) {
       };
       this.set('range', config.range || null);
 
-      YearCalendar.superclass.initialize.call(this);
+      MonthColumn.superclass.initialize.call(this);
+      // set focus after initialize
       var focus = moment(config.focus);
       this.set('focus', focus);
     },
@@ -48,101 +49,80 @@ define(function(require, exports, module) {
     },
 
     prev: function() {
-      this.get('focus').add('years', -1);
-      this.refresh();
+      this.get('focus').add('months', -1);
       this.focus();
       return this.get('focus');
     },
 
     next: function() {
-      this.get('focus').add('years', 1);
-      this.refresh();
+      this.get('focus').add('months', 1);
       this.focus();
       return this.get('focus');
     },
 
     select: function(value) {
-      this.get('focus').year(value);
-      this.refresh();
+      this.get('focus').month(value);
       this.focus();
       this.trigger('select', value);
       return value;
     },
 
     focus: function() {
-      var selector = '[data-value=' + this.get('focus').year() + ']';
+      var selector = '[data-value=' + this.get('focus').month() + ']';
       this.element.find('.focused-element').removeClass('focused-element');
       this.element.find(selector).addClass('focused-element');
-    },
-
-    refresh: function() {
-      var focus = this.get('focus').year();
-      var years = this.element.find('[data-role=year]');
-      if (focus < years.first().data('value') || focus > years.last().data('value')) {
-        var model = this.get('model');
-        var template = this.get('template');
-        this.element.html($(this.compile(template, model)).html());
-      }
     }
   });
 
-  module.exports = YearCalendar;
+  module.exports = MonthColumn;
 
   // helpers
-  function createYearModel(time, range) {
-    var year = time.year();
+  var MONTHS = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+    'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
 
-    var items = [{
-      value: year - 10,
-      label: '. . .',
-      available: true,
-      role: 'previous-10-year'
-    }];
+  function createMonthModel(time, range) {
+    var month = time.month();
+    var items = [];
 
-    for (var i = year - 6; i < year + 4; i++) {
+    for (i = 0; i < MONTHS.length; i++) {
       items.push({
         value: i,
-        label: i,
         available: isInRange(i, range),
-        role: 'year'
+        label: MONTHS[i]
       });
-    }
-    items.push({
-      value: year + 10,
-      label: '. . .',
-      available: true,
-      role: 'next-10-year'
-    });
-
-    var list = [];
-    for (i = 0; i < items.length / 3; i++) {
-      list.push(items.slice(i * 3, i * 3 + 3));
     }
 
     var current = {
-      value: year,
-      label: year
+      value: month,
+      label: MONTHS[month]
     };
 
+    // split [1, 2, .. 12] to [[1, 2, 3, 4], [5, ...]...]
+    var list = [];
+    for (var i = 0; i < items.length / 3; i++) {
+      list.push(items.slice(i * 3, i * 3 + 3));
+    }
     return {current: current, items: list};
   }
 
-  function isInRange(year, range) {
+  function isInRange(month, range) {
     if (range == null) return true;
     if ($.isArray(range)) {
       var start = range[0];
       var end = range[1];
       var result = true;
       if (start) {
-        result = result && year >= start;
+        result = result && month >= start;
       }
       if (end) {
-        result = result && year <= end;
+        result = result && month <= end;
       }
       return result;
     }
     if ($.isFunction(range)) {
-      return range(year);
+      return range(month);
     }
     return true;
   }
