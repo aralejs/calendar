@@ -1,8 +1,6 @@
 define(function(require, exports, module) {
   var $ = require('$');
   var moment = require('moment');
-  var Templatable = require('templatable');
-  var Widget = require('widget');
   var BaseColumn = require('./base-column');
   var template = require('./templates/date.tpl');
 
