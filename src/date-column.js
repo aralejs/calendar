@@ -2,79 +2,81 @@ define(function(require, exports, module) {
   var $ = require('$');
   var moment = require('moment');
   var Templatable = require('templatable');
-  var Overlay = require('overlay');
+  var Widget = require('widget');
   var template = require('./templates/date.tpl');
 
-  var DateCalendar = Overlay.extend({
+  var DateColumn = Widget.extend({
     Implements: [Templatable],
 
     attrs: {
       focus: moment(),
       range: null,
+      format: 'YYYY-MM-DD',
       template: template,
       model: {
         getter: function() {
-          return createDateModel(this.get('focus'), this.get('range'));
+          var focus = moment(this.get('focus'), this.get('format'));
+          return createDateModel(focus, this.get('range'));
         }
       }
     },
 
     events: {
-      'click [data-role=date]': 'select'
+      'click [data-role=date]': function(ev) {
+        var el = $(ev.target);
+        var value = el.data('value');
+        this.select(value);
+      }
     },
 
     templateHelpers: {},
 
     initialize: function(config) {
+      config = config || {};
       this.templateHelpers['_'] = function(key) {
         var lang = config.lang || {};
         return lang[key] || key;
       };
+      this.set('range', config.range || null);
+      this.set('format', config.format || 'YYYY-MM-DD');
 
-      DateCalendar.superclass.initialize.call(this);
-      var focus = moment(config.focus);
+      DateColumn.superclass.initialize.call(this);
+      var focus = moment(config.focus, this.get('format'));
       this.set('focus', focus);
     },
 
     show: function() {
-      DateCalendar.superclass.show.call(this);
+      this.render();
       this.focus();
     },
 
     prev: function() {
-      this.get('focus').add('months', -1);
+      this.get('focus').add('dates', -1);
       this.focus();
       return this.get('focus');
     },
 
     next: function() {
-      this.get('focus').add('months', 1);
+      this.get('focus').add('dates', 1);
       this.focus();
       return this.get('focus');
     },
 
-    to: function(value) {
-      this.get('focus').month(value);
+    select: function(value) {
+      this.get('focus').date(value);
       this.focus();
-      return value;
-    },
-
-    select: function(ev) {
-      var el = $(ev.target);
-      var value = el.data('value');
-      this.to(value);
       this.trigger('select', value);
       return value;
     },
 
     focus: function() {
-      var selector = '[data-value=' + this.get('focus').month() + ']';
+      var selector = '[data-value=' + this.get('focus').format('YYYY-MM-DD') + ']';
       this.element.find('.focused-element').removeClass('focused-element');
       this.element.find(selector).addClass('focused-element');
     }
   });
 
-  module.exports = DateCalendar;
+  module.exports = DateColumn;
 
   // helpers
   var DAYS = [
@@ -184,22 +186,22 @@ define(function(require, exports, module) {
   }
 
 
-  function isInRange(month, range) {
+  function isInRange(date, range) {
     if (range == null) return true;
     if ($.isArray(range)) {
       var start = range[0];
       var end = range[1];
       var result = true;
       if (start) {
-        result = result && month >= start;
+        result = result && date >= start;
       }
       if (end) {
-        result = result && month <= end;
+        result = result && date <= end;
       }
       return result;
     }
     if ($.isFunction(range)) {
-      return range(month);
+      return range(date);
     }
     return true;
   }
