@@ -17,7 +17,7 @@
     "$": "$",
     "moment": "gallery/moment/1.6.2/moment",
     "base": "arale/base/1.0.1/base",
-    "overlay": "arale/overlay/0.9.12/overlay",
+    "overlay": "arale/overlay/0.9.13/overlay",
     "widget": "arale/widget/1.0.2/widget",
     "templatable": "arale/widget/1.0.2/templatable"
   },

@@ -7,7 +7,7 @@ debug:
 	@nico server -C $(THEME)/nico.js --watch debug
 
 server:
-	@nico server -v -C $(THEME)/nico.js
+	@nico server -C $(THEME)/nico.js
 
 watch:
 	@nico server -C $(THEME)/nico.js --watch
