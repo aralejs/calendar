@@ -26,7 +26,7 @@ define(function(require, exports, module) {
     var i18nlang = 'i18n!lang';
     var lang = require(i18nlang) || {};
 
-    var template = require('./calendar.tpl');
+    var template = require('./calendar-tpl');
     var CalendarModel = require('./model');
 
     // ## Options

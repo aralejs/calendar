@@ -29,7 +29,10 @@ seajs.config({
 
 ````javascript
 seajs.use('calendar', function(Calendar) {
+    var t1 = (new Date).getTime();
     new Calendar({trigger: '#date-nothing'});
+    var t2 = (new Date).getTime();
+    document.title = (t2 - t1);
 });
 ````
 

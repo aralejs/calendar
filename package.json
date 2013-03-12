@@ -1,6 +1,6 @@
 {
   "name": "calendar",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "root": "arale",
   "description": "Moment supported calendar",
   "author": "Hsiaoming Yang <lepture@me.com>",
@@ -17,9 +17,10 @@
     "$": "$",
     "moment": "gallery/moment/1.6.2/moment",
     "base": "arale/base/1.0.1/base",
-    "overlay": "arale/overlay/0.9.12/overlay",
-    "widget": "arale/widget/1.0.2/widget",
-    "templatable": "arale/widget/1.0.2/templatable"
+    "overlay": "arale/overlay/1.0.0/overlay",
+    "widget": "arale/widget/1.0.3/widget",
+    "templatable": "arale/widget/1.0.3/templatable",
+    "handlebars": "gallery/handlebars/1.0.0/handlebars"
   },
 
   "devDependencies": {
