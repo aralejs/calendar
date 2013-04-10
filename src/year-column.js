@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
   var $ = require('$');
   var BaseColumn = require('./base-column');
-  var template = require('./templates/year.tpl');
+  var template = require('./templates/year.handlebars');
 
   var YearColumn = BaseColumn.extend({
     attrs: {

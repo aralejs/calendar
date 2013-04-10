@@ -1,11 +1,9 @@
 define(function(require, exports, module) {
   var $ = require('$');
   var moment = require('moment');
-  var Templatable = require('templatable');
   var Widget = require('widget');
 
   var BaseColumn = Widget.extend({
-    Implements: [Templatable],
 
     attrs: {
       focus: {
@@ -15,20 +13,29 @@ define(function(require, exports, module) {
           return moment(val, this.get('format'));
         }
       },
-      template: '',
+      template: null,
       format: 'YYYY-MM-DD',
       lang: {}
     },
 
-    templateHelpers: {},
+    compileTemplate: function() {
+      var fn = this.get('template');
+      var model = this.get('model');
+
+      var self = this;
+      var lang = this.get('lang') || {};
+
+      return fn(model, {
+        helpers: {
+          '_': function(key) {
+            return lang[key] || key;
+          }
+        }
+      });
+    },
 
     parseElement: function() {
-      var self = this;
-      this.templateHelpers['_'] = function(key) {
-        var lang = self.get('lang') || {};
-        return lang[key] || key;
-      };
-      BaseColumn.superclass.parseElement.call(this);
+      this.element = $(this.compileTemplate());
     },
 
     show: function() {
@@ -37,9 +44,7 @@ define(function(require, exports, module) {
     },
 
     refresh: function() {
-      var model = this.get('model');
-      var template = this.get('template');
-      this.element.html($(this.compile(template, model)).html());
+      this.element.html($(this.compileTemplate()).html());
     }
   });
 

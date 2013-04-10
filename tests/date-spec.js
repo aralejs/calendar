@@ -1,5 +1,7 @@
 define(function(require) {
-  var DateColumn = require('../src/date-column');
+  var expect = require('expect');
+  var sinon = require('sinon');
+  var DateColumn = require('date-column');
   var moment = require('moment');
   var cal;
 
@@ -65,12 +67,16 @@ define(function(require) {
 
     it('can click on 2012-11-25', function() {
       cal = new DateColumn({focus: '2012-12-11'});
-      var spy = sinon.spy(cal, 'select');
+      sinon.spy(cal, 'select');
+
       cal.show();
+
       cal.element.find('.ui-calendar-date column li').eq(0).click();
-      expect(cal.select.calledOnce);
+      expect(cal.select.calledOnce).to.be.ok();
+
       cal.element.find('.ui-calendar-date column li').eq(0).click();
-      expect(cal.select.calledTwice);
+      expect(cal.select.calledTwice).to.be.ok();
+
       cal.element.remove();
       cal.destroy();
     });

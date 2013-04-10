@@ -1,5 +1,6 @@
 define(function(require) {
-  var YearColumn = require('../src/year-column');
+  var expect = require('expect');
+  var YearColumn = require('year-column');
   var moment = require('moment');
   var cal;
 

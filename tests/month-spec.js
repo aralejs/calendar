@@ -1,5 +1,6 @@
 define(function(require) {
-  var MonthColumn = require('../src/month-column');
+  var expect = require('expect');
+  var MonthColumn = require('month-column');
   var moment = require('moment');
   var cal;
 

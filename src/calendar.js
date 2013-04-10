@@ -2,14 +2,12 @@ define(function(require, exports, module) {
   var $ = require('$');
   var moment = require('moment');
   var Overlay = require('overlay');
-  var Templatable = require('templatable');
-  var locale = './i18n/{{locale}}';
-  var lang = require(locale) || {};
-  var template = require('./templates/calendar.tpl');
 
+  var locale = './i18n/{locale}';
+  var lang = require(locale) || {};
+  var template = require('./templates/calendar.handlebars');
 
   var Calendar = Overlay.extend({
-    Implements: [Templatable],
 
     attrs: {
       trigger: null,

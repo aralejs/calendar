@@ -1,10 +1,10 @@
 {
+  "family": "arale",
   "name": "calendar",
   "version": "0.9.0",
-  "root": "arale",
-  "description": "Moment supported calendar",
+  "description": "Calendar widget.",
   "author": "Hsiaoming Yang <lepture@me.com>",
-  "homepage": "http://aralejs.org/calendar",
+  "homepage": "http://aralejs.org/calendar/",
   "repository": {
     "type": "git",
     "url": "https://github.com/aralejs/calendar.git"
@@ -12,29 +12,30 @@
   "bugs": {
     "url": "https://github.com/aralejs/calendar/issues"
   },
-  "tag": "widget",
-  "dependencies": {
-    "$": "$",
-    "moment": "gallery/moment/1.6.2/moment",
-    "base": "arale/base/1.0.1/base",
-    "overlay": "arale/overlay/0.9.13/overlay",
-    "widget": "arale/widget/1.0.2/widget",
-    "templatable": "arale/widget/1.0.2/templatable"
-  },
+  "keywords": ["widget", "month"],
 
-  "devDependencies": {
-  },
-
-  "tests": [
-    "date", "month", "year"
-  ],
-
-  "output": {
-    "calendar.js": ".",
-    "date-column.js": ".",
-    "month-column.js": ".",
-    "year-column.js": ".",
-
-    "i18n/*": "*"
+  "spm": {
+    "alias": {
+      "$": "$",
+      "moment": "gallery/moment/2.0.0/moment",
+      "handlebars": "gallery/handlebars/1.0.1/runtime",
+      "base": "arale/base/1.0.1/base",
+      "overlay": "arale/overlay/1.0.1/overlay",
+      "widget": "arale/widget/1.0.3/widget"
+    },
+    "devAlias": {
+      "mocha": "gallery/mocha/1.9.0/mocha",
+      "expect": "gallery/expect/0.2.0/expect",
+      "sinon": "gallery/sinon/1.6.0/sinon"
+    },
+    "engines": {
+      "seajs": "seajs/seajs/2.0.0/sea"
+    },
+    "output": [
+      "calendar.js",
+      "date-column.js", "month-column.js", "year-column.js",
+      "css/date.css", "css/month.css", "css/year.css",
+      "i18n/*"
+    ]
   }
 }

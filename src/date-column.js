@@ -2,7 +2,7 @@ define(function(require, exports, module) {
   var $ = require('$');
   var moment = require('moment');
   var BaseColumn = require('./base-column');
-  var template = require('./templates/date.tpl');
+  var template = require('./templates/date.handlebars');
 
   var DateColumn = BaseColumn.extend({
     attrs: {
@@ -43,8 +43,6 @@ define(function(require, exports, module) {
         this.select(value);
       }
     },
-
-    templateHelpers: {},
 
     prev: function() {
       var pre = this.get('focus').month();
