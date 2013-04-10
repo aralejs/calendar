@@ -56,9 +56,7 @@ define(function(require, exports, module) {
       var focus = this.get('focus').year();
       var years = this.element.find('[data-role=year]');
       if (focus < years.first().data('value') || focus > years.last().data('value')) {
-        var model = this.get('model');
-        var template = this.get('template');
-        this.element.html($(this.compile(template, model)).html());
+        this.element.html($(this.compileTemplate()).html());
       }
     }
   });
