@@ -1,10 +1,10 @@
 {
+  "family": "arale",
   "name": "calendar",
-  "version": "0.8.4",
-  "root": "arale",
+  "version": "0.8.5",
   "description": "Moment supported calendar",
-  "author": "Hsiaoming Yang <lepture@me.com>",
-  "homepage": "http://aralejs.org/calendar",
+  "author": "Hsiaoming Yang <me@lepture.com>",
+  "homepage": "http://aralejs.org/calendar/",
   "repository": {
     "type": "git",
     "url": "https://github.com/aralejs/calendar.git"
@@ -12,30 +12,23 @@
   "bugs": {
     "url": "https://github.com/aralejs/calendar/issues"
   },
-  "tag": "widget",
-  "dependencies": {
-    "$": "$",
-    "moment": "gallery/moment/1.6.2/moment",
-    "base": "arale/base/1.0.1/base",
-    "overlay": "arale/overlay/1.0.0/overlay",
-    "widget": "arale/widget/1.0.3/widget",
-    "templatable": "arale/widget/1.0.3/templatable",
-    "handlebars": "gallery/handlebars/1.0.0/handlebars"
-  },
+  "keywords": ["widget", "date", "month"],
+  "spm": {
+    "alias": {
+      "$": "$",
+      "moment": "gallery/moment/2.0.0/moment",
+      "base": "arale/base/1.0.1/base",
+      "overlay": "arale/overlay/1.0.1/overlay",
+      "widget": "arale/widget/1.0.3/widget",
+      "templatable": "arale/widget/1.0.3/templatable",
+      "handlebars": "gallery/handlebars/1.0.0/handlebars"
+    },
 
-  "devDependencies": {
-  },
-
-  "tests": [
-    "calendar",
-    "model"
-  ],
-
-  "output": {
-    "calendar.js": ".",
-    "calendar.css": ".",
-
-    "i18n/lang.js": ".",
-    "i18n/zh-cn/lang.js": "."
+    "output": [
+      "calendar.js",
+      "calendar.css",
+      "i18n/lang.js",
+      "i18n/zh-cn/lang.js"
+    ]
   }
 }

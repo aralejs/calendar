@@ -2,10 +2,18 @@
 
 ------------
 
+
+## 0.8.5
+
+`tag:improved` update arale/overlay to 1.0.1
+
+`tag:improved` update moment to 2.0.0
+
 ## 0.8.4
 
-*   对 arale/widget 的依赖从 1.0.2 升级到 1.0.3
-*   对 arale/overlay 的依赖从 0.9.12 升级到 1.0.0
+`tag:improved` 对 arale/widget 的依赖从 1.0.2 升级到 1.0.3
+
+`tag:improved` 对 arale/overlay 的依赖从 0.9.12 升级到 1.0.0
 
 ## 0.8.1 
 

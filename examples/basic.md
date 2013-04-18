@@ -10,15 +10,6 @@
 <link rel="stylesheet" href="../src/calendar.css" />
 ````
 
-设置国际化支持：
-
-````javascript
-seajs.config({
-    locale: 'zh-cn',
-    preload: ['seajs/plugin-i18n']
-});
-````
-
 ## There is nothing to do
 
 最简示例，没有任何特殊要求：

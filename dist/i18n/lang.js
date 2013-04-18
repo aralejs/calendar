@@ -1,1 +1,1 @@
-define("arale/calendar/0.8.4/i18n/lang",[],{});
+define("arale/calendar/0.8.5/i18n/lang",[],{});

@@ -1,5 +1,6 @@
 define(function(require) {
-  var Model = require('../src/model');
+  var expect = require('expect');
+  var Model = require('model');
   var moment = require('moment');
 
   var m;
