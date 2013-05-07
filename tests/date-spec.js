@@ -71,10 +71,10 @@ define(function(require) {
 
       cal.show();
 
-      cal.element.find('.ui-calendar-date column li').eq(0).click();
+      cal.element.find('.ui-calendar-date-column li').eq(0).click();
       expect(cal.select.calledOnce).to.be.ok();
 
-      cal.element.find('.ui-calendar-date column li').eq(0).click();
+      cal.element.find('.ui-calendar-date-column li').eq(0).click();
       expect(cal.select.calledTwice).to.be.ok();
 
       cal.element.remove();

@@ -23,14 +23,6 @@
       "overlay": "arale/overlay/1.0.1/overlay",
       "widget": "arale/widget/1.0.3/widget"
     },
-    "devAlias": {
-      "mocha": "gallery/mocha/1.9.0/mocha",
-      "expect": "gallery/expect/0.2.0/expect",
-      "sinon": "gallery/sinon/1.6.0/sinon"
-    },
-    "engines": {
-      "seajs": "seajs/seajs/2.0.0/sea"
-    },
     "output": [
       "calendar.js",
       "date-column.js", "month-column.js", "year-column.js",
