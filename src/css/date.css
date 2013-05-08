@@ -7,6 +7,7 @@
   text-align: center;
 }
 .ui-calendar-date tr {
+  background-color: #f9f9f9;
   border: none;
   margin: 0;
   padding: 0;
