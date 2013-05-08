@@ -106,6 +106,17 @@ define(function(require) {
       cal.destroy();
     });
 
+    it('range can be a function', function() {
+      cal = new DateColumn({
+        focus: '2012-12-21',
+        range: function(d) {
+          return d.date() < 21;
+        }
+      });
+      expect(cal.element.find('[data-value=2012-12-25]').hasClass('disabled-element')).to.be.ok();
+      cal.destroy();
+    });
+
     it('can start week at Friday', function() {
       cal = new DateColumn({focus: '2012-12-21', startDay: 'Friday'});
       expect(cal.element.find('li').eq(0).text()).to.be('Fr');
@@ -115,5 +126,23 @@ define(function(require) {
       expect(cal.element.find('li').eq(0).text()).to.be('Fr');
       cal.destroy();
     });
+
+    it('can change the className', function() {
+      cal = new DateColumn({
+        focus: '2012-08-11',
+        process: function(item) {
+          if (item.value === '2012-08-11') {
+            item.className += ' foo';
+          }
+          return item;
+        }
+      });
+      cal.focus();
+      var element = cal.element.find('.focused-element');
+      expect(element.hasClass('foo')).to.be.ok();
+      expect(cal.element.find('.foo')).to.have.length(1);
+      cal.destroy();
+    });
+
   });
 });

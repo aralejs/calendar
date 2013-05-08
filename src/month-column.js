@@ -7,9 +7,12 @@ define(function(require, exports, module) {
     attrs: {
       template: template,
       range: null,
+      process: null,
       model: {
         getter: function() {
-          return createMonthModel(this.get('focus'), this.get('range'));
+          return createMonthModel(
+            this.get('focus'), this.get('range'), this.get('process')
+          );
         }
       }
     },
@@ -56,16 +59,21 @@ define(function(require, exports, module) {
     'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
   ];
 
-  function createMonthModel(time, range) {
+  function createMonthModel(time, range, fn) {
     var month = time.month();
     var items = [];
 
     for (i = 0; i < MONTHS.length; i++) {
-      items.push({
+      var item = {
         value: i,
         available: isInRange(i, range),
         label: MONTHS[i]
-      });
+      };
+      if (fn) {
+        item.type = 'month';
+        item = fn(item);
+      }
+      items.push(item);
     }
 
     var current = {

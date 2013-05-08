@@ -23,12 +23,14 @@ define(function(require, exports, module) {
           return val;
         }
       },
+      process: null,
       model: {
         getter: function() {
           var date = createDateModel(
             this.get('focus'),
             this.get('startDay'),
-            this.get('range')
+            this.get('range'),
+            this.get('process')
           );
           var day = createDayModel(this.get('startDay'));
           return {date: date, day: day};
@@ -125,19 +127,24 @@ define(function(require, exports, module) {
   }
 
 
-  function createDateModel(current, startDay, range) {
+  function createDateModel(current, startDay, range, fn) {
     var items = [], delta, d, daysInMonth;
     startDay = parseStartDay(startDay);
 
     var pushData = function(d, className) {
-      items.push({
+      var item = {
         value: d.format('YYYY-MM-DD'),
         label: d.date(),
 
         day: d.day(),
         className: className,
         available: isInRange(d, range)
-      });
+      };
+      if (fn) {
+        item.type = 'date';
+        item = fn(item);
+      }
+      items.push(item);
     };
 
     // reset to the first date of the month

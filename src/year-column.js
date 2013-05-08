@@ -6,10 +6,13 @@ define(function(require, exports, module) {
   var YearColumn = BaseColumn.extend({
     attrs: {
       range: null,
+      process: null,
       template: template,
       model: {
         getter: function() {
-          return createYearModel(this.get('focus'), this.get('range'));
+          return createYearModel(
+            this.get('focus'), this.get('range'), this.get('process')
+          );
         }
       }
     },
@@ -64,30 +67,31 @@ define(function(require, exports, module) {
   module.exports = YearColumn;
 
   // helpers
-  function createYearModel(time, range) {
+  function createYearModel(time, range, fn) {
     var year = time.year();
 
-    var items = [{
+    var items = [process({
       value: year - 10,
       label: '. . .',
       available: true,
       role: 'previous-10-year'
-    }];
+    }, fn)];
 
     for (var i = year - 6; i < year + 4; i++) {
-      items.push({
+      items.push(process({
         value: i,
         label: i,
         available: isInRange(i, range),
         role: 'year'
-      });
+      }, fn));
     }
-    items.push({
+
+    items.push(process({
       value: year + 10,
       label: '. . .',
       available: true,
       role: 'next-10-year'
-    });
+    }, fn));
 
     var list = [];
     for (i = 0; i < items.length / 3; i++) {
@@ -100,6 +104,14 @@ define(function(require, exports, module) {
     };
 
     return {current: current, items: list};
+  }
+
+  function process(item, fn) {
+    if (!fn) {
+      return item;
+    }
+    item.type = 'year';
+    return fn(item);
   }
 
   function isInRange(year, range) {

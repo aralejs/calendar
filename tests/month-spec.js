@@ -105,5 +105,20 @@ define(function(require) {
       expect(cal.element.find('[data-value=4]').hasClass('disabled-element')).to.not.be.ok();
       cal.destroy();
     });
+
+    it('can change the label', function() {
+      cal = new MonthColumn({
+        focus: '2012-08-11',
+        process: function(item) {
+          if (item.value === 1) {
+            item.label = 'foo';
+          }
+          return item;
+        }
+      });
+      expect(cal.element.find('[data-value=1]').text()).to.equal('foo');
+      cal.destroy();
+    });
   });
+
 });

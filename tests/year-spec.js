@@ -105,5 +105,19 @@ define(function(require) {
       expect(cal.element.find('[data-value=2011]').hasClass('disabled-element')).to.not.be.ok();
       cal.destroy();
     });
+
+    it('can change the label', function() {
+      cal = new YearColumn({
+        focus: '2012-08-11',
+        process: function(item) {
+          if (item.value === 2012) {
+            item.label = 'foo';
+          }
+          return item;
+        }
+      });
+      expect(cal.element.find('[data-value=2012]').text()).to.equal('foo');
+      cal.destroy();
+    });
   });
 });
