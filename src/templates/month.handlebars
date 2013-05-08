@@ -1,9 +1,9 @@
-<div class="ui-calendar-month">
+<table class="ui-calendar-month">
 {{#each items}}
-<ul class="ui-calendar-month-column">
+<tr class="ui-calendar-month-column">
     {{#each this}}
-    <li class="{{#unless available}}disabled-element{{/unless}}" data-role="month" data-value="{{value}}">{{_ label}}</li>
+    <td class="{{#unless available}}disabled-element{{/unless}}" data-role="month" data-value="{{value}}">{{_ label}}</td>
     {{/each}}
-</ul>
+</tr>
 {{/each}}
-</div>
+</table>

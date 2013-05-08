@@ -1,45 +1,33 @@
 .ui-calendar-month {
   font: 16px/20px 'Xin Gothic', 'PT Sans', 'Hiragino Sans GB', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  border-collapse: collapse;
   background-color: #f9f9f9;
   border: 1px solid #dadada;
   box-shadow: 1px 1px 9px #ccc;
   text-align: center;
 }
-.ui-calendar-month ul {
-  list-style-type: none;
+.ui-calendar-month tr {
+  border: none;
   margin: 0;
   padding: 0;
-  clear: both;
   width: 210px;
   color: #333;
-  zoom: 1;
 }
-.ui-calendar-month ul:after {
-  display: block;
-  content: "";
-  visibility: hidden;
-  font-size: 0;
-  clear: both;
-  height: 0;
-}
-.ui-calendar-month li {
-  float: left;
+.ui-calendar-month .ui-calendar-month-column td {
+  display: inline-block;
+  border: none;
   text-align: center;
-  width: 30px;
-  padding: 3px 0;
   cursor: pointer;
-}
-.ui-calendar-month .ui-calendar-month-column li {
   width: 65px;
   margin: 2px;
   padding: 2px 0;
   border-radius: 4px;
 }
-.ui-calendar-month .ui-calendar-month-column li:hover {
+.ui-calendar-month .ui-calendar-month-column td:hover {
   color: #333;
   background: #dadada;
 }
-.ui-calendar-month .ui-calendar-month-column li.focused-element {
+.ui-calendar-month .ui-calendar-month-column td.focused-element {
     color: #fff;
     background: #d64;
 }

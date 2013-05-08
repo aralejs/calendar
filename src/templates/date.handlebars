@@ -1,18 +1,14 @@
-<div class="ui-calendar-date">
-  <ul class="ui-calendar-day-column">
+<table class="ui-calendar-date">
+  <tr class="ui-calendar-day-column">
     {{#each day.items}}
-    <li class="ui-calendar-day ui-calendar-day-{{value}}" data-role="day" data-value="{{value}}">{{_ label}}</li>
+    <th class="ui-calendar-day ui-calendar-day-{{value}}" data-role="day" data-value="{{value}}">{{_ label}}</th>
     {{/each}}
-  </ul>
+  </tr>
   {{#each date.items}}
-  <ul class="ui-calendar-date-column">
+  <tr class="ui-calendar-date-column">
     {{#each this}}
-    <li class="ui-calendar-day-{{day}} {{className}}
-    {{#unless available}}disabled-element{{/unless}}
-    "
-    data-role="date" data-value="{{value}}"
-    >{{label}}</li>
+    <td class="ui-calendar-day-{{day}} {{className}} {{#unless available}}disabled-element{{/unless}}" data-role="date" data-value="{{value}}">{{label}}</td>
     {{/each}}
-  </ul>
+  </tr>
   {{/each}}
-</div>
+</table>
