@@ -17,4 +17,24 @@
 .ui-calendar .ui-calendar-year
 {
   border: none;
+  box-shadow: none;
+}
+.ui-calendar .ui-calendar-pannel {
+  border-bottom: 1px solid #dadada;
+  zoom: 1;
+}
+.ui-calendar .ui-calendar-pannel:after,
+.ui-calendar .ui-calendar-pannel:before {
+  display: table;
+  line-height: 0;
+  content: "";
+}
+.ui-calendar .ui-calendar-pannel:after {
+  clear: both;
+}
+.ui-calendar .ui-calendar-control {
+  display: inline-block;
+  float: left;
+  width: 10%;
+  cursor: pointer;
 }

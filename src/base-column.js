@@ -4,19 +4,9 @@ define(function(require, exports, module) {
   var Widget = require('widget');
 
   var BaseColumn = Widget.extend({
-
     attrs: {
       focus: {
-        value: '',
-        getter: function(val) {
-          if (!val) {
-            return moment();
-          }
-          if (moment.isMoment(val)) {
-            return val;
-          }
-          return moment(val, this.get('format'));
-        },
+        value: moment(),
         setter: function(val) {
           if (!val) {
             return moment();
@@ -57,6 +47,7 @@ define(function(require, exports, module) {
     refresh: function() {
       this.element.html($(this.compileTemplate()).html());
     }
+
   });
 
   module.exports = BaseColumn;

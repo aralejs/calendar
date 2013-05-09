@@ -33,6 +33,9 @@
 .ui-calendar-date .ui-calendar-date-column .next-month {
     color: #ccc;
 }
+.ui-calendar-date .ui-calendar-date-column td {
+  cursor: pointer;
+}
 .ui-calendar-date .ui-calendar-date-column td:hover {
   cursor: pointer;
   color: #333;
