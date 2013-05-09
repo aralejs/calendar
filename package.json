@@ -20,7 +20,7 @@
       "moment": "gallery/moment/2.0.0/moment",
       "handlebars": "gallery/handlebars/1.0.1/runtime",
       "base": "arale/base/1.0.1/base",
-      "overlay": "arale/overlay/1.0.1/overlay",
+      "position": "arale/position/1.0.0/position",
       "widget": "arale/widget/1.0.3/widget"
     },
     "output": [

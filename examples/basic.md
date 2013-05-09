@@ -14,8 +14,9 @@
 
 ````javascript
 seajs.config({
-    locale: 'zh-cn',
-    preload: ['seajs/plugin-i18n']
+    vars: {
+        locale: 'zh-cn',
+    }
 });
 ````
 

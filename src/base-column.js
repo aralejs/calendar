@@ -7,9 +7,17 @@ define(function(require, exports, module) {
 
     attrs: {
       focus: {
-        value: moment(),
+        value: '',
+        getter: function(val) {
+          if (!val) {
+            return moment();
+          }
+          return moment(val, this.get('format'));
+        },
         setter: function(val) {
-          if (!val) return moment();
+          if (!val) {
+            return moment();
+          }
           return moment(val, this.get('format'));
         }
       },
