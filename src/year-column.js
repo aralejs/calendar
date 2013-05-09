@@ -21,7 +21,7 @@ define(function(require, exports, module) {
       'click [data-role=year],[data-role=previous-10-year],[data-role=next-10-year]': function(ev) {
         var el = $(ev.target);
         var value = el.data('value');
-        this.select(value);
+        this.select(value, el);
       }
     },
 
@@ -41,11 +41,15 @@ define(function(require, exports, module) {
       return this.get('focus');
     },
 
-    select: function(value) {
+    select: function(value, el) {
+      if (el && el.hasClass('disabled-element')) {
+        this.trigger('selectDisable', value, el);
+        return value;
+      }
       this.get('focus').year(value);
       this.refresh();
       this.focus();
-      this.trigger('select', value);
+      this.trigger('select', value, el);
       return value;
     },
 
