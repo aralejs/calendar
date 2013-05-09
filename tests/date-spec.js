@@ -71,10 +71,10 @@ define(function(require) {
 
       cal.show();
 
-      cal.element.find('.ui-calendar-date-column li').eq(0).click();
+      cal.element.find('.ui-calendar-date-column td').eq(0).click();
       expect(cal.select.calledOnce).to.be.ok();
 
-      cal.element.find('.ui-calendar-date-column li').eq(0).click();
+      cal.element.find('.ui-calendar-date-column td').eq(0).click();
       expect(cal.select.calledTwice).to.be.ok();
 
       cal.element.remove();
@@ -119,11 +119,11 @@ define(function(require) {
 
     it('can start week at Friday', function() {
       cal = new DateColumn({focus: '2012-12-21', startDay: 'Friday'});
-      expect(cal.element.find('li').eq(0).text()).to.be('Fr');
+      expect(cal.element.find('th').eq(0).text()).to.be('Fr');
       cal.destroy();
 
       cal = new DateColumn({focus: '2012-12-21', startDay: 5});
-      expect(cal.element.find('li').eq(0).text()).to.be('Fr');
+      expect(cal.element.find('th').eq(0).text()).to.be('Fr');
       cal.destroy();
     });
 

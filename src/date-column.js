@@ -50,7 +50,9 @@ define(function(require, exports, module) {
       var pre = this.get('focus').month();
       this.get('focus').add('days', -1);
       var post = this.get('focus').month();
-      if (pre !== post) this.refresh();
+      if (pre !== post) {
+        this.refresh();
+      }
       this.focus();
       return this.get('focus');
     },

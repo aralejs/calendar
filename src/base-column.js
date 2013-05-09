@@ -12,6 +12,9 @@ define(function(require, exports, module) {
           if (!val) {
             return moment();
           }
+          if (moment.isMoment(val)) {
+            return val;
+          }
           return moment(val, this.get('format'));
         },
         setter: function(val) {
