@@ -51,8 +51,9 @@ define(function(require, exports, module) {
       return this._sync(focus, el);
     },
 
-    focus: function() {
-      var selector = '[data-value=' + this.get('focus').year() + ']';
+    focus: function(focus) {
+      focus = focus || this.get('focus');
+      var selector = '[data-value=' + focus.year() + ']';
       this.element.find('.focused-element').removeClass('focused-element');
       this.element.find(selector).addClass('focused-element');
     },
@@ -68,7 +69,7 @@ define(function(require, exports, module) {
     _sync: function(focus, el) {
       this.set('focus', focus);
       this.refresh();
-      this.focus();
+      this.focus(focus);
       this.trigger('select', focus.year(), el);
       return focus;
     }

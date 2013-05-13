@@ -156,6 +156,7 @@ define(function(require, exports, module) {
         self.set('focus', focus);
         self.renderPannel();
         if (el) {
+          self.dates.refresh();
           self.renderContainer('dates', focus);
         }
       });
@@ -165,6 +166,7 @@ define(function(require, exports, module) {
         self.set('focus', focus);
         self.renderPannel();
         if (el && el.data('role') === 'year') {
+          self.dates.refresh();
           self.renderContainer('dates', focus);
         }
       });

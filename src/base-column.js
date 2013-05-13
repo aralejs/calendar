@@ -6,10 +6,19 @@ define(function(require, exports, module) {
   var BaseColumn = Widget.extend({
     attrs: {
       focus: {
-        value: moment(),
+        value: '',
+        getter: function(val) {
+          if (val) {
+            return val;
+          }
+          return moment();
+        },
         setter: function(val) {
           if (!val) {
             return moment();
+          }
+          if (moment.isMoment(val)) {
+            return val;
           }
           return moment(val, this.get('format'));
         }
@@ -21,6 +30,9 @@ define(function(require, exports, module) {
 
     compileTemplate: function() {
       var fn = this.get('template');
+      if (!fn) {
+        return '';
+      }
       var model = this.get('model');
 
       var self = this;

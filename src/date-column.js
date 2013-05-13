@@ -47,22 +47,24 @@ define(function(require, exports, module) {
     },
 
     prev: function() {
-      var pre = this.get('focus').month();
+      var pre = this.get('focus');
       this.get('focus').add('days', -1);
-      var post = this.get('focus').month();
-      if (pre !== post) {
+      var post = this.get('focus');
+      if (pre.month() !== post.month()) {
         this.refresh();
       }
-      this.focus();
+      this.focus(post);
       return this.get('focus');
     },
 
     next: function() {
-      var pre = this.get('focus').month();
+      var pre = this.get('focus');
       this.get('focus').add('days', 1);
-      var post = this.get('focus').month();
-      if (pre !== post) this.refresh();
-      this.focus();
+      var post = this.get('focus');
+      if (pre.month() !== post.month()) {
+        this.refresh();
+      }
+      this.focus(focus);
       return this.get('focus');
     },
 
@@ -78,13 +80,14 @@ define(function(require, exports, module) {
       if (pre.month() !== post.month() || pre.year() !== post.year()) {
         this.refresh();
       }
-      this.focus();
+      this.focus(post);
       this.trigger('select', value, el);
       return value;
     },
 
-    focus: function() {
-      var selector = '[data-value=' + this.get('focus').format('YYYY-MM-DD') + ']';
+    focus: function(focus) {
+      focus = focus || this.get('focus');
+      var selector = '[data-value=' + focus.format('YYYY-MM-DD') + ']';
       this.element.find('.focused-element').removeClass('focused-element');
       this.element.find(selector).addClass('focused-element');
     }
