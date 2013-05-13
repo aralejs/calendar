@@ -44,6 +44,10 @@ define(function(require, exports, module) {
       this.focus();
     },
 
+    hide: function() {
+      this.element.hide();
+    },
+
     refresh: function() {
       this.element.html($(this.compileTemplate()).html());
     }

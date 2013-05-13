@@ -86,8 +86,26 @@ define(function(require, exports, module) {
 
     },
 
+    events: {
+      'click [data-role=current-month]': function(ev) {
+        if (this.get('mode') === 'months') {
+          this.renderContainer('dates');
+        } else {
+          this.renderContainer('months');
+        }
+      },
+      'click [data-role=current-year]': function(ev) {
+        if (this.get('mode') === 'years') {
+          this.renderContainer('dates');
+        } else {
+          this.renderContainer('years');
+        }
+      }
+    },
+
     setup: function() {
       Calendar.superclass.setup.call(this);
+      this.renderPannel();
 
       var attrs = {
         lang: lang,
@@ -103,14 +121,36 @@ define(function(require, exports, module) {
       this.years = new YearColumn(attrs);
 
       var self = this;
-      this.dates.on('select', function(value) {
+      this.dates.on('select', function(value, el) {
         self.set('focus', value);
-        self._output(value);
+        if (el) {
+          self._output(value);
+        }
+      });
+      this.months.on('select', function(value, el) {
+        var focus = self.get('focus');
+        focus.month(value);
+        self.set('focus', focus);
+        self.renderPannel();
+        if (el) {
+          self.renderContainer('dates', focus);
+        }
+      });
+      this.years.on('select', function(value, el) {
+        var focus = self.get('focus');
+        focus.year(value);
+        self.set('focus', focus);
+        self.renderPannel();
+        if (el) {
+          self.renderContainer('dates', focus);
+        }
       });
 
       var container = this.element.find('[data-role=container]');
-      this.dates.focus();
-      container.html(this.dates.element);
+      container.append(this.dates.element);
+      container.append(this.months.element);
+      container.append(this.years.element);
+      this.renderContainer('dates');
 
       var trigger = this.get('trigger');
       if (trigger) {
@@ -120,17 +160,44 @@ define(function(require, exports, module) {
       }
     },
 
-    renderContainer: function(mode) {
+    renderContainer: function(mode, focus) {
       this.set('mode', mode);
 
-      var focus = this.get('focus');
-      var container = this.element.find('[data-role=container]');
+      focus = focus || this.get('focus');
+
+      this.dates.hide();
+      this.months.hide();
+      this.years.hide();
 
       if (mode === 'dates') {
         this.dates.select(focus);
-        container.html(this.dates.element);
+        this.dates.element.show();
+      } else if (mode === 'months') {
+        this.months.select(focus.month());
+        this.months.element.show();
+      } else if (mode === 'years') {
+        this.years.select(focus.year());
+        this.years.element.show();
       }
+      return this;
 
+    },
+
+    renderPannel: function() {
+      var focus = this.get('focus');
+      var monthPannel = this.element.find('[data-role=current-month]');
+      var yearPannel = this.element.find('[data-role=current-year]');
+
+      var MONTHS = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+        'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      ];
+
+      var month = MONTHS[focus.month()];
+      month = lang[month] || month;
+
+      monthPannel.text(month);
+      yearPannel.text(focus.year());
     },
 
     show: function() {
@@ -140,10 +207,6 @@ define(function(require, exports, module) {
       }
       this._pin();
       this.element.show();
-    },
-
-    hide: function() {
-      this.element.hide();
     },
 
     destroy: function() {

@@ -35,6 +35,14 @@
 .ui-calendar .ui-calendar-control {
   display: inline-block;
   float: left;
-  width: 10%;
+  width: 12.5%;
+  padding: 2px 0;
   cursor: pointer;
+}
+.ui-calendar .ui-calendar-control:hover {
+  background-color: #efefee;
+}
+.ui-calendar .ui-calendar-pannel .month,
+.ui-calendar .ui-calendar-pannel .year {
+  width: 25%;
 }

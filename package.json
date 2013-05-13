@@ -25,8 +25,7 @@
     },
     "output": [
       "calendar.js",
-      "date-column.js", "month-column.js", "year-column.js",
-      "css/date.css", "css/month.css", "css/year.css",
+      "calendar.css",
       "i18n/*"
     ]
   }

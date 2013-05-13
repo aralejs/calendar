@@ -72,10 +72,10 @@ define(function(require, exports, module) {
         return value;
       }
 
-      var pre = this.get('focus').month();
+      var pre = this.get('focus');
       this.set('focus', value);
-      var post = this.get('focus').month();
-      if (pre !== post) {
+      var post = this.get('focus');
+      if (pre.month() !== post.month() || pre.year() !== post.year()) {
         this.refresh();
       }
       this.focus();
