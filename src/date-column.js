@@ -47,25 +47,15 @@ define(function(require, exports, module) {
     },
 
     prev: function() {
-      var pre = this.get('focus');
-      this.get('focus').add('days', -1);
-      var post = this.get('focus');
-      if (pre.month() !== post.month()) {
-        this.refresh();
-      }
-      this.focus(post);
-      return this.get('focus');
+      var prev = this.get('focus').format('YYYY-MM-DD');
+      var focus = this.get('focus').add('days', -1);
+      return this._sync(focus, prev);
     },
 
     next: function() {
-      var pre = this.get('focus');
-      this.get('focus').add('days', 1);
-      var post = this.get('focus');
-      if (pre.month() !== post.month()) {
-        this.refresh();
-      }
-      this.focus(focus);
-      return this.get('focus');
+      var prev = this.get('focus').format('YYYY-MM-DD');
+      var focus = this.get('focus').add('days', 1);
+      return this._sync(focus, prev);
     },
 
     select: function(value, el) {
@@ -73,16 +63,9 @@ define(function(require, exports, module) {
         this.trigger('selectDisable', value, el);
         return value;
       }
-
-      var pre = this.get('focus');
+      var prev = this.get('focus').format('YYYY-MM-DD');
       this.set('focus', value);
-      var post = this.get('focus');
-      if (pre.month() !== post.month() || pre.year() !== post.year()) {
-        this.refresh();
-      }
-      this.focus(post);
-      this.trigger('select', value, el);
-      return value;
+      return this._sync(this.get('focus'), prev, el);
     },
 
     focus: function(focus) {
@@ -90,6 +73,16 @@ define(function(require, exports, module) {
       var selector = '[data-value=' + focus.format('YYYY-MM-DD') + ']';
       this.element.find('.focused-element').removeClass('focused-element');
       this.element.find(selector).addClass('focused-element');
+    },
+
+    _sync: function(focus, prev, el) {
+      this.set('focus', focus);
+      if (focus.format('YYYY-MM') !== prev) {
+        this.refresh();
+      }
+      this.focus(focus);
+      this.trigger('select', focus, el);
+      return focus;
     }
   });
 
