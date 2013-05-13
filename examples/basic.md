@@ -110,7 +110,10 @@ seajs.use('calendar', function(Calendar) {
     var cal = new Calendar({
         trigger: '#date-disable-3',
         range: function(date) {
-            return date.day() != 2;
+            if (date.day) {
+                return date.day() != 2;
+            }
+            return true;
         }
     });
     cal.on('selectDisabledDate', function(date) {

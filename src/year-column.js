@@ -28,17 +28,13 @@ define(function(require, exports, module) {
     templateHelpers: {},
 
     prev: function() {
-      this.get('focus').add('years', -1);
-      this.refresh();
-      this.focus();
-      return this.get('focus');
+      var focus = this.get('focus').add('years', -1);
+      return this._sync(focus);
     },
 
     next: function() {
-      this.get('focus').add('years', 1);
-      this.refresh();
-      this.focus();
-      return this.get('focus');
+      var focus = this.get('focus').add('years', 1);
+      return this._sync(focus);
     },
 
     select: function(value, el) {
@@ -46,11 +42,13 @@ define(function(require, exports, module) {
         this.trigger('selectDisable', value, el);
         return value;
       }
-      this.get('focus').year(value);
-      this.refresh();
-      this.focus();
-      this.trigger('select', value, el);
-      return value;
+      var focus;
+      if (value.year) {
+        focus = value;
+      } else {
+        focus = this.get('focus').year(value);
+      }
+      return this._sync(focus, el);
     },
 
     focus: function() {
@@ -65,6 +63,14 @@ define(function(require, exports, module) {
       if (focus < years.first().data('value') || focus > years.last().data('value')) {
         this.element.html($(this.compileTemplate()).html());
       }
+    },
+
+    _sync: function(focus, el) {
+      this.set('focus', focus);
+      this.refresh();
+      this.focus();
+      this.trigger('select', focus.year(), el);
+      return focus;
     }
   });
 

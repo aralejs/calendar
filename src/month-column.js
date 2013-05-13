@@ -26,15 +26,13 @@ define(function(require, exports, module) {
     },
 
     prev: function() {
-      this.get('focus').add('months', -1);
-      this.focus();
-      return this.get('focus');
+      var focus = this.get('focus').add('months', -1);
+      return this._sync(focus);
     },
 
     next: function() {
-      this.get('focus').add('months', 1);
-      this.focus();
-      return this.get('focus');
+      var focus = this.get('focus').add('months', 1);
+      return this._sync(focus);
     },
 
     select: function(value, el) {
@@ -42,16 +40,27 @@ define(function(require, exports, module) {
         this.trigger('selectDisable', value, el);
         return value;
       }
-      this.get('focus').month(value);
-      this.focus();
-      this.trigger('select', value, el);
-      return value;
+
+      var focus;
+      if (value.month) {
+        focus = value;
+      } else {
+        focus = this.get('focus').month(value);
+      }
+      return this._sync(focus, el);
     },
 
     focus: function() {
       var selector = '[data-value=' + this.get('focus').month() + ']';
       this.element.find('.focused-element').removeClass('focused-element');
       this.element.find(selector).addClass('focused-element');
+    },
+
+    _sync: function(focus, el) {
+      this.set('focus', focus);
+      this.focus();
+      this.trigger('select', focus.month(), el);
+      return focus;
     }
   });
 

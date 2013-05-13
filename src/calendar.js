@@ -100,6 +100,26 @@ define(function(require, exports, module) {
         } else {
           this.renderContainer('years');
         }
+      },
+      'click [data-role=prev-year]': function(ev) {
+        var focus = this.years.prev();
+        this.dates.select(focus);
+        this.months.select(focus);
+      },
+      'click [data-role=next-year]': function(ev) {
+        var focus = this.years.next()
+        this.dates.select(focus);
+        this.months.select(focus);
+      },
+      'click [data-role=prev-month]': function(ev) {
+        var focus = this.months.prev();
+        this.dates.select(focus);
+        this.years.select(focus);
+      },
+      'click [data-role=next-month]': function(ev) {
+        var focus = this.months.next();
+        this.dates.select(focus);
+        this.years.select(focus);
       }
     },
 
