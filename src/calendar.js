@@ -143,6 +143,9 @@ define(function(require, exports, module) {
       var self = this;
       this.dates.on('select', function(value, el) {
         self.set('focus', value);
+        var focus = self.get('focus');
+        self.months.select(focus);
+        self.years.select(focus);
         if (el) {
           self._output(value);
         }
@@ -161,7 +164,7 @@ define(function(require, exports, module) {
         focus.year(value);
         self.set('focus', focus);
         self.renderPannel();
-        if (el) {
+        if (el && el.data('role') === 'year') {
           self.renderContainer('dates', focus);
         }
       });
@@ -188,15 +191,15 @@ define(function(require, exports, module) {
       this.dates.hide();
       this.months.hide();
       this.years.hide();
+      this.dates.select(focus);
+      this.months.select(focus);
+      this.years.select(focus);
 
       if (mode === 'dates') {
-        this.dates.select(focus);
         this.dates.element.show();
       } else if (mode === 'months') {
-        this.months.select(focus.month());
         this.months.element.show();
       } else if (mode === 'years') {
-        this.years.select(focus.year());
         this.years.element.show();
       }
       return this;
