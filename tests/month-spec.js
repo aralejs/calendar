@@ -66,9 +66,9 @@ define(function(require) {
       cal = new MonthColumn({focus: '2012-08-11'});
       var spy = sinon.spy(cal, 'select');
       cal.show();
-      cal.element.find('li').eq(0).click();
+      cal.element.find('td').eq(0).click();
       expect(cal.select.calledOnce);
-      cal.element.find('li').eq(0).click();
+      cal.element.find('td').eq(0).click();
       expect(cal.select.calledTwice);
       cal.element.remove();
       cal.destroy();
