@@ -177,8 +177,16 @@ define(function(require, exports, module) {
 
       var trigger = this.get('trigger');
       if (trigger) {
-        $(trigger).on(this.get('triggerType'), function() {
+        var $trigger = $(this.get('trigger'));
+        $trigger.on(this.get('triggerType'), function() {
           self.show();
+        });
+        $trigger.on('blur', function() {
+          self.hide();
+        });
+        this.element.on('mousedown', function(e) {
+          // TODO: ie
+          e.preventDefault();
         });
       }
     },
@@ -270,4 +278,8 @@ define(function(require, exports, module) {
   });
 
   exports = module.exports = Calendar;
+
+  exports.DateColumn = DateColumn;
+  exports.MonthColumn = MonthColumn;
+  exports.YearColumn = YearColumn;
 });
