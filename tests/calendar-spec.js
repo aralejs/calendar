@@ -1,8 +1,7 @@
 define(function(require) {
+  var $ = require('jquery');
   var expect = require('expect');
-  var sinon = require('sinon');
   var Calendar = require('calendar');
-  var moment = require('moment');
   var cal;
 
   describe('Calendar', function() {
@@ -124,6 +123,49 @@ define(function(require) {
         done();
       });
       cal.element.find('[data-value=2012]').click();
+    });
+
+    it('should disable on 2012-12-25', function() {
+      cal = new Calendar({focus: '2012-12-26', range: ['2012-12-26']});
+      expect(cal.element.find('[data-value=2012-12-25]').hasClass('disabled-element')).to.be.ok();
+      expect(cal.element.find('[data-value=2012-12-28]').hasClass('disabled-element')).to.not.be.ok();
+      cal.destroy();
+
+      cal = new Calendar({focus: '2012-12-26', range: ['2012-12-26', '2012-12-28']});
+      expect(cal.element.find('[data-value=2012-12-25]').hasClass('disabled-element')).to.be.ok();
+      expect(cal.element.find('[data-value=2012-12-28]').hasClass('disabled-element')).to.not.be.ok();
+      cal.destroy();
+
+      cal = new Calendar({focus: '2012-12-24', range: [null, '2012-12-24']});
+      expect(cal.element.find('[data-value=2012-12-25]').hasClass('disabled-element')).to.be.ok();
+      cal.destroy();
+    });
+
+    it('can be triggered', function() {
+      var input = $('<input>');
+      cal = new Calendar({trigger: input});
+      expect(cal.element.is(':visible')).to.not.be.ok();
+      input.click();
+      expect(cal.element.is(':visible')).to.be.ok();
+      input.blur();
+      expect(cal.element.is(':visible')).to.not.be.ok();
+      cal.element.remove();
+      cal.destroy();
+    });
+
+    it('can output to trigger', function(done) {
+      var input = $('<input>');
+
+      cal = new Calendar({trigger: input, focus: '2012-12-25'});
+      cal.render();
+      cal.element.find('[data-value=2012-12-25]').click();
+
+      setTimeout(function() {
+        expect(input.val()).to.equal('2012-12-25');
+        cal.element.remove();
+        cal.destroy();
+        done();
+      }, 1);
     });
 
   });
