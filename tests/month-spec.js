@@ -97,6 +97,15 @@ define(function(require) {
       cal.destroy();
     });
 
+    it('trigger selectDisable', function(done) {
+      cal = new MonthColumn({focus: '2012-08-11', range: [6]});
+      cal.on('selectDisable', function() {
+        done();
+      });
+      cal.element.find('[data-value=4]').click();
+      cal.destroy();
+    });
+
     it('should not disable on May', function() {
       cal = new MonthColumn({
         focus: '2012-08-11',

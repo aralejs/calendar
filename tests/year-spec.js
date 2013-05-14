@@ -97,6 +97,15 @@ define(function(require) {
       cal.destroy();
     });
 
+    it('trigger selectDisable', function(done) {
+      cal = new YearColumn({focus: '2012-08-11', range: [2012]});
+      cal.on('selectDisable', function() {
+        done();
+      });
+      cal.element.find('[data-value=2011]').click();
+      cal.destroy();
+    });
+
     it('should not disable on 2011', function() {
       cal = new YearColumn({
         focus: '2012-08-11',

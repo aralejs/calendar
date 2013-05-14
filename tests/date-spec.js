@@ -97,6 +97,15 @@ define(function(require) {
       cal.destroy();
     });
 
+    it('trigger selectDisable event', function(done) {
+      cal = new DateColumn({focus: '2012-12-26', range: ['2012-12-26']});
+      cal.on('selectDisable', function() {
+        done();
+      });
+      cal.element.find('[data-value=2012-12-25]').click();
+      cal.destroy();
+    });
+
     it('should not disable on 2012-12-25', function() {
       cal = new DateColumn({
         focus: '2012-12-21',
