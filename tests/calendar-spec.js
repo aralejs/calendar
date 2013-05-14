@@ -1,6 +1,7 @@
 define(function(require) {
   var $ = require('jquery');
   var expect = require('expect');
+  var moment = require('moment');
   var Calendar = require('calendar');
   var cal;
 
@@ -8,6 +9,13 @@ define(function(require) {
     it('can initialize without options', function() {
       cal = new Calendar();
       expect(cal.element.find('table').length > 2).to.be.ok();
+      cal.destroy();
+    });
+
+    it('set no focus', function() {
+      cal = new Calendar();
+      cal.set('focus');
+      expect(cal.get('focus').format('YYYY-MM-DD')).to.equal(moment().format('YYYY-MM-DD'));
       cal.destroy();
     });
 
@@ -166,6 +174,15 @@ define(function(require) {
         cal.destroy();
         done();
       }, 1);
+    });
+
+    it('output is not input', function() {
+      var span = $('<span>');
+      cal = new Calendar({trigger: span, focus: '2012-12-25'});
+      cal.render();
+      cal.element.find('[data-value=2012-12-25]').click();
+      cal.element.remove();
+      cal.destroy();
     });
 
   });
