@@ -2,7 +2,7 @@
 
 -------------
 
-[![Build Status](https://secure.travis-ci.org/aralejs/calendar.png)](https://travis-ci.org/aralejs/calendar)
+[![Build Status](https://travis-ci.org/aralejs/calendar.png)](https://travis-ci.org/aralejs/calendar)
 
 
 提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。
@@ -84,30 +84,6 @@ range: function(time) {
 ### hide()
 
 隐藏日历。继承自 [Overlay](http://aralejs.org/overlay/)。
-
-### range(aRange)
-
-动态修改日历的 range，参考双日历演示。
-
-```javascript
-cal.range(['2012-10-10', '2012-10-19'])
-```
-
-### prevYear()
-
-切换到上一年。
-
-### nextYear()
-
-切换到下一年。
-
-### prevMonth()
-
-切换到上一月。
-
-### nextMonth()
-
-切换到下一月。
 
 
 ## Events
