@@ -60,7 +60,9 @@ define(function(require, exports, module) {
     _sync: function(focus, el) {
       this.set('focus', focus);
       this.focus(focus);
-      this.trigger('select', focus.month(), el);
+      if (el !== null) {
+        this.trigger('select', focus.month(), el);
+      }
       return focus;
     }
   });

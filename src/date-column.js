@@ -81,7 +81,9 @@ define(function(require, exports, module) {
         this.refresh();
       }
       this.focus(focus);
-      this.trigger('select', focus, el);
+      if (el !== null) {
+        this.trigger('select', focus, el);
+      }
       return focus;
     }
   });

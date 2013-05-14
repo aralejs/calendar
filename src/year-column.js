@@ -70,7 +70,9 @@ define(function(require, exports, module) {
       this.set('focus', focus);
       this.refresh();
       this.focus(focus);
-      this.trigger('select', focus.year(), el);
+      if (el !== null) {
+        this.trigger('select', focus.year(), el);
+      }
       return focus;
     }
   });

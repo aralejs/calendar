@@ -199,9 +199,9 @@ define(function(require, exports, module) {
       this.dates.hide();
       this.months.hide();
       this.years.hide();
-      this.dates.select(focus);
-      this.months.select(focus);
-      this.years.select(focus);
+      this.dates.select(focus, null);
+      this.months.select(focus, null);
+      this.years.select(focus, null);
 
       if (mode === 'dates') {
         this.dates.element.show();
@@ -262,6 +262,9 @@ define(function(require, exports, module) {
 
     _output: function(value) {
       var output = this.get('output');
+      if (!output.length) {
+        return;
+      }
       if (typeof output[0].value === 'undefined') {
         return;
       }
