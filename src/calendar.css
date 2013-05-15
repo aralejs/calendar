@@ -46,3 +46,13 @@
 .ui-calendar .ui-calendar-pannel .year {
   width: 25%;
 }
+.ui-double-calendar {
+  width: 420px;
+}
+.ui-double-calendar .ui-calendar-control {
+  width: 7%;
+}
+.ui-double-calendar .ui-calendar-pannel .month,
+.ui-double-calendar .ui-calendar-pannel .year {
+  width: 18%;
+}
