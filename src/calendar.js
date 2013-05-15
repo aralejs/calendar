@@ -4,13 +4,26 @@ define(function(require, exports, module) {
   var Position = require('position');
 
   var lang = require('./i18n/{locale}') || {};
-  var BaseColumn = require('./base-column');
+  var Widget = require('widget');
   var DateColumn = require('./date-column');
   var MonthColumn = require('./month-column');
   var YearColumn = require('./year-column');
-  var template = require('./templates/calendar.handlebars');
+  var template = [
+    '<div class="ui-calendar">',
+    '<div class="ui-calendar-pannel" data-role="pannel">',
+    '<span class="ui-calendar-control" data-role="prev-year">&lt;&lt;</span>',
+    '<span class="ui-calendar-control" data-role="prev-month">&lt;</span>',
+    '<span class="ui-calendar-control month" data-role="current-month"></span>',
+    '<span class="ui-calendar-control year" data-role="current-year"></span>',
+    '<span class="ui-calendar-control" data-role="next-month">&gt;</span>',
+    '<span class="ui-calendar-control" data-role="next-year">&gt;&gt;</span>',
+    '</div>',
+    '<div class="ui-calendar-container" data-role="container">',
+    '</div>',
+    '</div>'
+  ].join('');
 
-  var Calendar = BaseColumn.extend({
+  var Calendar = Widget.extend({
     attrs: {
       lang: lang,
       trigger: null,
@@ -83,7 +96,6 @@ define(function(require, exports, module) {
           };
         }
       }
-
     },
 
     events: {
@@ -238,6 +250,10 @@ define(function(require, exports, module) {
       }
       this._pin();
       this.element.show();
+    },
+
+    hide: function() {
+      this.element.hide();
     },
 
     destroy: function() {
