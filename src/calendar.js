@@ -88,6 +88,9 @@ define(function(require, exports, module) {
         self.months.select(focus);
         self.years.select(focus);
         if (el) {
+          if (moment.isMoment(value)) {
+            value = value.format(this.get('format'));
+          }
           self._output(value);
         }
       });
@@ -162,31 +165,8 @@ define(function(require, exports, module) {
       this.months.destroy();
       this.years.destroy();
       Calendar.superclass.destroy.call(this)
-    },
-
-    _output: function(value) {
-      var output = this.get('output');
-      if (!output.length) {
-        return;
-      }
-      if (typeof output[0].value === 'undefined') {
-        return;
-      }
-      value = value || this.get('focus');
-      if (moment.isMoment(value)) {
-        value = value.format(this.get('format'));
-      }
-      output.val(value);
-      if (this.get('hideOnSelect')) {
-        this.hide();
-      }
     }
-
   });
 
-  exports = module.exports = Calendar;
-
-  exports.DateColumn = DateColumn;
-  exports.MonthColumn = MonthColumn;
-  exports.YearColumn = YearColumn;
+  module.exports = Calendar;
 });

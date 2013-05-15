@@ -123,7 +123,23 @@ define(function(require, exports, module) {
         x: align.baseXY[0],
         y: align.baseXY[1]
       });
+    },
+
+    _output: function(value) {
+      var output = this.get('output');
+      if (!output.length) {
+        return;
+      }
+      if (typeof output[0].value === 'undefined') {
+        output.text(value);
+      } else {
+        output.val(value);
+      }
+      if (this.get('hideOnSelect')) {
+        this.hide();
+      }
     }
+
   });
 
   module.exports = BaseCalendar;
