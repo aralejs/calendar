@@ -1,10 +1,8 @@
 define(function(require, exports, module) {
   var $ = require('$');
   var moment = require('moment');
-  var Position = require('position');
 
-  var lang = require('./i18n/{locale}') || {};
-  var Widget = require('widget');
+  var BaseCalendar = require('./base-calendar');
   var DateColumn = require('./date-column');
   var MonthColumn = require('./month-column');
   var YearColumn = require('./year-column');
@@ -23,79 +21,10 @@ define(function(require, exports, module) {
     '</div>'
   ].join('');
 
-  var Calendar = Widget.extend({
+  var Calendar = BaseCalendar.extend({
     attrs: {
-      lang: lang,
-      trigger: null,
-      triggerType: 'click',
-      output: {
-        value: '',
-        getter: function(val) {
-          val = val ? val : this.get('trigger');
-          return $(val);
-        }
-      },
       mode: 'dates',
-      hideOnSelect: true,
-
-      focus: {
-        value: '',
-        getter: function(val) {
-          val = val ? val : $(this.get('trigger')).val();
-          if (!val) {
-            return moment();
-          }
-          return moment(val, this.get('format'));
-        },
-        setter: function(val) {
-          if (!val) {
-            return moment();
-          }
-          return moment(val, this.get('format'));
-        }
-      },
-
-      format: 'YYYY-MM-DD',
-
-      startDay: 'Sun',
       template: template,
-
-      range: {
-        value: null,
-        setter: function(val) {
-          if ($.isArray(val)) {
-            var format = this.get('format');
-            var range = [];
-            $.each(val, function(i, date) {
-              date = date === null ? null : moment(date, format);
-              range.push(date);
-            });
-            return range;
-          }
-          return val;
-        }
-      },
-
-      process: null,
-
-      align: {
-        getter: function(val) {
-          if (val) return val;
-
-          var trigger = $(this.get('trigger'));
-          if (trigger) {
-            return {
-              selfXY: [0, 0],
-              baseElement: trigger,
-              baseXY: [0, trigger.height() + 10]
-            };
-          }
-          return {
-            selfXY: [0, 0],
-            baseXY: [0, 0]
-          };
-        }
-      }
     },
 
     events: {
@@ -140,7 +69,7 @@ define(function(require, exports, module) {
       this.renderPannel();
 
       var attrs = {
-        lang: lang,
+        lang: this.get('lang'),
         focus: this.get('focus'),
         range: this.get('range'),
         format: this.get('format'),
@@ -186,21 +115,6 @@ define(function(require, exports, module) {
       container.append(this.months.element);
       container.append(this.years.element);
       this.renderContainer('dates');
-
-      var trigger = this.get('trigger');
-      if (trigger) {
-        var $trigger = $(this.get('trigger'));
-        $trigger.on(this.get('triggerType'), function() {
-          self.show();
-        });
-        $trigger.on('blur', function() {
-          self.hide();
-        });
-        this.element.on('mousedown', function(e) {
-          // TODO: ie
-          e.preventDefault();
-        });
-      }
     },
 
     renderContainer: function(mode, focus) {
@@ -237,23 +151,10 @@ define(function(require, exports, module) {
       ];
 
       var month = MONTHS[focus.month()];
-      month = lang[month] || month;
+      month = this.get('lang')[month] || month;
 
       monthPannel.text(month);
       yearPannel.text(focus.year());
-    },
-
-    show: function() {
-      if (!this.rendered) {
-        this._pin();
-        this.render();
-      }
-      this._pin();
-      this.element.show();
-    },
-
-    hide: function() {
-      this.element.hide();
     },
 
     destroy: function() {
@@ -261,19 +162,6 @@ define(function(require, exports, module) {
       this.months.destroy();
       this.years.destroy();
       Calendar.superclass.destroy.call(this)
-    },
-
-    _pin: function(align) {
-      align = align || this.get('align');
-      Position.pin({
-        element: this.element,
-        x: align.selfXY[0],
-        y: align.selfXY[1]
-      }, {
-        element: align.baseElement,
-        x: align.baseXY[0],
-        y: align.baseXY[1]
-      });
     },
 
     _output: function(value) {
