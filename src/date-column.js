@@ -81,6 +81,7 @@ define(function(require, exports, module) {
         this.refresh();
       }
       this.focus(focus);
+      // if user call select(value, null) it will not trigger an event
       if (el !== null) {
         this.trigger('select', focus, el);
       }
@@ -100,7 +101,7 @@ define(function(require, exports, module) {
     startDay = (startDay || 0).toString().toLowerCase();
 
     if ($.isNumeric(startDay)) {
-      startDay = parseInt(startDay);
+      startDay = parseInt(startDay, 10);
       return startDay;
     }
 
@@ -145,7 +146,7 @@ define(function(require, exports, module) {
 
         day: d.day(),
         className: className,
-        available: isInRange(d, range)
+        available: BaseColumn.isInRange(d, range)
       };
       if (fn) {
         item.type = 'date';
@@ -200,26 +201,5 @@ define(function(require, exports, module) {
     };
 
     return {current: _current, items: list};
-  }
-
-
-  function isInRange(date, range) {
-    if (range == null) return true;
-    if ($.isArray(range)) {
-      var start = range[0];
-      var end = range[1];
-      var result = true;
-      if (start) {
-        result = result && date >= start;
-      }
-      if (end) {
-        result = result && date <= end;
-      }
-      return result;
-    }
-    if ($.isFunction(range)) {
-      return range(date);
-    }
-    return true;
   }
 });

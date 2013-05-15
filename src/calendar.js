@@ -48,7 +48,7 @@ define(function(require, exports, module) {
         this.months.select(focus);
       },
       'click [data-role=next-year]': function(ev) {
-        var focus = this.years.next()
+        var focus = this.years.next();
         this.dates.select(focus);
         this.months.select(focus);
       },
@@ -164,7 +164,7 @@ define(function(require, exports, module) {
       this.dates.destroy();
       this.months.destroy();
       this.years.destroy();
-      Calendar.superclass.destroy.call(this)
+      Calendar.superclass.destroy.call(this);
     }
   });
 

@@ -29,6 +29,7 @@ define(function(require, exports, module) {
     },
 
     compileTemplate: function() {
+      // the template is a runtime handlebars function
       var fn = this.get('template');
       if (!fn) {
         return '';
@@ -48,6 +49,7 @@ define(function(require, exports, module) {
     },
 
     parseElement: function() {
+      // rewrite parseElement of widget
       this.element = $(this.compileTemplate());
     },
 
@@ -67,4 +69,26 @@ define(function(require, exports, module) {
   });
 
   module.exports = BaseColumn;
+
+  BaseColumn.isInRange = function(date, range) {
+    if (range == null) {
+      return true;
+    }
+    if ($.isArray(range)) {
+      var start = range[0];
+      var end = range[1];
+      var result = true;
+      if (start) {
+        result = result && date >= start;
+      }
+      if (end) {
+        result = result && date <= end;
+      }
+      return result;
+    }
+    if ($.isFunction(range)) {
+      return range(date);
+    }
+    return true;
+  };
 });

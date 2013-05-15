@@ -60,6 +60,7 @@ define(function(require, exports, module) {
     _sync: function(focus, el) {
       this.set('focus', focus);
       this.focus(focus);
+      // if user call select(value, null) it will not trigger an event
       if (el !== null) {
         this.trigger('select', focus.month(), el);
       }
@@ -82,7 +83,7 @@ define(function(require, exports, module) {
     for (i = 0; i < MONTHS.length; i++) {
       var item = {
         value: i,
-        available: isInRange(i, range),
+        available: BaseColumn.isInRange(i, range),
         label: MONTHS[i]
       };
       if (fn) {
@@ -103,25 +104,5 @@ define(function(require, exports, module) {
       list.push(items.slice(i * 3, i * 3 + 3));
     }
     return {current: current, items: list};
-  }
-
-  function isInRange(month, range) {
-    if (range == null) return true;
-    if ($.isArray(range)) {
-      var start = range[0];
-      var end = range[1];
-      var result = true;
-      if (start) {
-        result = result && month >= start;
-      }
-      if (end) {
-        result = result && month <= end;
-      }
-      return result;
-    }
-    if ($.isFunction(range)) {
-      return range(month);
-    }
-    return true;
   }
 });
