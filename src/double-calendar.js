@@ -7,18 +7,29 @@ define(function(require, exports, module) {
 
   var template = [
     '<div class="ui-calendar ui-double-calendar">',
+    '<div class="ui-calendar-start">',
+    '<div class="ui-calendar-wrap">',
     '<div class="ui-calendar-pannel" data-role="pannel">',
     '<span class="ui-calendar-control" data-role="prev-year">&lt;&lt;</span>',
     '<span class="ui-calendar-control" data-role="prev-month">&lt;</span>',
     '<span class="ui-calendar-control month" data-role="start-month"></span>',
     '<span class="ui-calendar-control year" data-role="start-year"></span>',
+    '</div>',
+    '</div>',
+    '<div class="ui-calendar-container" data-role="container"></div>',
+    '</div>',
+    '<div class="ui-calendar-end">',
+    '<div class="ui-calendar-wrap">',
+    '<div class="ui-calendar-pannel" data-role="pannel">',
     '<span class="ui-calendar-control month" data-role="end-month"></span>',
     '<span class="ui-calendar-control year" data-role="end-year"></span>',
     '<span class="ui-calendar-control" data-role="next-month">&gt;</span>',
     '<span class="ui-calendar-control" data-role="next-year">&gt;&gt;</span>',
     '</div>',
-    '<div class="ui-calendar-container" data-role="container">',
     '</div>',
+    '<div class="ui-calendar-container" data-role="container"></div>',
+    '</div>',
+
     '</div>'
   ].join('');
 
@@ -45,6 +56,7 @@ define(function(require, exports, module) {
       var focus = this.get('focus');
 
       var attrs = {
+        focus: focus,
         lang: this.get('lang'),
         range: this.get('range'),
         format: this.get('format'),
@@ -53,7 +65,12 @@ define(function(require, exports, module) {
       };
 
       this.startDates = new DateColumn(attrs);
+
+      attrs['focus'] = focus.clone().add('months', 1);
       this.endDates = new DateColumn(attrs);
+
+      this.element.find('.ui-calendar-start .ui-calendar-container').append(this.startDates.element);
+      this.element.find('.ui-calendar-end .ui-calendar-container').append(this.endDates.element);
     },
 
     renderPannel: function() {
