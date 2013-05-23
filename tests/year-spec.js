@@ -86,15 +86,6 @@ define(function(require) {
       cal = new YearColumn({focus: '2012-08-11', range: [null, 2000]});
       expect(cal.element.find('[data-value=2011]').hasClass('disabled-element')).to.be.ok();
       cal.destroy();
-
-      cal = new YearColumn({
-        focus: '2012-08-11',
-        range: function(value) {
-          return value !== 2011;
-        }
-      });
-      expect(cal.element.find('[data-value=2011]').hasClass('disabled-element')).to.be.ok();
-      cal.destroy();
     });
 
     it('trigger selectDisable', function(done) {
