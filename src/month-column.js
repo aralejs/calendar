@@ -83,7 +83,7 @@ define(function(require, exports, module) {
     for (i = 0; i < MONTHS.length; i++) {
       var item = {
         value: i,
-        available: BaseColumn.isInRange(i, range),
+        available: isInRange(i, range),
         label: MONTHS[i]
       };
       if (fn) {
@@ -104,5 +104,30 @@ define(function(require, exports, module) {
       list.push(items.slice(i * 3, i * 3 + 3));
     }
     return {current: current, items: list};
+  }
+
+  function isInRange(date, range) {
+    if (range == null) {
+      return true;
+    }
+    if ($.isArray(range)) {
+      var start = range[0];
+      if (start && start.month) {
+        start = start.month();
+      }
+      var end = range[1];
+      if (end && end.month) {
+        end = end.month();
+      }
+      var result = true;
+      if (start) {
+        result = result && date >= start;
+      }
+      if (end) {
+        result = result && date <= end;
+      }
+      return result;
+    }
+    return true;
   }
 });

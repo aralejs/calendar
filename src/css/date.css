@@ -27,11 +27,11 @@
 }
 .ui-calendar-date .ui-calendar-day-0,
 .ui-calendar-date .ui-calendar-day-6 {
-    color: #d64;
+  color: #d64;
 }
 .ui-calendar-date .ui-calendar-date-column .previous-month,
 .ui-calendar-date .ui-calendar-date-column .next-month {
-    color: #ccc;
+  color: #ccc;
 }
 .ui-calendar-date .ui-calendar-date-column td {
   cursor: pointer;
@@ -42,11 +42,11 @@
   background: #dadada;
 }
 .ui-calendar-date .ui-calendar-date-column td.focused-element {
-    color: #fff;
-    background: #d64;
+  color: #fff;
+  background: #d64;
 }
 .ui-calendar-date .ui-calendar-date-column td.disabled-element {
-    background: #eee;
-    color: #bbb;
-    cursor: not-allowed;
+  background: #eee;
+  color: #bbb;
+  cursor: not-allowed;
 }

@@ -94,7 +94,7 @@ define(function(require, exports, module) {
       items.push(process({
         value: i,
         label: i,
-        available: BaseColumn.isInRange(i, range),
+        available: isInRange(i, range),
         role: 'year'
       }, fn));
     }
@@ -125,5 +125,30 @@ define(function(require, exports, module) {
     }
     item.type = 'year';
     return fn(item);
+  }
+
+  function isInRange(date, range) {
+    if (range == null) {
+      return true;
+    }
+    if ($.isArray(range)) {
+      var start = range[0];
+      if (start && start.year) {
+        start = start.year();
+      }
+      var end = range[1];
+      if (end && end.year) {
+        end = end.year();
+      }
+      var result = true;
+      if (start) {
+        result = result && date >= start;
+      }
+      if (end) {
+        result = result && date <= end;
+      }
+      return result;
+    }
+    return true;
   }
 });

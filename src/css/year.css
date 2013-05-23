@@ -11,7 +11,7 @@
   border: none;
   margin: 0;
   padding: 0;
-  width: 210px;
+  width: 238px;
   color: #333;
 }
 .ui-calendar-year .ui-calendar-year-column td {
@@ -19,16 +19,20 @@
   border: none;
   text-align: center;
   cursor: pointer;
-  width: 65px;
+  width: 78px;
   margin: 2px;
-  padding: 2px 0;
-  border-radius: 4px;
+  padding: 6px 0;
 }
 .ui-calendar-year .ui-calendar-year-column td:hover {
   color: #333;
   background: #dadada;
 }
 .ui-calendar-year .ui-calendar-year-column td.focused-element {
-    color: #fff;
-    background: #d64;
+  color: #fff;
+  background: #d64;
+}
+.ui-calendar-year .ui-calendar-year-column td.disabled-element {
+  background: #eee;
+  color: #bbb;
+  cursor: not-allowed;
 }

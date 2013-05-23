@@ -28,6 +28,11 @@
   background: #dadada;
 }
 .ui-calendar-month .ui-calendar-month-column td.focused-element {
-    color: #fff;
-    background: #d64;
+  color: #fff;
+  background: #d64;
+}
+.ui-calendar-month .ui-calendar-month-column td.disabled-element {
+  background: #eee;
+  color: #bbb;
+  cursor: not-allowed;
 }
