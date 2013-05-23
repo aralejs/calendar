@@ -5,22 +5,22 @@
   border: 1px solid #dadada;
   box-shadow: 1px 1px 9px #ccc;
   text-align: center;
+  border-spacing: 0;
 }
 .ui-calendar-date tr {
   background-color: #f9f9f9;
   border: none;
   margin: 0;
   padding: 0;
-  width: 210px;
+  width: 238px;
   color: #333;
 }
 .ui-calendar-date td, .ui-calendar-date th {
   font-weight: normal;
   border: none;
-  display: inline-block;
   text-align: center;
-  width: 30px;
-  padding: 3px 0;
+  width: 34px;
+  padding: 4px 0;
 }
 .ui-calendar-date .ui-calendar-day-column {
   border-bottom: 1px solid #dadada;

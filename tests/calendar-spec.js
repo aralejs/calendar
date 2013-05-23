@@ -65,7 +65,7 @@ define(function(require) {
       cal = new Calendar({focus: '2012-12-25'});
       cal.render();
       cal.element.find('[data-role=prev-year]').click();
-      expect(cal.element.find('td').eq(0).data('value')).to.be.equal('2011-11-27');
+      expect(cal.element.find('.ui-calendar-date-column td').eq(0).data('value')).to.be.equal('2011-11-27');
       cal.element.remove();
       cal.destroy();
     });
@@ -74,7 +74,7 @@ define(function(require) {
       cal = new Calendar({focus: '2012-12-25'});
       cal.render();
       cal.element.find('[data-role=next-year]').click();
-      expect(cal.element.find('td').eq(0).data('value')).to.be.equal('2013-12-01');
+      expect(cal.element.find('.ui-calendar-date-column td').eq(0).data('value')).to.be.equal('2013-12-01');
       cal.element.remove();
       cal.destroy();
     });
