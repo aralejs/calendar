@@ -18,10 +18,10 @@
     "alias": {
       "$": "$",
       "moment": "gallery/moment/2.0.0/moment",
-      "handlebars": "gallery/handlebars/1.0.1/runtime",
-      "base": "arale/base/1.0.1/base",
+      "handlebars": "gallery/handlebars/1.0.2/runtime",
+      "base": "arale/base/1.1.0/base",
       "position": "arale/position/1.0.0/position",
-      "widget": "arale/widget/1.0.3/widget"
+      "widget": "arale/widget/1.1.0/widget"
     },
     "output": [
       "calendar.js",
