@@ -1,34 +1,38 @@
 {
-  "family": "arale",
-  "name": "calendar",
-  "version": "0.8.5",
-  "description": "Moment supported calendar",
-  "author": "Hsiaoming Yang <me@lepture.com>",
-  "homepage": "http://aralejs.org/calendar/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/aralejs/calendar.git"
-  },
-  "bugs": {
-    "url": "https://github.com/aralejs/calendar/issues"
-  },
-  "keywords": ["widget", "date", "month"],
-  "spm": {
-    "alias": {
-      "$": "$",
-      "moment": "gallery/moment/2.0.0/moment",
-      "base": "arale/base/1.0.1/base",
-      "overlay": "arale/overlay/1.0.1/overlay",
-      "widget": "arale/widget/1.0.3/widget",
-      "templatable": "arale/widget/1.0.3/templatable",
-      "handlebars": "gallery/handlebars/1.0.0/handlebars"
+    "family": "arale",
+    "name": "calendar",
+    "version": "0.8.5",
+    "description": "Moment supported calendar",
+    "homepage": "http://aralejs.org/calendar/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/aralejs/calendar.git"
     },
+    "author": "南伯 <me@lepture.com>",
+    "maintainers": [
+        "南伯 <me@lepture.com>",
+        "偏右 <afc163@gmail.com>"
+    ],
+    "bugs": {
+        "url": "https://github.com/aralejs/calendar/issues"
+    },
+    "keywords": ["widget", "date", "month"],
+    "spm": {
+        "alias": {
+            "$": "$",
+            "moment": "gallery/moment/2.0.0/moment",
+            "base": "arale/base/1.0.1/base",
+            "overlay": "arale/overlay/1.0.1/overlay",
+            "widget": "arale/widget/1.0.3/widget",
+            "templatable": "arale/widget/1.0.3/templatable",
+            "handlebars": "gallery/handlebars/1.0.0/handlebars"
+        },
 
-    "output": [
-      "calendar.js",
-      "calendar.css",
-      "i18n/lang.js",
-      "i18n/zh-cn/lang.js"
-    ]
-  }
+        "output": [
+            "calendar.js",
+            "calendar.css",
+            "i18n/lang.js",
+            "i18n/zh-cn/lang.js"
+        ]
+    }
 }
