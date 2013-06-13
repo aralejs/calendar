@@ -1,237 +1,361 @@
-// # calendar model's job
-// ----------------------
-//
-// initialize model with startDay, focus, and range in an object. Which means:
-//
-// var m = Model({startDay: 0, focus: '2012-12-12', range: null})
-//
-// and it will create the model for template, the result should be
-// ``m.toJSON()``:
-//
-// {
-//  year: {
-//    current: {value: 2012, label: 2012},
-//    items: [{value: 2002, label: 2002, role: 'previous-10-year'}, ...]
-//  },
-//  month: {
-//    current: {value: 12, label: 12},
-//    items: [
-//      [{value: 1, label: 1}, ... {value: 3, label: 3}],
-//      [...], [...], [...]
-//    ]
-//  },
-//  date: {
-//    current: {value: '2012-12-12', label: 12},
-//    items: [
-//      [
-//        {
-//          value: '2012-11-25',
-//          label: 25,
-//          day: 0,
-//          className: 'previous-month',
-//          available: True
-//        },
-//        {..}, {..}, ...
-//      ],
-//      [..],
-//      [..],
-//      ...
-//    ]
-//  },
-//  day: {
-//    current: {value: 0, label: 'Su'},
-//    items: [
-//      {value: 0, label: 'Su'}, {value: 1, label: 'Mo'}, ....
-//    ]
-//  },
-//  mode: {
-//    date: true,
-//    month: false,
-//    year: false
-//  }
-// }
-//
-
-define("arale/calendar/0.8.2/model-debug", ["$-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "gallery/moment/1.6.2/moment-debug"], function(require, exports, module) {
-
-    var $ = require('$-debug');
-    var Base = require('arale/base/1.0.1/base-debug');
-    var moment = require('gallery/moment/1.6.2/moment-debug');
-
-    // Create a model data on calendar. For example, now is May, 2012.
-    // And the week begin at Sunday.
-    var CalendarModel = Base.extend({
-
+define("arale/calendar/0.9.0/calendar-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "./base-calendar-debug", "arale/position/1.0.1/position-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug", "./i18n/{locale}-debug", "./date-column-debug", "./base-column-debug", "./templates/date-debug.handlebars", "./month-column-debug", "./templates/month-debug.handlebars", "./year-column-debug", "./templates/year-debug.handlebars" ], function(require, exports, module) {
+    var $ = require("$-debug");
+    var moment = require("gallery/moment/2.0.0/moment-debug");
+    var BaseCalendar = require("./base-calendar-debug");
+    var DateColumn = require("./date-column-debug");
+    var MonthColumn = require("./month-column-debug");
+    var YearColumn = require("./year-column-debug");
+    var template = [ '<div class="ui-calendar">', '<div class="ui-calendar-pannel" data-role="pannel">', '<span class="ui-calendar-control" data-role="prev-year">&lt;&lt;</span>', '<span class="ui-calendar-control" data-role="prev-month">&lt;</span>', '<span class="ui-calendar-control month" data-role="current-month"></span>', '<span class="ui-calendar-control year" data-role="current-year"></span>', '<span class="ui-calendar-control" data-role="next-month">&gt;</span>', '<span class="ui-calendar-control" data-role="next-year">&gt;&gt;</span>', "</div>", '<div class="ui-calendar-container" data-role="container">', "</div>", "</div>" ].join("");
+    var Calendar = BaseCalendar.extend({
         attrs: {
-            year: {
-                setter: function(val) {
-                    return createYearModel(val);
-                }
-            },
-
-            month: {
-                setter: function(val) {
-                    return createMonthModel(val);
-                }
-            },
-
-            day: {
-                setter: function(val) {
-                    return createDayModel(this.startDay);
-                }
-            },
-
-            date: {
-                setter: function(val) {
-                    return createDateModel(
-                        val, this.startDay, this.range
-                    );
-                }
-            },
-
-            mode: {
-                setter: function(current) {
-                    var o = {
-                        date: false,
-                        month: false,
-                        year: false
-                    };
-                    o[current] = true;
-                    return o;
-                }
-            },
-
-            message: null
+            mode: "dates",
+            template: template
         },
-
-        initialize: function(config) {
-            CalendarModel.superclass.initialize.call(this);
-
-            this.startDay = config.startDay || 0;
-            this.activeTime = moment(config.focus).clone();
-
-            this.range = config.range || null;
-
-            var message = config.message || {};
-            message.today = 'Today';
-
-            this.set('message', message);
-            this.set('mode', 'date');
-            this._refresh();
-        },
-
-        changeYear: function(number) {
-            this.activeTime.add('years', number);
-            this._refresh();
-            this.trigger('changeYear');
-        },
-
-        changeMonth: function(number) {
-            this.activeTime.add('months', number);
-            this._refresh();
-            this.trigger('changeMonth');
-        },
-
-        changeDate: function(number) {
-            var oldTime = this.activeTime.format('YYYY-MM');
-            this.activeTime.add('days', number);
-            this._refresh();
-            var newTime = this.activeTime.format('YYYY-MM');
-            if (oldTime != newTime && this.get('mode').date) {
-                this.trigger('changeMonth');
+        events: {
+            "click [data-role=current-month]": function(ev) {
+                if (this.get("mode") === "months") {
+                    this.renderContainer("dates");
+                } else {
+                    this.renderContainer("months");
+                }
+            },
+            "click [data-role=current-year]": function(ev) {
+                if (this.get("mode") === "years") {
+                    this.renderContainer("dates");
+                } else {
+                    this.renderContainer("years");
+                }
+            },
+            "click [data-role=prev-year]": function(ev) {
+                var focus = this.years.prev();
+                this.dates.select(focus);
+                this.months.select(focus);
+            },
+            "click [data-role=next-year]": function(ev) {
+                var focus = this.years.next();
+                this.dates.select(focus);
+                this.months.select(focus);
+            },
+            "click [data-role=prev-month]": function(ev) {
+                var focus = this.months.prev();
+                this.dates.select(focus);
+                this.years.select(focus);
+            },
+            "click [data-role=next-month]": function(ev) {
+                var focus = this.months.next();
+                this.dates.select(focus);
+                this.years.select(focus);
             }
         },
-
-        changeStartDay: function(day) {
-            this.startDay = day;
-            this._refresh();
-            this.trigger('changeStartday');
-        },
-
-        changeMode: function(mode, obj) {
-            obj || (obj = {});
-            if ('month' in obj) this.activeTime.month(obj.month);
-            if ('year' in obj) this.activeTime.year(obj.year);
-
-            this.set('mode', mode);
-            this._refresh();
-            this.trigger('changeMode');
-        },
-
-        changeRange: function(range) {
-            this.range = range;
-            this._refresh();
-            this.trigger('changeRange');
-        },
-
-        selectDate: function(time) {
-            if (time) {
-                var oldTime = this.activeTime.format('YYYY-MM');
-                this.activeTime = moment(time);
-                this._refresh();
-                var newTime = this.activeTime.format('YYYY-MM');
-                if (oldTime != newTime && this.get('mode').date) {
-                   this.trigger('changeMonth');
+        setup: function() {
+            Calendar.superclass.setup.call(this);
+            this.renderPannel();
+            var attrs = {
+                lang: this.get("lang"),
+                focus: this.get("focus"),
+                range: this.get("range"),
+                format: this.get("format"),
+                startDay: this.get("startDay"),
+                process: this.get("process")
+            };
+            this.dates = new DateColumn(attrs);
+            this.months = new MonthColumn(attrs);
+            this.years = new YearColumn(attrs);
+            var self = this;
+            this.dates.on("select", function(value, el) {
+                self.set("focus", value);
+                var focus = self.get("focus");
+                self.months.select(focus);
+                self.years.select(focus);
+                if (el) {
+                    if (moment.isMoment(value)) {
+                        value = value.format(this.get("format"));
+                    }
+                    self._output(value);
                 }
+            });
+            this.months.on("select", function(value, el) {
+                var focus = self.get("focus");
+                focus.month(value);
+                self.set("focus", focus);
+                self.renderPannel();
+                if (el) {
+                    self.renderContainer("dates", focus);
+                }
+            });
+            this.years.on("select", function(value, el) {
+                var focus = self.get("focus");
+                focus.year(value);
+                self.set("focus", focus);
+                self.renderPannel();
+                if (el && el.data("role") === "year") {
+                    self.renderContainer("dates", focus);
+                }
+            });
+            var container = this.element.find("[data-role=container]");
+            container.append(this.dates.element);
+            container.append(this.months.element);
+            container.append(this.years.element);
+            this.renderContainer("dates");
+        },
+        renderContainer: function(mode, focus) {
+            this.set("mode", mode);
+            focus = focus || this.get("focus");
+            this.dates.hide();
+            this.months.hide();
+            this.years.hide();
+            this.dates.select(focus, null);
+            this.months.select(focus, null);
+            this.years.select(focus, null);
+            if (mode === "dates") {
+                this.dates.element.show();
+            } else if (mode === "months") {
+                this.months.element.show();
+            } else if (mode === "years") {
+                this.years.element.show();
             }
-            return this.activeTime.clone();
+            return this;
         },
-
-        selectToday: function() {
-            this.selectDate(moment());
-            this.trigger('selectToday');
+        renderPannel: function() {
+            var focus = this.get("focus");
+            var monthPannel = this.element.find("[data-role=current-month]");
+            var yearPannel = this.element.find("[data-role=current-year]");
+            var MONTHS = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+            var month = MONTHS[focus.month()];
+            month = this.get("lang")[month] || month;
+            monthPannel.text(month);
+            yearPannel.text(focus.year());
         },
-
-        isInRange: function(date) {
-            return isInRange(date, this.range);
-        },
-
-        toJSON: function() {
-            var object = {};
-            var attrs = this.attrs;
-
-            for (var attr in attrs) {
-                object[attr] = this.get(attr);
-            }
-
-            return object;
-        },
-
-        _refresh: function() {
-            this.set('year', this.activeTime.year());
-            this.set('month', this.activeTime.month());
-            this.set('date', this.activeTime.clone());
-            this.set('day');
-            this.trigger('refresh');
-        },
-
-        range: null,
-        activeTime: null,
-        startDay: 0
+        destroy: function() {
+            this.dates.destroy();
+            this.months.destroy();
+            this.years.destroy();
+            Calendar.superclass.destroy.call(this);
+        }
     });
+    module.exports = Calendar;
+});
 
+define("arale/calendar/0.9.0/base-calendar-debug", [ "$-debug", "arale/position/1.0.1/position-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug", "arale/calendar/0.9.0/i18n/{locale}-debug" ], function(require, exports, module) {
+    var $ = require("$-debug");
+    var Position = require("arale/position/1.0.1/position-debug");
+    var moment = require("gallery/moment/2.0.0/moment-debug");
+    var Widget = require("arale/widget/1.1.0/widget-debug");
+    var lang = require("arale/calendar/0.9.0/i18n/{locale}-debug") || {};
+    var BaseCalendar = Widget.extend({
+        attrs: {
+            lang: lang,
+            trigger: null,
+            triggerType: "click",
+            output: {
+                value: "",
+                getter: function(val) {
+                    val = val ? val : this.get("trigger");
+                    return $(val);
+                }
+            },
+            hideOnSelect: true,
+            focus: {
+                value: "",
+                getter: function(val) {
+                    val = val ? val : $(this.get("trigger")).val();
+                    if (!val) {
+                        return moment();
+                    }
+                    return moment(val, this.get("format"));
+                },
+                setter: function(val) {
+                    if (!val) {
+                        return moment();
+                    }
+                    return moment(val, this.get("format"));
+                }
+            },
+            format: "YYYY-MM-DD",
+            startDay: "Sun",
+            range: {
+                value: null,
+                setter: function(val) {
+                    if ($.isArray(val)) {
+                        var format = this.get("format");
+                        var range = [];
+                        $.each(val, function(i, date) {
+                            date = date === null ? null : moment(date, format);
+                            range.push(date);
+                        });
+                        return range;
+                    }
+                    return val;
+                }
+            },
+            process: null,
+            align: {
+                getter: function(val) {
+                    if (val) return val;
+                    var trigger = $(this.get("trigger"));
+                    if (trigger) {
+                        return {
+                            selfXY: [ 0, 0 ],
+                            baseElement: trigger,
+                            baseXY: [ 0, trigger.height() + 10 ]
+                        };
+                    }
+                    return {
+                        selfXY: [ 0, 0 ],
+                        baseXY: [ 0, 0 ]
+                    };
+                }
+            }
+        },
+        setup: function() {
+            BaseCalendar.superclass.setup.call(this);
+            var self = this;
+            var trigger = this.get("trigger");
+            if (trigger) {
+                var $trigger = $(this.get("trigger"));
+                $trigger.on(this.get("triggerType"), function() {
+                    self.show();
+                });
+                $trigger.on("blur", function() {
+                    self.hide();
+                });
+                this.element.on("mousedown", function(e) {
+                    // TODO: ie
+                    e.preventDefault();
+                });
+            }
+        },
+        show: function() {
+            if (!this.rendered) {
+                this._pin();
+                this.render();
+            }
+            this._pin();
+            this.element.show();
+        },
+        hide: function() {
+            this.element.hide();
+        },
+        _pin: function(align) {
+            align = align || this.get("align");
+            Position.pin({
+                element: this.element,
+                x: align.selfXY[0],
+                y: align.selfXY[1]
+            }, {
+                element: align.baseElement,
+                x: align.baseXY[0],
+                y: align.baseXY[1]
+            });
+        },
+        _output: function(value) {
+            var output = this.get("output");
+            if (!output.length) {
+                return;
+            }
+            if (typeof output[0].value === "undefined") {
+                output.text(value);
+            } else {
+                output.val(value);
+            }
+            if (this.get("hideOnSelect")) {
+                this.hide();
+            }
+        }
+    });
+    module.exports = BaseCalendar;
+});
 
-    // Helpers
-    // -------
-
-    var MONTHS = [
-        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
-        'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-
-    var DAYS = [
-        'sunday', 'monday', 'tuesday', 'wednesday',
-        'thursday', 'friday', 'saturday'
-    ];
-
+define("arale/calendar/0.9.0/date-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/calendar/0.9.0/base-column-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+    var $ = require("$-debug");
+    var moment = require("gallery/moment/2.0.0/moment-debug");
+    var BaseColumn = require("arale/calendar/0.9.0/base-column-debug");
+    var template = require("arale/calendar/0.9.0/templates/date-debug.handlebars");
+    var DateColumn = BaseColumn.extend({
+        attrs: {
+            startDay: "Sun",
+            template: template,
+            range: {
+                value: null,
+                setter: function(val) {
+                    if ($.isArray(val)) {
+                        var format = this.get("format");
+                        var range = [];
+                        $.each(val, function(i, date) {
+                            date = date === null ? null : moment(date, format);
+                            range.push(date);
+                        });
+                        return range;
+                    }
+                    return val;
+                }
+            },
+            process: null,
+            model: {
+                getter: function() {
+                    var date = createDateModel(this.get("focus"), this.get("startDay"), this.get("range"), this.get("process"));
+                    var day = createDayModel(this.get("startDay"));
+                    return {
+                        date: date,
+                        day: day
+                    };
+                }
+            }
+        },
+        events: {
+            "click [data-role=date]": function(ev) {
+                var el = $(ev.target);
+                var value = el.data("value");
+                this.select(value, el);
+            }
+        },
+        prev: function() {
+            var prev = this.get("focus").format("YYYY-MM-DD");
+            var focus = this.get("focus").add("days", -1);
+            return this._sync(focus, prev);
+        },
+        next: function() {
+            var prev = this.get("focus").format("YYYY-MM-DD");
+            var focus = this.get("focus").add("days", 1);
+            return this._sync(focus, prev);
+        },
+        select: function(value, el) {
+            if (el && el.hasClass("disabled-element")) {
+                this.trigger("selectDisable", value, el);
+                return value;
+            }
+            var prev = this.get("focus").format("YYYY-MM-DD");
+            this.set("focus", value);
+            return this._sync(this.get("focus"), prev, el);
+        },
+        focus: function(focus) {
+            focus = focus || this.get("focus");
+            var selector = "[data-value=" + focus.format("YYYY-MM-DD") + "]";
+            this.element.find(".focused-element").removeClass("focused-element");
+            this.element.find(selector).addClass("focused-element");
+        },
+        _sync: function(focus, prev, el) {
+            this.set("focus", focus);
+            if (focus.format("YYYY-MM") !== prev) {
+                this.refresh();
+            }
+            this.focus(focus);
+            // if user call select(value, null) it will not trigger an event
+            if (el !== null) {
+                this.trigger("select", focus, el);
+            }
+            return focus;
+        }
+    });
+    module.exports = DateColumn;
+    // helpers
+    var DAYS = [ "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday" ];
     function parseStartDay(startDay) {
         startDay = (startDay || 0).toString().toLowerCase();
-
         if ($.isNumeric(startDay)) {
-            startDay = parseInt(startDay);
+            startDay = parseInt(startDay, 10);
             return startDay;
         }
-
         for (var i = 0; i < DAYS.length; i++) {
             if (DAYS[i].indexOf(startDay) === 0) {
                 startDay = i;
@@ -240,129 +364,70 @@ define("arale/calendar/0.8.2/model-debug", ["$-debug", "arale/base/1.0.1/base-de
         }
         return startDay;
     }
-
-    function createMonthModel(month) {
-        var items = [];
-
-        for (i = 0; i < MONTHS.length; i++) {
-            items.push({
-                value: i,
-                label: MONTHS[i]
-            });
-        }
-
-        var current = {
-            value: month,
-            label: MONTHS[month]
-        };
-
-        // split [1, 2, .. 12] to [[1, 2, 3, 4], [5, ...]...]
-        var list = [];
-        for (var i = 0; i < items.length / 3; i++) {
-            list.push(items.slice(i * 3, i * 3 + 3));
-        }
-
-        return {current: current, items: list};
-    }
-
-    function createYearModel(year) {
-        var items = [
-            {
-                value: year - 10,
-                label: '. . .',
-                role: 'previous-10-year'
-            }
-        ];
-
-        for (var i = year - 6; i < year + 4; i++) {
-            items.push({
-                value: i,
-                label: i,
-                role: 'year'
-            });
-        }
-        items[7] = {value: year, label: year, role: 'year', current: true};
-        items.push({
-            value: year + 10,
-            label: '. . .',
-            role: 'next-10-year'
-        });
-
-        var list = [];
-        for (i = 0; i < items.length / 3; i++) {
-            list.push(items.slice(i * 3, i * 3 + 3));
-        }
-
-        var current = {
-            value: year,
-            label: year
-        };
-
-        return {current: current, items: list};
-    }
-
-
-    var DAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-
+    var DAY_LABELS = [ "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" ];
     function createDayModel(startDay) {
         // Translate startDay to number. 0 is Sunday, 6 is Saturday.
         startDay = parseStartDay(startDay);
         var items = [];
         for (var i = startDay; i < 7; i++) {
-            items.push({label: DAY_LABELS[i], value: i});
+            items.push({
+                label: DAY_LABELS[i],
+                value: i
+            });
         }
         for (i = 0; i < startDay; i++) {
-            items.push({label: DAY_LABELS[i], value: i});
+            items.push({
+                label: DAY_LABELS[i],
+                value: i
+            });
         }
-
         var current = {
             value: startDay,
             label: DAY_LABELS[startDay]
         };
-        return {current: current, items: items};
+        return {
+            current: current,
+            items: items
+        };
     }
-
-
-    function createDateModel(current, startDay, range) {
+    function createDateModel(current, startDay, range, fn) {
         var items = [], delta, d, daysInMonth;
         startDay = parseStartDay(startDay);
-
         var pushData = function(d, className) {
-            items.push({
-                value: d.format('YYYY-MM-DD'),
+            var item = {
+                value: d.format("YYYY-MM-DD"),
                 label: d.date(),
-
                 day: d.day(),
                 className: className,
-                available: isInRange(d, range)
-            });
+                available: BaseColumn.isInRange(d, range)
+            };
+            if (fn) {
+                item.type = "date";
+                item = fn(item);
+            }
+            items.push(item);
         };
-
         // reset to the first date of the month
         var currentMonth = current.clone().date(1);
-        var previousMonth = currentMonth.clone().add('months', -1);
-        var nextMonth = currentMonth.clone().add('months', 1);
-
+        var previousMonth = currentMonth.clone().add("months", -1);
+        var nextMonth = currentMonth.clone().add("months", 1);
         // Calculate days of previous month
         // that should be on current month's sheet
         delta = currentMonth.day() - startDay;
         if (delta < 0) delta += 7;
         if (delta != 0) {
             daysInMonth = previousMonth.daysInMonth();
-
             // *delta - 1**: we need decrease it first
             for (i = delta - 1; i >= 0; i--) {
                 d = previousMonth.date(daysInMonth - i);
-                pushData(d, 'previous-month');
+                pushData(d, "previous-month");
             }
         }
-
         daysInMonth = currentMonth.daysInMonth();
         for (i = 1; i <= daysInMonth; i++) {
             d = currentMonth.date(i);
-            pushData(d, 'current-month');
+            pushData(d, "current-month");
         }
-
         // Calculate days of next month
         // that should be on current month's sheet
         delta = 35 - items.length;
@@ -370,420 +435,655 @@ define("arale/calendar/0.8.2/model-debug", ["$-debug", "arale/base/1.0.1/base-de
             if (delta < 0) delta += 7;
             for (i = 1; i <= delta; i++) {
                 d = nextMonth.date(i);
-                pushData(d, 'next-month');
+                pushData(d, "next-month");
             }
         }
         var list = [];
         for (var i = 0; i < items.length / 7; i++) {
             list.push(items.slice(i * 7, i * 7 + 7));
         }
-
         var _current = {
-            value: current.format('YYYY-MM-DD'),
+            value: current.format("YYYY-MM-DD"),
             label: current.date()
         };
-
-        return {current: _current, items: list};
+        return {
+            current: _current,
+            items: list
+        };
     }
+});
 
-    function isInRange(time, range) {
-        if (range == null) return true;
+define("arale/calendar/0.9.0/base-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+    var $ = require("$-debug");
+    var moment = require("gallery/moment/2.0.0/moment-debug");
+    var Widget = require("arale/widget/1.1.0/widget-debug");
+    var BaseColumn = Widget.extend({
+        attrs: {
+            focus: {
+                value: "",
+                getter: function(val) {
+                    if (val) {
+                        return val;
+                    }
+                    return moment();
+                },
+                setter: function(val) {
+                    if (!val) {
+                        return moment();
+                    }
+                    if (moment.isMoment(val)) {
+                        return val;
+                    }
+                    return moment(val, this.get("format"));
+                }
+            },
+            template: null,
+            format: "YYYY-MM-DD",
+            lang: {}
+        },
+        compileTemplate: function() {
+            // the template is a runtime handlebars function
+            var fn = this.get("template");
+            if (!fn) {
+                return "";
+            }
+            var model = this.get("model");
+            var self = this;
+            var lang = this.get("lang") || {};
+            return fn(model, {
+                helpers: {
+                    _: function(key) {
+                        return lang[key] || key;
+                    }
+                }
+            });
+        },
+        parseElement: function() {
+            // rewrite parseElement of widget
+            this.element = $(this.compileTemplate());
+        },
+        show: function() {
+            this.render();
+            this.focus();
+        },
+        hide: function() {
+            this.element.hide();
+        },
+        refresh: function() {
+            this.element.html($(this.compileTemplate()).html());
+        }
+    });
+    module.exports = BaseColumn;
+    BaseColumn.isInRange = function(date, range) {
+        if (range == null) {
+            return true;
+        }
         if ($.isArray(range)) {
             var start = range[0];
             var end = range[1];
             var result = true;
             if (start) {
-                result = result && time >= moment(start);
+                result = result && date >= start;
             }
             if (end) {
-                result = result && time <= moment(end);
+                result = result && date <= end;
             }
             return result;
         }
         if ($.isFunction(range)) {
-            return range(time);
+            return range(date);
+        }
+        return true;
+    };
+});
+
+define("arale/calendar/0.9.0/templates/date-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
+    var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
+    var template = Handlebars.template;
+    module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
+        this.compilerInfo = [ 3, ">= 1.0.0-rc.4" ];
+        helpers = helpers || {};
+        for (var key in Handlebars.helpers) {
+            helpers[key] = helpers[key] || Handlebars.helpers[key];
+        }
+        data = data || {};
+        var buffer = "", stack1, stack2, functionType = "function", escapeExpression = this.escapeExpression, helperMissing = helpers.helperMissing, self = this;
+        function program1(depth0, data) {
+            var buffer = "", stack1, options;
+            buffer += '\n    <th class="ui-calendar-day ui-calendar-day-';
+            if (stack1 = helpers.value) {
+                stack1 = stack1.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack1 = depth0.value;
+                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+            }
+            buffer += escapeExpression(stack1) + '" data-role="day" data-value="';
+            if (stack1 = helpers.value) {
+                stack1 = stack1.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack1 = depth0.value;
+                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+            }
+            buffer += escapeExpression(stack1) + '">';
+            options = {
+                hash: {},
+                data: data
+            };
+            buffer += escapeExpression((stack1 = helpers["_"], stack1 ? stack1.call(depth0, depth0.label, options) : helperMissing.call(depth0, "_", depth0.label, options))) + "</th>\n    ";
+            return buffer;
+        }
+        function program3(depth0, data) {
+            var buffer = "", stack1;
+            buffer += '\n  <tr class="ui-calendar-date-column">\n    ';
+            stack1 = helpers.each.call(depth0, depth0, {
+                hash: {},
+                inverse: self.noop,
+                fn: self.program(4, program4, data),
+                data: data
+            });
+            if (stack1 || stack1 === 0) {
+                buffer += stack1;
+            }
+            buffer += "\n  </tr>\n  ";
+            return buffer;
+        }
+        function program4(depth0, data) {
+            var buffer = "", stack1;
+            buffer += '\n    <td class="ui-calendar-day-';
+            if (stack1 = helpers.day) {
+                stack1 = stack1.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack1 = depth0.day;
+                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+            }
+            buffer += escapeExpression(stack1) + " ";
+            if (stack1 = helpers.className) {
+                stack1 = stack1.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack1 = depth0.className;
+                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+            }
+            buffer += escapeExpression(stack1) + " ";
+            stack1 = helpers.unless.call(depth0, depth0.available, {
+                hash: {},
+                inverse: self.noop,
+                fn: self.program(5, program5, data),
+                data: data
+            });
+            if (stack1 || stack1 === 0) {
+                buffer += stack1;
+            }
+            buffer += '" data-role="date" data-value="';
+            if (stack1 = helpers.value) {
+                stack1 = stack1.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack1 = depth0.value;
+                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+            }
+            buffer += escapeExpression(stack1) + '">';
+            if (stack1 = helpers.label) {
+                stack1 = stack1.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack1 = depth0.label;
+                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+            }
+            buffer += escapeExpression(stack1) + "</td>\n    ";
+            return buffer;
+        }
+        function program5(depth0, data) {
+            return "disabled-element";
+        }
+        buffer += '<table class="ui-calendar-date" data-role="date-column">\n  <tr class="ui-calendar-day-column">\n    ';
+        stack2 = helpers.each.call(depth0, (stack1 = depth0.day, stack1 == null || stack1 === false ? stack1 : stack1.items), {
+            hash: {},
+            inverse: self.noop,
+            fn: self.program(1, program1, data),
+            data: data
+        });
+        if (stack2 || stack2 === 0) {
+            buffer += stack2;
+        }
+        buffer += "\n  </tr>\n  ";
+        stack2 = helpers.each.call(depth0, (stack1 = depth0.date, stack1 == null || stack1 === false ? stack1 : stack1.items), {
+            hash: {},
+            inverse: self.noop,
+            fn: self.program(3, program3, data),
+            data: data
+        });
+        if (stack2 || stack2 === 0) {
+            buffer += stack2;
+        }
+        buffer += "\n</table>\n";
+        return buffer;
+    });
+});
+
+define("arale/calendar/0.9.0/month-column-debug", [ "$-debug", "arale/calendar/0.9.0/base-column-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+    var $ = require("$-debug");
+    var BaseColumn = require("arale/calendar/0.9.0/base-column-debug");
+    var template = require("arale/calendar/0.9.0/templates/month-debug.handlebars");
+    var MonthColumn = BaseColumn.extend({
+        attrs: {
+            template: template,
+            range: null,
+            process: null,
+            model: {
+                getter: function() {
+                    return createMonthModel(this.get("focus"), this.get("range"), this.get("process"));
+                }
+            }
+        },
+        events: {
+            "click [data-role=month]": function(ev) {
+                var el = $(ev.target);
+                var value = el.data("value");
+                this.select(value, el);
+            }
+        },
+        prev: function() {
+            var focus = this.get("focus").add("months", -1);
+            return this._sync(focus);
+        },
+        next: function() {
+            var focus = this.get("focus").add("months", 1);
+            return this._sync(focus);
+        },
+        select: function(value, el) {
+            if (el && el.hasClass("disabled-element")) {
+                this.trigger("selectDisable", value, el);
+                return value;
+            }
+            var focus;
+            if (value.month) {
+                focus = value;
+            } else {
+                focus = this.get("focus").month(value);
+            }
+            return this._sync(focus, el);
+        },
+        focus: function(focus) {
+            focus = focus || this.get("focus");
+            var selector = "[data-value=" + focus.month() + "]";
+            this.element.find(".focused-element").removeClass("focused-element");
+            this.element.find(selector).addClass("focused-element");
+        },
+        _sync: function(focus, el) {
+            this.set("focus", focus);
+            this.focus(focus);
+            // if user call select(value, null) it will not trigger an event
+            if (el !== null) {
+                this.trigger("select", focus.month(), el);
+            }
+            return focus;
+        }
+    });
+    module.exports = MonthColumn;
+    // helpers
+    var MONTHS = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+    function createMonthModel(time, range, fn) {
+        var month = time.month();
+        var items = [];
+        for (i = 0; i < MONTHS.length; i++) {
+            var item = {
+                value: i,
+                available: isInRange(i, range),
+                label: MONTHS[i]
+            };
+            if (fn) {
+                item.type = "month";
+                item = fn(item);
+            }
+            items.push(item);
+        }
+        var current = {
+            value: month,
+            label: MONTHS[month]
+        };
+        // split [1, 2, .. 12] to [[1, 2, 3, 4], [5, ...]...]
+        var list = [];
+        for (var i = 0; i < items.length / 3; i++) {
+            list.push(items.slice(i * 3, i * 3 + 3));
+        }
+        return {
+            current: current,
+            items: list
+        };
+    }
+    function isInRange(date, range) {
+        if (range == null) {
+            return true;
+        }
+        if ($.isArray(range)) {
+            var start = range[0];
+            if (start && start.month) {
+                start = start.month();
+            }
+            var end = range[1];
+            if (end && end.month) {
+                end = end.month();
+            }
+            var result = true;
+            if (start) {
+                result = result && date >= start;
+            }
+            if (end) {
+                result = result && date <= end;
+            }
+            return result;
         }
         return true;
     }
-
-    module.exports = CalendarModel;
 });
 
-// # Calendar
-//
-// Calendar is also known as date-picker. It is widely used in web apps.
-//
-// This calendar is a part of [arale](http://aralejs.org) project, therefore,
-// it is suitable for any project that is powered by [seajs](http://seajs.org).
-//
-// ## Syntax Overview:
-//
-//     var Calendar = require('calendar-debug');
-//     var cal = new Calendar({
-//         trigger: 'input.date-picker',
-//         format: "YYYY-MM-DD"
-//     });
-//
-// Need more complex task? Head over to Options section.
-//
-
-define("arale/calendar/0.8.2/calendar-debug", ["./model-debug", "$-debug", "gallery/moment/1.6.2/moment-debug", "arale/overlay/0.9.12/overlay-debug", "arale/position/1.0.0/position-debug", "arale/iframe-shim/1.0.0/iframe-shim-debug", "arale/widget/1.0.2/widget-debug", "arale/base/1.0.1/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.0.0/events-debug", "arale/widget/1.0.2/templatable-debug", "gallery/handlebars/1.0.0/handlebars-debug", "i18n!lang-debug"], function(require, exports, module) {
-
-    // Calendar is designed for desktop, we don't need to consider ``zepto``.
-    var $ = require('$-debug');
-    var moment = require('gallery/moment/1.6.2/moment-debug');
-    var Overlay = require('arale/overlay/0.9.12/overlay-debug');
-    var Templatable = require('arale/widget/1.0.2/templatable-debug');
-    var lang = require('i18n!lang-debug') || {};
-
-    var template = '<div class="ui-calendar"> <ul class="ui-calendar-navigation" data-role="navigation-container"> <li class="ui-calendar-previous-year" data-role="prev-year">&lt;&lt;</li> <li class="ui-calendar-previous-month" data-role="prev-month">&lt;</li> <li class="ui-calendar-month-year" data-role="month-year-container"> <span class="month" data-role="mode-month" data-value="{{month.current.value}}">{{_ month.current.label}}</span> <span class="year" data-role="mode-year">{{year.current.label}}</span> </li> <li class="ui-calendar-next-month" data-role="next-month">&gt;</li> <li class="ui-calendar-next-year" data-role="next-year">&gt;&gt;</li> </ul><ul class="ui-calendar-control" data-role="pannel-container"> {{#if mode.date}} {{#each day.items}} <li class="ui-calendar-day ui-calendar-day-{{value}}" data-role="day" data-value="{{value}}">{{_ label}}</li> {{/each}} {{/if}} </ul><div class="ui-calendar-data-container" data-role="data-container"> {{#if mode.date}} {{#each date.items}} <ul class="ui-calendar-date-column"> {{#each this}} <li class="ui-calendar-day-{{day}} {{className}} {{#unless available}}disabled-date{{/unless}} " data-role="date" data-value="{{value}}" >{{label}}</li> {{/each}} </ul> {{/each}} {{/if}}{{#if mode.month}} {{#each month.items}} <ul class="ui-calendar-month-column"> {{#each this}} <li data-role="month" data-value="{{value}}">{{_ label}}</li> {{/each}} </ul> {{/each}} {{/if}}{{#if mode.year}} {{#each year.items}} <ul class="ui-calendar-year-column"> {{#each this}} <li data-role="{{role}}" data-value="{{value}}">{{_ label}}</li> {{/each}} </ul> {{/each}} {{/if}} </div><ul class="ui-calendar-footer" data-role="time-container"> <li class="ui-calendar-today" data-role="today">{{_ message.today}}</li> {{#if mode.time}} <li class="ui-calendar-time" colspan="2" data-role="time"><span class="ui-calendar-hour">{{time.hour}}</span> : {{time.minute}}</li> {{/if}} </ul> </div>';
-    var CalendarModel = require('./model-debug');
-
-    // ## Options
-    // default options for calendar
-    var defaults = {
-        // ### trigger and input
-        // element, usually input[type=date], or date icon
-        trigger: null,
-        triggerType: 'click',
-
-        // output format
-        format: 'YYYY-MM-DD',
-
-        // output field
-        output: {
-            value: '',
-            getter: function(val) {
-                val = val ? val : this.get('trigger');
-                return $(val);
-            }
-        },
-
-        // ### overlay
-        align: {
-            getter: function() {
-                var trigger = this.get('trigger');
-                if (trigger) {
-                    return {
-                        selfXY: [0, 0],
-                        baseElement: trigger,
-                        baseXY: [0, $(trigger).height() + 10]
-                    };
-                }
-                return {
-                    selfXY: [0, 0],
-                    baseXY: [0, 0]
-                };
-            }
-        },
-
-        // ### display
-        // start of a week, default is Sunday.
-        startDay: 'Sun',
-        showTime: false,
-        hideOnSelect: true,
-
-        // when initialize a calendar, which date should be focused.
-        // default is today.
-        focus: {
-            value: '',
-            getter: function(val) {
-                val = val ? val : $(this.get('trigger')).val();
-                if (!val) return moment();
-                return moment(val, this.get('format'));
-            }
-        },
-        range: null,
-
-        template: template,
-
-        model: {
-            getter: function() {
-                if (!this.hasOwnProperty('model')) {
-                    var modelConfig = {
-                        focus: this.get('focus'),
-                        range: this.get('range'),
-                        showTime: this.get('showTime'),
-                        startDay: this.get('startDay')
-                    };
-                    this.model = new CalendarModel(modelConfig);
-                }
-
-                return this.model;
-            }
+define("arale/calendar/0.9.0/templates/month-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
+    var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
+    var template = Handlebars.template;
+    module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
+        this.compilerInfo = [ 3, ">= 1.0.0-rc.4" ];
+        helpers = helpers || {};
+        for (var key in Handlebars.helpers) {
+            helpers[key] = helpers[key] || Handlebars.helpers[key];
         }
-    };
-
-    var Calendar = Overlay.extend({
-        Implements: [Templatable],
-
-        attrs: defaults,
-
-        events: {
-            'click [data-role=mode-year]': '_changeMode',
-            'click [data-role=prev-year]': 'prevYear',
-            'click [data-role=next-year]': 'nextYear',
-            'click [data-role=mode-month]': '_changeMode',
-            'click [data-role=prev-month]': 'prevMonth',
-            'click [data-role=next-month]': 'nextMonth',
-
-            'click [data-role=previous-10-year]': '_selectYear',
-            'click [data-role=next-10-year]': '_selectYear',
-            'click [data-role=year]': '_selectYear',
-            'click [data-role=month]': '_selectMonth',
-            'click [data-role=day]': '_selectDay',
-            'click [data-role=date]': '_selectDate',
-            'click [data-role=today]': '_selectToday'
-        },
-
-        templateHelpers: {
-            '_': function(key) {return lang[key] || key;}
-        },
-
-        setup: function() {
-            Calendar.superclass.setup.call(this);
-
-            var self = this;
-
-            // bind trigger
-            var $trigger = $(this.get('trigger'));
-            $trigger.on(this.get('triggerType'), function() {
-                self.show();
-                setFocusedElement(self.element, self.model);
+        data = data || {};
+        var buffer = "", stack1, self = this, functionType = "function", escapeExpression = this.escapeExpression, helperMissing = helpers.helperMissing;
+        function program1(depth0, data) {
+            var buffer = "", stack1;
+            buffer += '\n<tr class="ui-calendar-month-column">\n    ';
+            stack1 = helpers.each.call(depth0, depth0, {
+                hash: {},
+                inverse: self.noop,
+                fn: self.program(2, program2, data),
+                data: data
             });
-            $trigger.on('keydown', function(ev) {
-                self._keyControl(ev);
+            if (stack1 || stack1 === 0) {
+                buffer += stack1;
+            }
+            buffer += "\n</tr>\n";
+            return buffer;
+        }
+        function program2(depth0, data) {
+            var buffer = "", stack1, options;
+            buffer += '\n    <td class="';
+            stack1 = helpers.unless.call(depth0, depth0.available, {
+                hash: {},
+                inverse: self.noop,
+                fn: self.program(3, program3, data),
+                data: data
             });
-            $trigger.on('blur', function() {
-                self.hide();
-            });
-
-            self.element.on('mousedown', function(ev) {
-                if ($.browser.msie && parseInt($.browser.version, 10) < 9) {
-                    var trigger = $trigger[0];
-                    trigger.onbeforedeactivate = function() {
-                        window.event.returnValue = false;
-                        trigger.onbeforedeactivate = null;
-                    };
-                }
-                ev.preventDefault();
-            });
-
-            // bind model change event
-            var model = this.model;
-            model.on('changeStartday changeMode', function() {
-                self.renderPartial('[data-role=data-container]');
-                self.renderPartial('[data-role=pannel-container]');
-                self.renderPartial('[data-role=month-year-container]');
-                setFocusedElement(self.element, self.model);
-            });
-            model.on('changeMonth changeYear selectToday', function() {
-                var mode = model.get('mode');
-                if (mode.date || mode.year) {
-                    self.renderPartial('[data-role=data-container]');
-                }
-                self.renderPartial('[data-role=month-year-container]');
-                setFocusedElement(self.element, self.model);
-            });
-            model.on('changeRange', function() {
-                self.renderPartial('[data-role=data-container]');
-            });
-            model.on('refresh', function() {
-                setFocusedElement(self.element, self.model);
-            });
-        },
-
-        range: function(range) {
-            this.model.changeRange(range);
-        },
-
-        prevYear: function() {
-            this.model.changeYear(-1);
-        },
-
-        nextYear: function() {
-            this.model.changeYear(1);
-        },
-
-        prevMonth: function() {
-            this.model.changeMonth(-1);
-        },
-
-        nextMonth: function() {
-            this.model.changeMonth(1);
-        },
-
-        _selectYear: function(ev) {
-            var el = $(ev.target);
-            if (el.data('role') === 'year') {
-                this.model.changeMode('date', {year: el.data('value')});
+            if (stack1 || stack1 === 0) {
+                buffer += stack1;
+            }
+            buffer += '" data-role="month" data-value="';
+            if (stack1 = helpers.value) {
+                stack1 = stack1.call(depth0, {
+                    hash: {},
+                    data: data
+                });
             } else {
-                this.model.changeMode('year', {year: el.data('value')});
+                stack1 = depth0.value;
+                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
             }
-        },
-
-        _selectMonth: function(ev) {
-            var el = $(ev.target);
-            this.model.changeMode('date', {month: el.data('value')});
-        },
-
-        _selectDay: function(ev) {
-            var el = $(ev.target);
-            this.model.changeStartDay(el.data('value'));
-        },
-
-        _selectDate: function(ev) {
-            var el = $(ev.target);
-            var date = this.model.selectDate(el.data('value'));
-            this._fillDate(date);
-        },
-
-        _selectToday: function() {
-            this.model.selectToday();
-            this.trigger('selectToday');
-        },
-
-        _changeMode: function(ev) {
-            var mode = $(ev.target).data('role').substring(5);
-            this.model.changeMode(mode);
-        },
-
-        _keyControl: function(ev) {
-            var modeMap = {
-                68: 'date',
-                77: 'month',
-                89: 'year'
+            buffer += escapeExpression(stack1) + '">';
+            options = {
+                hash: {},
+                data: data
             };
-            if (ev.keyCode in modeMap) {
-                this.model.changeMode(modeMap[ev.keyCode]);
-                ev.preventDefault();
-                return false;
-            }
-            var codeMap = {
-                13: 'enter',
-                27: 'esc',
-                37: 'left',
-                38: 'up',
-                39: 'right',
-                40: 'down',
+            buffer += escapeExpression((stack1 = helpers["_"], stack1 ? stack1.call(depth0, depth0.label, options) : helperMissing.call(depth0, "_", depth0.label, options))) + "</td>\n    ";
+            return buffer;
+        }
+        function program3(depth0, data) {
+            return "disabled-element";
+        }
+        buffer += '<table class="ui-calendar-month" data-role="month-column">\n';
+        stack1 = helpers.each.call(depth0, depth0.items, {
+            hash: {},
+            inverse: self.noop,
+            fn: self.program(1, program1, data),
+            data: data
+        });
+        if (stack1 || stack1 === 0) {
+            buffer += stack1;
+        }
+        buffer += "\n</table>\n";
+        return buffer;
+    });
+});
 
-                // vim bind
-                72: 'left',
-                76: 'right',
-                74: 'down',
-                75: 'up'
-            };
-            if (!(ev.keyCode in codeMap)) return;
-
-            ev.preventDefault();
-
-            var keyboard = codeMap[ev.keyCode];
-            var mode = this.model.get('mode');
-            if (ev.shiftKey && keyboard === 'down') {
-                this.nextYear();
-            } else if (ev.shiftKey && keyboard === 'up') {
-                this.prevYear();
-            } else if (ev.shiftKey && keyboard === 'right') {
-                this.nextMonth();
-            } else if (ev.shiftKey && keyboard === 'left') {
-                this.prevMonth();
-            } else if (keyboard === 'esc') {
-                this.hide();
-            } else if (mode.date) {
-                this._keyControlDate(keyboard);
-            } else if (mode.month) {
-                this._keyControlMonth(keyboard);
-            } else if (mode.year) {
-                this._keyControlYear(keyboard);
+define("arale/calendar/0.9.0/year-column-debug", [ "$-debug", "arale/calendar/0.9.0/base-column-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+    var $ = require("$-debug");
+    var BaseColumn = require("arale/calendar/0.9.0/base-column-debug");
+    var template = require("arale/calendar/0.9.0/templates/year-debug.handlebars");
+    var YearColumn = BaseColumn.extend({
+        attrs: {
+            range: null,
+            process: null,
+            template: template,
+            model: {
+                getter: function() {
+                    return createYearModel(this.get("focus"), this.get("range"), this.get("process"));
+                }
             }
         },
-
-        _keyControlDate: function(keyboard) {
-            if (keyboard === 'enter') {
-                var date = this.model.selectDate();
-                this._fillDate(date);
-                return;
+        events: {
+            "click [data-role=year],[data-role=previous-10-year],[data-role=next-10-year]": function(ev) {
+                var el = $(ev.target);
+                var value = el.data("value");
+                this.select(value, el);
             }
-            var moves = {
-                'right': 1,
-                'left': -1,
-                'up': -7,
-                'down': 7
-            };
-            this.model.changeDate(moves[keyboard]);
         },
-
-        _keyControlMonth: function(keyboard) {
-            if (keyboard === 'enter') {
-                var date = this.model.selectDate();
-                this.model.changeMode('date', {month: date.month()});
-                return;
-            }
-            var moves = {
-                'right': 1,
-                'left': -1,
-                'up': -3,
-                'down': 3
-            };
-            this.model.changeMonth(moves[keyboard]);
+        templateHelpers: {},
+        prev: function() {
+            var focus = this.get("focus").add("years", -1);
+            return this._sync(focus);
         },
-
-        _keyControlYear: function(keyboard) {
-            if (keyboard === 'enter') {
-                var date = this.model.selectDate();
-                this.model.changeMode('date', {year: date.year()});
-                return;
-            }
-            var moves = {
-                'right': 1,
-                'left': -1,
-                'up': -3,
-                'down': 3
-            };
-            this.model.changeYear(moves[keyboard]);
+        next: function() {
+            var focus = this.get("focus").add("years", 1);
+            return this._sync(focus);
         },
-
-        _fillDate: function(date) {
-            if (!this.model.isInRange(date)) {
-                this.trigger('selectDisabledDate', date);
-                return this;
+        select: function(value, el) {
+            if (el && el.hasClass("disabled-element")) {
+                this.trigger("selectDisable", value, el);
+                return value;
             }
-            this.trigger('selectDate', date);
-
-            var trigger = this.get('trigger');
-            if (!trigger) {
-                return this;
+            var focus;
+            if (value.year) {
+                focus = value;
+            } else {
+                focus = this.get("focus").year(value);
             }
-            var $output = this.get('output');
-            if (typeof $output[0].value === 'undefined') {
-                return this;
+            return this._sync(focus, el);
+        },
+        focus: function(focus) {
+            focus = focus || this.get("focus");
+            var selector = "[data-value=" + focus.year() + "]";
+            this.element.find(".focused-element").removeClass("focused-element");
+            this.element.find(selector).addClass("focused-element");
+        },
+        refresh: function() {
+            var focus = this.get("focus").year();
+            var years = this.element.find("[data-role=year]");
+            if (focus < years.first().data("value") || focus > years.last().data("value")) {
+                this.element.html($(this.compileTemplate()).html());
             }
-            var value = date.format(this.get('format'));
-            $output.val(value);
-            if (this.get('hideOnSelect')) {
-              this.hide();
+        },
+        _sync: function(focus, el) {
+            this.set("focus", focus);
+            this.refresh();
+            this.focus(focus);
+            if (el !== null) {
+                this.trigger("select", focus.year(), el);
             }
+            return focus;
         }
     });
-
-    function setFocusedElement(element, model) {
-        var current;
-        var mode = model.get('mode');
-        var o = ['date', 'month', 'year'];
-        for (var i = 0; i < o.length; i++) {
-            if (mode[o[i]]) current = o[i];
+    module.exports = YearColumn;
+    // helpers
+    function createYearModel(time, range, fn) {
+        var year = time.year();
+        var items = [ process({
+            value: year - 10,
+            label: ". . .",
+            available: true,
+            role: "previous-10-year"
+        }, fn) ];
+        for (var i = year - 6; i < year + 4; i++) {
+            items.push(process({
+                value: i,
+                label: i,
+                available: isInRange(i, range),
+                role: "year"
+            }, fn));
         }
-        if (!current) return;
-        var selector = '[data-value=' + model.get(current).current.value + ']';
-        element.find('.focused-element').removeClass('focused-element');
-        element.find(selector).addClass('focused-element');
+        items.push(process({
+            value: year + 10,
+            label: ". . .",
+            available: true,
+            role: "next-10-year"
+        }, fn));
+        var list = [];
+        for (i = 0; i < items.length / 3; i++) {
+            list.push(items.slice(i * 3, i * 3 + 3));
+        }
+        var current = {
+            value: year,
+            label: year
+        };
+        return {
+            current: current,
+            items: list
+        };
     }
+    function process(item, fn) {
+        if (!fn) {
+            return item;
+        }
+        item.type = "year";
+        return fn(item);
+    }
+    function isInRange(date, range) {
+        if (range == null) {
+            return true;
+        }
+        if ($.isArray(range)) {
+            var start = range[0];
+            if (start && start.year) {
+                start = start.year();
+            }
+            var end = range[1];
+            if (end && end.year) {
+                end = end.year();
+            }
+            var result = true;
+            if (start) {
+                result = result && date >= start;
+            }
+            if (end) {
+                result = result && date <= end;
+            }
+            return result;
+        }
+        return true;
+    }
+});
 
-    Calendar.autoRender = function(config) {
-        config.trigger = config.element;
-        config.element = '';
-        new Calendar(config);
-    };
-
-    module.exports = Calendar;
+define("arale/calendar/0.9.0/templates/year-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
+    var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
+    var template = Handlebars.template;
+    module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
+        this.compilerInfo = [ 3, ">= 1.0.0-rc.4" ];
+        helpers = helpers || {};
+        for (var key in Handlebars.helpers) {
+            helpers[key] = helpers[key] || Handlebars.helpers[key];
+        }
+        data = data || {};
+        var buffer = "", stack1, self = this, functionType = "function", escapeExpression = this.escapeExpression, helperMissing = helpers.helperMissing;
+        function program1(depth0, data) {
+            var buffer = "", stack1;
+            buffer += '\n  <tr class="ui-calendar-year-column">\n    ';
+            stack1 = helpers.each.call(depth0, depth0, {
+                hash: {},
+                inverse: self.noop,
+                fn: self.program(2, program2, data),
+                data: data
+            });
+            if (stack1 || stack1 === 0) {
+                buffer += stack1;
+            }
+            buffer += "\n  </tr>\n  ";
+            return buffer;
+        }
+        function program2(depth0, data) {
+            var buffer = "", stack1, options;
+            buffer += "\n    <td ";
+            stack1 = helpers.unless.call(depth0, depth0.available, {
+                hash: {},
+                inverse: self.noop,
+                fn: self.program(3, program3, data),
+                data: data
+            });
+            if (stack1 || stack1 === 0) {
+                buffer += stack1;
+            }
+            buffer += ' data-role="';
+            if (stack1 = helpers.role) {
+                stack1 = stack1.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack1 = depth0.role;
+                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+            }
+            buffer += escapeExpression(stack1) + '" data-value="';
+            if (stack1 = helpers.value) {
+                stack1 = stack1.call(depth0, {
+                    hash: {},
+                    data: data
+                });
+            } else {
+                stack1 = depth0.value;
+                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+            }
+            buffer += escapeExpression(stack1) + '">';
+            options = {
+                hash: {},
+                data: data
+            };
+            buffer += escapeExpression((stack1 = helpers["_"], stack1 ? stack1.call(depth0, depth0.label, options) : helperMissing.call(depth0, "_", depth0.label, options))) + "</td>\n    ";
+            return buffer;
+        }
+        function program3(depth0, data) {
+            return 'class="disabled-element"';
+        }
+        buffer += '<table class="ui-calendar-year" data-role="year-column">\n  ';
+        stack1 = helpers.each.call(depth0, depth0.items, {
+            hash: {},
+            inverse: self.noop,
+            fn: self.program(1, program1, data),
+            data: data
+        });
+        if (stack1 || stack1 === 0) {
+            buffer += stack1;
+        }
+        buffer += "\n</table>\n";
+        return buffer;
+    });
 });
