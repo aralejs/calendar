@@ -168,5 +168,11 @@ define(function(require, exports, module) {
     }
   });
 
+  Calendar.BaseColumn = require('./base-column');
+  Calendar.BaseCalendar = BaseCalendar;
+  Calendar.DateColumn = DateColumn;
+  Calendar.MonthColumn = MonthColumn;
+  Calendar.YearColumn = YearColumn;
+
   module.exports = Calendar;
 });

@@ -1,6 +1,6 @@
 define(function(require) {
   var expect = require('expect');
-  var BaseColumn = require('base-column');
+  var BaseColumn = require('calendar').BaseColumn;
   var moment = require('moment');
   var cal;
 

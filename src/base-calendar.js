@@ -86,8 +86,12 @@ define(function(require, exports, module) {
       var trigger = this.get('trigger');
       if (trigger) {
         var $trigger = $(this.get('trigger'));
-        $trigger.on(this.get('triggerType'), self.show)
-        $trigger.on('blur', self.hide)
+        $trigger.on(this.get('triggerType'), function() {
+          self.show();
+        });
+        $trigger.on('blur', function() {
+          self.hide();
+        });
         this.element.on('mousedown', function(e) {
           // TODO: ie
           e.preventDefault();

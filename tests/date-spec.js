@@ -1,7 +1,7 @@
 define(function(require) {
   var expect = require('expect');
   var sinon = require('sinon');
-  var DateColumn = require('date-column');
+  var DateColumn = require('calendar').DateColumn;
   var moment = require('moment');
   var cal;
 

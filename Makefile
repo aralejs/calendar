@@ -17,7 +17,7 @@ clean:
 
 
 runner = _site/tests/runner.html
-test-src:
+test-src: build-doc
 	@mocha-browser ${runner} -S
 
 test-dist:
