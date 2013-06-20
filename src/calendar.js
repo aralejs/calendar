@@ -87,6 +87,7 @@ define(function(require, exports, module) {
         var focus = self.get('focus');
         self.months.select(focus);
         self.years.select(focus);
+        self.trigger('selectDate', value);
         if (el) {
           if (moment.isMoment(value)) {
             value = value.format(this.get('format'));
@@ -102,6 +103,7 @@ define(function(require, exports, module) {
         if (el) {
           self.renderContainer('dates', focus);
         }
+        self.trigger('selectMonth', focus);
       });
       this.years.on('select', function(value, el) {
         var focus = self.get('focus');
@@ -111,6 +113,7 @@ define(function(require, exports, module) {
         if (el && el.data('role') === 'year') {
           self.renderContainer('dates', focus);
         }
+        self.trigger('selectYear', focus);
       });
 
       var container = this.element.find('[data-role=container]');

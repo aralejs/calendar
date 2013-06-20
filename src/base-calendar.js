@@ -120,9 +120,7 @@ define(function(require, exports, module) {
       if (!output.length) {
         return;
       }
-      if (typeof output[0].value === 'undefined') {
-        output.text(value);
-      } else {
+      if (typeof output[0].value) {
         output.val(value);
       }
       if (this.get('hideOnSelect')) {
