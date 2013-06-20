@@ -82,21 +82,11 @@ define(function(require, exports, module) {
     setup: function() {
       BaseCalendar.superclass.setup.call(this);
 
-      var self = this;
-      var trigger = this.get('trigger');
-      if (trigger) {
-        var $trigger = $(this.get('trigger'));
-        $trigger.on(this.get('triggerType'), function() {
-          self.show();
-        });
-        $trigger.on('blur', function() {
-          self.hide();
-        });
-        this.element.on('mousedown', function(e) {
-          // TODO: ie
-          e.preventDefault();
-        });
-      }
+      this.enable();
+      this.element.on('mousedown', function(e) {
+        // TODO: ie
+        e.preventDefault();
+      });
     },
 
     show: function() {
@@ -137,6 +127,32 @@ define(function(require, exports, module) {
       }
       if (this.get('hideOnSelect')) {
         this.hide();
+      }
+    },
+
+    enable: function() {
+      var trigger = this.get('trigger');
+      var self = this;
+      if (trigger) {
+        var $trigger = $(this.get('trigger'));
+        var event = this.get('triggerType') + '.calendar';
+        $trigger.on(event, function() {
+          self.show();
+        });
+        $trigger.on('blur.calendar', function() {
+          self.hide();
+        });
+      }
+    },
+
+    disable: function() {
+      var trigger = this.get('trigger');
+      var self = this;
+      if (trigger) {
+        var $trigger = $(this.get('trigger'));
+        var event = this.get('triggerType') + '.calendar';
+        $trigger.off(event);
+        $trigger.off('blur.calendar');
       }
     }
 

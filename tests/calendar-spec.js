@@ -161,6 +161,20 @@ define(function(require) {
       cal.destroy();
     });
 
+    it('can be disabled', function() {
+      var input = $('<input>');
+      cal = new Calendar({trigger: input});
+      expect(cal.element.is(':visible')).to.not.be.ok();
+      cal.disable();
+      input.click();
+      expect(cal.element.is(':visible')).to.not.be.ok();
+      cal.enable();
+      input.click();
+      expect(cal.element.is(':visible')).to.be.ok();
+      cal.element.remove();
+      cal.destroy();
+    });
+
     it('can output to trigger', function(done) {
       var input = $('<input>');
 
