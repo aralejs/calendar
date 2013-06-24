@@ -1,6 +1,6 @@
 # 月份表
 
-- order: 2
+- order: 3
 
 ------------
 
@@ -17,8 +17,8 @@ margin-left: -100px;
 
 
 ````javascript
-seajs.use('month-column', function(Month) {
-    var month = new Month({});
+seajs.use('calendar', function(Calendar) {
+    var month = new Calendar.MonthColumn({});
     month.show();
 });
 ````

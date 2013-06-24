@@ -1,6 +1,6 @@
 # 日期表
 
-- order: 1
+- order: 2
 
 -----
 
@@ -17,8 +17,8 @@ margin-left: -100px;
 
 
 ````javascript
-seajs.use('date-column', function(DateColumn) {
-    var date = new DateColumn({});
+seajs.use('calendar', function(Calendar) {
+    var date = new Calendar.DateColumn({});
     date.show();
 });
 ````

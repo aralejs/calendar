@@ -1,6 +1,6 @@
 # 年份表
 
-- order: 2
+- order: 4
 
 ------------
 
@@ -17,8 +17,8 @@ margin-left: -100px;
 
 
 ````javascript
-seajs.use('year-column', function(Year) {
-    var year = new Year({range: [2012]});
+seajs.use('calendar', function(Calendar) {
+    var year = new Calendar.YearColumn({range: [2012]});
     year.show();
 });
 ````
