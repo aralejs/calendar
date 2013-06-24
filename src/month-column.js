@@ -1,7 +1,6 @@
 define(function(require, exports, module) {
   var $ = require('$');
   var BaseColumn = require('./base-column');
-  var template = require('./templates/month.handlebars');
 
   var MonthColumn = BaseColumn.extend({
     attrs: {
@@ -130,4 +129,38 @@ define(function(require, exports, module) {
     }
     return true;
   }
+
+  /* template in handlebars
+  <table class="ui-calendar-month" data-role="month-column">
+  {{#each items}}
+  <tr class="ui-calendar-month-column">
+      {{#each this}}
+      <td class="{{#unless available}}disabled-element{{/unless}}" data-role="month" data-value="{{value}}">{{_ label}}</td>
+      {{/each}}
+  </tr>
+  {{/each}}
+  </table>
+  */
+
+  function template(model, options) {
+    var _ = options.helpers._;
+    html = '<table class="ui-calendar-month" data-role="month-column">';
+
+    $.each(model.items, function(i, items) {
+      html += '<tr class="ui-calendar-month-column">';
+      $.each(items, function(i, item) {
+        html += '<td data-role="month"';
+        if (!item.available) {
+          html += ' class="disabled-element"';
+        }
+        html += 'data-value="' + item.value + '">';
+        html += _(item.label) + '</td>';
+      });
+      html += '</tr>';
+    });
+
+    html += '</table>';
+    return html;
+  }
+
 });

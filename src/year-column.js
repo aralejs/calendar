@@ -1,7 +1,6 @@
 define(function(require, exports, module) {
   var $ = require('$');
   var BaseColumn = require('./base-column');
-  var template = require('./templates/year.handlebars');
 
   var YearColumn = BaseColumn.extend({
     attrs: {
@@ -150,5 +149,38 @@ define(function(require, exports, module) {
       return result;
     }
     return true;
+  }
+
+  /* template in handlebars
+  <table class="ui-calendar-year" data-role="year-column">
+    {{#each items}}
+    <tr class="ui-calendar-year-column">
+      {{#each this}}
+      <td {{#unless available}}class="disabled-element"{{/unless}} data-role="{{role}}" data-value="{{value}}">{{_ label}}</td>
+      {{/each}}
+    </tr>
+    {{/each}}
+  </table>
+  */
+
+  function template(model, options) {
+    var _ = options.helpers._;
+    html = '<table class="ui-calendar-year" data-role="year-column">';
+
+    $.each(model.items, function(i, items) {
+      html += '<tr class="ui-calendar-year-column">';
+      $.each(items, function(i, item) {
+        html += '<td data-role="' + item.role + '"';
+        if (!item.available) {
+          html += ' class="disabled-element"';
+        }
+        html += 'data-value="' + item.value + '">';
+        html += _(item.label) + '</td>';
+      });
+      html += '</tr>';
+    });
+
+    html += '</table>';
+    return html;
   }
 });

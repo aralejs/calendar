@@ -2,7 +2,6 @@ define(function(require, exports, module) {
   var $ = require('$');
   var moment = require('moment');
   var BaseColumn = require('./base-column');
-  var template = require('./templates/date.handlebars');
 
   var DateColumn = BaseColumn.extend({
     attrs: {
@@ -201,5 +200,61 @@ define(function(require, exports, module) {
     };
 
     return {current: _current, items: list};
+  }
+
+
+  /* template in handlebars
+  <table class="ui-calendar-date" data-role="date-column">
+    <tr class="ui-calendar-day-column">
+      {{#each day.items}}
+      <th class="ui-calendar-day ui-calendar-day-{{value}}" data-role="day" data-value="{{value}}">{{_ label}}</th>
+      {{/each}}
+    </tr>
+    {{#each date.items}}
+    <tr class="ui-calendar-date-column">
+      {{#each this}}
+      <td class="ui-calendar-day-{{day}} {{className}} {{#unless available}}disabled-element{{/unless}}" data-role="date" data-value="{{value}}">{{label}}</td>
+      {{/each}}
+    </tr>
+    {{/each}}
+  </table>
+  */
+
+  function template(model, options) {
+    // keep the same API as handlebars
+
+    var _ = options.helpers._;
+    var html = '<table class="ui-calendar-date" data-role="date-column">';
+
+    // day column
+    html += '<tr class="ui-calendar-day-column">';
+    $.each(model.day.items, function(i, item) {
+      html += '<th class="ui-calendar-day ui-calendar-day-' + item.value + '" ';
+      html += 'data-role="day" data-value="' + item.value + '">';
+      html += _(item.label);
+      html += '</th>';
+    });
+    html += '</tr>';
+
+    // date column
+    $.each(model.date.items, function(i, items) {
+      html += '<tr class="ui-calendar-date-column">'
+      $.each(items, function(i, item) {
+        var className = [
+          'ui-calendar-day-' + item.day,
+          item.className || ''
+        ];
+        if (!item.available) {
+          className.push('disabled-element');
+        }
+        html += '<td class="' + className.join(' ') + '" data-role="date"';
+        html += 'data-value="' + item.value + '">';
+        html += item.label + '</td>';
+      });
+      html += '</tr>';
+    });
+
+    html += '</table>';
+    return html;
   }
 });
