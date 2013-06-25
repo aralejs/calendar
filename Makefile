@@ -4,6 +4,7 @@ build-doc:
 	@nico build -C $(THEME)/nico.js
 
 publish-doc: clean build-doc
+	@rm -fr _site/sea-modules
 	@spm publish --doc _site
 
 server:

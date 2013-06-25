@@ -24,7 +24,7 @@ define(function(require, exports, module) {
   var Calendar = BaseCalendar.extend({
     attrs: {
       mode: 'dates',
-      template: template,
+      template: template
     },
 
     events: {

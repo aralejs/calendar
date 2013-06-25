@@ -151,18 +151,21 @@ define(function(require) {
 
     it('can be triggered', function() {
       var input = $('<input>');
+      input.appendTo('body');
       cal = new Calendar({trigger: input});
       expect(cal.element.is(':visible')).to.not.be.ok();
-      input.click();
+      input.trigger('click');
       expect(cal.element.is(':visible')).to.be.ok();
-      input.blur();
+      input.trigger('blur');
       expect(cal.element.is(':visible')).to.not.be.ok();
       cal.element.remove();
+      input.remove();
       cal.destroy();
     });
 
     it('can be disabled', function() {
       var input = $('<input>');
+      input.appendTo('body');
       cal = new Calendar({trigger: input});
       expect(cal.element.is(':visible')).to.not.be.ok();
       cal.disable();
@@ -172,6 +175,7 @@ define(function(require) {
       input.click();
       expect(cal.element.is(':visible')).to.be.ok();
       cal.element.remove();
+      input.remove();
       cal.destroy();
     });
 

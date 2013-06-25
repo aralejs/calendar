@@ -6,6 +6,13 @@ define(function(require, exports, module) {
   var Widget = require('widget');
   var lang = require('./i18n/{locale}') || {};
 
+  var ua = (window.navigator.userAgent || "").toLowerCase();
+  var match = ua.match(/msie\s+(\d+)/);
+  var insaneIE = false;
+  if (match && match[1]) {
+    insaneIE = parseInt(match[1], 10) < 9;
+  }
+
   var BaseCalendar = Widget.extend({
     attrs: {
       lang: lang,
@@ -81,10 +88,17 @@ define(function(require, exports, module) {
 
     setup: function() {
       BaseCalendar.superclass.setup.call(this);
-
       this.enable();
+
+      var self = this;
       this.element.on('mousedown', function(e) {
-        // TODO: ie
+        if (insaneIE) {
+          var trigger = $(self.get('trigger'))[0];
+          trigger.onbeforedeactivate = function() {
+            window.event.returnValue = false;
+            trigger.onbeforedeactivate = null;
+          };
+        }
         e.preventDefault();
       });
     },
@@ -130,28 +144,29 @@ define(function(require, exports, module) {
 
     enable: function() {
       var trigger = this.get('trigger');
-      var self = this;
-      if (trigger) {
-        var $trigger = $(this.get('trigger'));
-        if ($trigger.attr('type') === 'date') {
-          // remove default style for type date
-          $trigger.attr('type', 'text');
-        }
-        var event = this.get('triggerType') + '.calendar';
-        $trigger.on(event, function() {
-          self.show();
-        });
-        $trigger.on('blur.calendar', function() {
-          self.hide();
-        });
+      if (!trigger) {
+        return;
       }
+      var self = this;
+      var $trigger = $(trigger);
+      if ($trigger.attr('type') === 'date') {
+        // remove default style for type date
+        $trigger.attr('type', 'text');
+      }
+      var event = this.get('triggerType') + '.calendar';
+      $trigger.on(event, function() {
+        self.show();
+      });
+      $trigger.on('blur.calendar', function() {
+        self.hide();
+      });
     },
 
     disable: function() {
       var trigger = this.get('trigger');
       var self = this;
       if (trigger) {
-        var $trigger = $(this.get('trigger'));
+        var $trigger = $(trigger);
         var event = this.get('triggerType') + '.calendar';
         $trigger.off(event);
         $trigger.off('blur.calendar');

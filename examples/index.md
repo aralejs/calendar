@@ -15,7 +15,7 @@
 ````javascript
 seajs.config({
     vars: {
-        locale: 'zh-cn',
+        locale: 'zh-cn'
     }
 });
 ````
