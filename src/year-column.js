@@ -24,8 +24,6 @@ define(function(require, exports, module) {
       }
     },
 
-    templateHelpers: {},
-
     prev: function() {
       var focus = this.get('focus').add('years', -1);
       return this._sync(focus);
