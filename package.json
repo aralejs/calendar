@@ -3,7 +3,7 @@
   "name": "calendar",
   "version": "0.9.0",
   "description": "Calendar widget.",
-  "author": "Hsiaoming Yang <lepture@me.com>",
+  "author": "Hsiaoming Yang <me@lepture.com>",
   "maintainers": [
     "南伯 <me@lepture.com>",
     "偏右 <afc163@gmail.com>"
@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/aralejs/calendar/issues"
   },
-  "keywords": ["widget", "month"],
+  "keywords": ["widget", "month", "datepicker"],
 
   "spm": {
     "alias": {
@@ -29,7 +29,11 @@
     "output": [
       "calendar.js",
       "calendar.css",
-      "i18n/zh-cn.js"
+      "i18n/en.js",
+      "i18n/fr.js",
+      "i18n/ja.js",
+      "i18n/zh-cn.js",
+      "i18n/zh-tw.js"
     ]
   }
 }
