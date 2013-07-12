@@ -1,29 +1,28 @@
 .ui-calendar-year {
   font: 16px/20px 'Xin Gothic', 'PT Sans', 'Hiragino Sans GB', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  border-collapse: collapse;
+  border-collapse: separate;
   background-color: #f9f9f9;
   border: 1px solid #dadada;
   box-shadow: 1px 1px 9px #ccc;
   text-align: center;
+  width: 238px;
 }
 .ui-calendar-year tr {
   background-color: #f9f9f9;
   border: none;
   margin: 0;
   padding: 0;
-  width: 238px;
+  width: 100%;
   color: #333;
 }
 .ui-calendar-year .ui-calendar-year-column td {
-  display: inline-block;
-  border: none;
   text-align: center;
-  cursor: pointer;
   width: 76px;
-  margin: 2px;
   padding: 6px 0;
+  border: 1px solid transparent;
 }
 .ui-calendar-year .ui-calendar-year-column td:hover {
+  cursor: pointer;
   color: #333;
   background: #dadada;
 }

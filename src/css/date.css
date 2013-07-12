@@ -1,6 +1,6 @@
 .ui-calendar-date {
   font: 16px/20px 'Xin Gothic', 'PT Sans', 'Hiragino Sans GB', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  border-collapse: collapse;
+  border-collapse: separate;
   background-color: #f9f9f9;
   border: 1px solid #dadada;
   box-shadow: 1px 1px 9px #ccc;
@@ -17,10 +17,13 @@
 }
 .ui-calendar-date td, .ui-calendar-date th {
   font-weight: normal;
-  border: none;
   text-align: center;
   width: 34px;
+  border: 1px solid transparent;
   padding: 4px 0;
+}
+.ui-calendar-date th {
+  border-bottom-color: #dadada;
 }
 .ui-calendar-date .ui-calendar-day-column {
   border-bottom: 1px solid #dadada;
@@ -38,8 +41,8 @@
 }
 .ui-calendar-date .ui-calendar-date-column td:hover {
   cursor: pointer;
-  color: #333;
-  background: #dadada;
+  background: none;
+  border-color: #f57403;
 }
 .ui-calendar-date .ui-calendar-date-column td.focused-element {
   color: #fff;
