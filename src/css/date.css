@@ -1,29 +1,27 @@
 .ui-calendar-date {
   font: 16px/20px 'Xin Gothic', 'PT Sans', 'Hiragino Sans GB', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  border-collapse: separate;
+  border-collapse: collapse;
   background-color: #f9f9f9;
   border: 1px solid #dadada;
   box-shadow: 1px 1px 9px #ccc;
   text-align: center;
   border-spacing: 0;
+  width: 238px;
 }
 .ui-calendar-date tr {
   background-color: #f9f9f9;
   border: none;
   margin: 0;
   padding: 0;
-  width: 238px;
+  width: 100%;
   color: #333;
 }
 .ui-calendar-date td, .ui-calendar-date th {
   font-weight: normal;
   text-align: center;
+  border: none;
   width: 34px;
-  border: 1px solid transparent;
   padding: 4px 0;
-}
-.ui-calendar-date th {
-  border-bottom-color: #dadada;
 }
 .ui-calendar-date .ui-calendar-day-column {
   border-bottom: 1px solid #dadada;
@@ -36,13 +34,10 @@
 .ui-calendar-date .ui-calendar-date-column .next-month {
   color: #ccc;
 }
-.ui-calendar-date .ui-calendar-date-column td {
-  cursor: pointer;
-}
 .ui-calendar-date .ui-calendar-date-column td:hover {
   cursor: pointer;
-  background: none;
-  border-color: #f57403;
+  color: #333;
+  background: #dadada;
 }
 .ui-calendar-date .ui-calendar-date-column td.focused-element {
   color: #fff;

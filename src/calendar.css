@@ -21,6 +21,7 @@
   box-shadow: none;
 }
 .ui-calendar .ui-calendar-pannel {
+  width: 238px;
   border-bottom: 1px solid #dadada;
   zoom: 1;
 }
@@ -34,9 +35,11 @@
   clear: both;
 }
 .ui-calendar .ui-calendar-control {
+  display: inline;
   display: inline-block;
   float: left;
   width: 12.5%;
+  *width: 29px;
   padding: 2px 0;
   cursor: pointer;
 }
