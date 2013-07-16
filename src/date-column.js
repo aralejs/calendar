@@ -74,6 +74,10 @@ define(function(require, exports, module) {
       this.element.find(selector).addClass('focused-element');
     },
 
+    inRange: function(date) {
+      return BaseColumn.isInRange(date, this.get('range'));
+    },
+
     _sync: function(focus, prev, el) {
       this.set('focus', focus);
       if (focus.format('YYYY-MM') !== prev) {

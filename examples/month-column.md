@@ -58,6 +58,10 @@ var month = new MonthColumn({..attributes..});
 
 焦点设置为指定时间。
 
+### inRange(date)
+
+指定时间是否可用。
+
 ### refresh
 
 重新渲染。

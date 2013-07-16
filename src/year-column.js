@@ -63,6 +63,10 @@ define(function(require, exports, module) {
       }
     },
 
+    inRange: function(date) {
+      return isInRange(date, this.get('range'));
+    },
+
     _sync: function(focus, el) {
       this.set('focus', focus);
       this.refresh();

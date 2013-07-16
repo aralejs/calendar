@@ -56,6 +56,10 @@ define(function(require, exports, module) {
       this.element.find(selector).addClass('focused-element');
     },
 
+    inRange: function(date) {
+      return isInRange(date, this.get('range'));
+    },
+
     _sync: function(focus, el) {
       this.set('focus', focus);
       this.focus(focus);
