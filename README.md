@@ -108,6 +108,15 @@ range: function(time) {
 当时 trigger 不是 input 时，调用此方法可自动隐藏日历。
 
 
+### focus(date)
+
+焦点设置为指定时间。
+
+```javascript
+cal.focus('2012-12-25');
+```
+
+
 ## Events
 
 事件监听：

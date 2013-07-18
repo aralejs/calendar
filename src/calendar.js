@@ -163,6 +163,13 @@ define(function(require, exports, module) {
       yearPannel.text(focus.year());
     },
 
+    focus: function(date) {
+      date = moment(date, this.get('format'));
+      this.dates.focus(date);
+      this.months.focus(date);
+      this.years.focus(date);
+    },
+
     destroy: function() {
       this.dates.destroy();
       this.months.destroy();

@@ -27,6 +27,15 @@ define(function(require) {
       cal.destroy();
     });
 
+    it('can reset focus', function() {
+      cal = new Calendar({focus: '2012-08-11'});
+      cal.show();
+      cal.focus('2012-08-13');
+      expect(cal.element.find('.focused-element').data('value')).to.equal('2012-08-13');
+      cal.element.remove();
+      cal.destroy();
+    });
+
     it('can switch to month', function() {
       cal = new Calendar();
       cal.render();
