@@ -4,6 +4,7 @@ define(function(require, exports, module) {
   var Position = require('position');
   var moment = require('moment');
   var Widget = require('widget');
+  var Shim = require('iframe-shim');
   var lang = require('./i18n/{locale}') || {};
 
   var ua = (window.navigator.userAgent || "").toLowerCase();
@@ -90,6 +91,8 @@ define(function(require, exports, module) {
       BaseCalendar.superclass.setup.call(this);
       this.enable();
 
+      this._shim = new Shim(this.element).sync();
+
       var self = this;
       this.element.on('mousedown', function(e) {
         if (insaneIE) {
@@ -171,6 +174,13 @@ define(function(require, exports, module) {
         $trigger.off(event);
         $trigger.off('blur.calendar');
       }
+    },
+
+    destroy: function() {
+      if (this._shim) {
+        this._shim.destroy();
+      }
+      BaseCalendar.superclass.destroy.call(this);
     }
 
   });

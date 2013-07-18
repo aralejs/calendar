@@ -24,6 +24,7 @@
       "moment": "gallery/moment/2.0.0/moment",
       "base": "arale/base/1.1.1/base",
       "position": "arale/position/1.0.1/position",
+      "iframe-shim": "arale/iframe-shim/1.0.2/iframe-shim",
       "widget": "arale/widget/1.1.1/widget"
     },
     "output": [
