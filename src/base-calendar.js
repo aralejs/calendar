@@ -176,10 +176,29 @@ define(function(require, exports, module) {
       }
     },
 
+    autohide: function() {
+      var me = this;
+
+      var trigger = $(this.get('trigger'))[0];
+      var element = this.element;
+      $('body').on('click.calendar', function(e) {
+        // not click on element
+        if (element.find(e.target).length || element[0] === e.target) {
+          return;
+        }
+        // not click on trigger
+        if (trigger !== e.target) {
+          me.hide();
+        }
+      });
+    },
+
     destroy: function() {
       if (this._shim) {
         this._shim.destroy();
       }
+      // clean event binding of autohide
+      $('body').off('click.calendar');
       BaseCalendar.superclass.destroy.call(this);
     }
 

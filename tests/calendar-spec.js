@@ -163,6 +163,36 @@ define(function(require) {
       cal.destroy();
     });
 
+    it('can hide when trigger is not input', function() {
+      var input = $('<span>');
+      var output = $('<span>');
+      input.appendTo('body');
+      output.appendTo('body');
+      cal = new Calendar({trigger: input, output: output});
+      expect(cal.element.is(':visible')).to.not.be.ok();
+      input.trigger('click');
+      expect(cal.element.is(':visible')).to.be.ok();
+
+      output.trigger('click');
+      expect(cal.element.is(':visible')).to.be.ok();
+
+      // enable auto hide feature
+      cal.autohide();
+
+      input.trigger('click');
+      expect(cal.element.is(':visible')).to.be.ok();
+      cal.element.trigger('click');
+      expect(cal.element.is(':visible')).to.be.ok();
+
+      output.trigger('click');
+      expect(cal.element.is(':visible')).to.not.be.ok();
+
+      cal.element.remove();
+      input.remove();
+      output.remove();
+      cal.destroy();
+    });
+
     it('can be disabled', function() {
       var input = $('<input>');
       input.appendTo('body');
@@ -202,7 +232,6 @@ define(function(require) {
       cal.element.remove();
       cal.destroy();
     });
-
   });
 });
 
