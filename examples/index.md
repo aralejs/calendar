@@ -51,7 +51,15 @@ seajs.use('calendar', function(Calendar) {
         'May': '5月', 'Jun': '6月', 'Jul': '7月', 'Aug': '8月',
         'Sep': '9月', 'Oct': '10月', 'Nov': '11月', 'Dec': '12月'
     };
-    new Calendar({trigger: '#date-lang', lang: lang});
+    new Calendar({
+        trigger: '#date-lang',
+        lang: lang,
+        align: {
+          selfXY: [0, 0],
+          baseElement: '#date-lang',
+          baseXY: [0, 10]
+        }
+    });
 });
 ````
 

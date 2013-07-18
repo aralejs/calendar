@@ -103,7 +103,7 @@ range: function(time) {
 
 启用 trigger。
 
-## autohide()
+### autohide()
 
 当时 trigger 不是 input 时，调用此方法可自动隐藏日历。
 
