@@ -80,6 +80,7 @@ define(function(require) {
       cal.destroy();
 
       cal = new YearColumn({focus: '2012-08-11', range: [2012, 2014]});
+      expect(cal.inRange(2011)).not.to.be.ok();
       expect(cal.element.find('[data-value=2011]').hasClass('disabled-element')).to.be.ok();
       cal.destroy();
 

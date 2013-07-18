@@ -232,6 +232,14 @@ define(function(require) {
       cal.element.remove();
       cal.destroy();
     });
+
+    it('can change input type', function() {
+      var input = $('<input>');
+      input.attr('type', 'date');
+      cal = new Calendar({trigger: input});
+      expect(input.attr('type')).to.equal('text');
+      cal.destroy();
+    });
   });
 });
 
