@@ -133,11 +133,13 @@ define(function(require, exports, module) {
       });
     },
 
-    _output: function(value) {
+    output: function(value) {
+      // send value to output
       var output = this.get('output');
       if (!output.length) {
         return;
       }
+      value = value || this.get('focus');
       var tagName = output[0].tagName.toLowerCase();
       if (tagName === 'input' || tagName === 'textarea') {
         output.val(value);

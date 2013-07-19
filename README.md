@@ -120,6 +120,10 @@ cal.focus('2012-12-25');
 
 重新设置 range。
 
+### output(date)
+
+将 date 填入 output 里。
+
 
 ## Events
 

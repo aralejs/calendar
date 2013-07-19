@@ -92,7 +92,7 @@ define(function(require, exports, module) {
           if (moment.isMoment(value)) {
             value = value.format(this.get('format'));
           }
-          self._output(value);
+          self.output(value);
         }
       });
       this.months.on('select', function(value, el) {
