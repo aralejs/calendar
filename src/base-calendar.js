@@ -106,6 +106,7 @@ define(function(require, exports, module) {
     },
 
     show: function() {
+      this.trigger('show');
       if (!this.rendered) {
         this._pin();
         this.render();
@@ -115,6 +116,7 @@ define(function(require, exports, module) {
     },
 
     hide: function() {
+      this.trigger('hide');
       this.element.hide();
     },
 

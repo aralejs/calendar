@@ -116,6 +116,10 @@ range: function(time) {
 cal.focus('2012-12-25');
 ```
 
+### range(range)
+
+重新设置 range。
+
 
 ## Events
 
@@ -126,6 +130,14 @@ cal.on('..event..', function(param){
     // do something
 })
 ```
+
+### show
+
+日历显示时。
+
+### hide
+
+日历隐藏时。
 
 ### selectDate `moment`
 
