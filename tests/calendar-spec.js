@@ -179,21 +179,14 @@ define(function(require) {
       output.appendTo('body');
       cal = new Calendar({trigger: input, output: output});
       expect(cal.element.is(':visible')).to.not.be.ok();
-      input.trigger('click');
-      expect(cal.element.is(':visible')).to.be.ok();
-
-      output.trigger('click');
-      expect(cal.element.is(':visible')).to.be.ok();
-
-      // enable auto hide feature
-      cal.autohide();
 
       input.trigger('click');
       expect(cal.element.is(':visible')).to.be.ok();
-      cal.element.trigger('click');
+
+      cal.element.trigger('mousedown');
       expect(cal.element.is(':visible')).to.be.ok();
 
-      output.trigger('click');
+      output.trigger('mousedown');
       expect(cal.element.is(':visible')).to.not.be.ok();
 
       cal.element.remove();
@@ -247,6 +240,17 @@ define(function(require) {
       input.attr('type', 'date');
       cal = new Calendar({trigger: input});
       expect(input.attr('type')).to.equal('text');
+      cal.destroy();
+    });
+
+    it('can change range dynamically', function() {
+      cal = new Calendar({focus: '2012-08-11'});
+      cal.show();
+      expect(cal.element.find('[data-value=2012-08-15]').hasClass('disabled-element')).not.to.be.ok();
+      cal.range(['2012-08-01', '2012-08-12']);
+      expect(cal.element.find('[data-value=2012-08-15]').hasClass('disabled-element')).to.be.ok();
+      expect(cal.element.find('[data-value=2012-08-10]').hasClass('disabled-element')).not.to.be.ok();
+      cal.element.remove();
       cal.destroy();
     });
   });
