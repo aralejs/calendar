@@ -171,11 +171,26 @@ define(function(require, exports, module) {
     },
 
     range: function(range) {
+      // change range dynamically
       this.set('range', range);
       this.dates.set('range', range);
       this.months.set('range', range);
       this.years.set('range', range);
       this.renderContainer(this.get('mode'));
+    },
+
+    show: function() {
+      var output = $(this.get('output'));
+      var value = output.val() || output.text();
+      if (value) {
+        value = moment(value, this.get('format'));
+        if (value.isValid()) {
+          this.dates.select(value);
+          this.months.select(value);
+          this.years.select(value);
+        }
+      }
+      Calendar.superclass.show.call(this);
     },
 
     destroy: function() {

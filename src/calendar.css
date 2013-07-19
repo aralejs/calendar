@@ -12,6 +12,7 @@
   box-shadow: 1px 1px 9px #ccc;
   text-align: center;
   width: 238px;
+  z-index: 10;
 }
 .ui-calendar .ui-calendar-date,
 .ui-calendar .ui-calendar-month,
