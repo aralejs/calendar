@@ -5,7 +5,7 @@ define(function(require, exports, module) {
   var moment = require('moment');
   var Widget = require('widget');
   var Shim = require('iframe-shim');
-  var lang = require('./i18n/{locale}') || {};
+  var lang = require('./i18n/zh-cn') || {};
 
   var ua = (window.navigator.userAgent || "").toLowerCase();
   var match = ua.match(/msie\s+(\d+)/);
@@ -137,8 +137,11 @@ define(function(require, exports, module) {
       if (!output.length) {
         return;
       }
-      if (typeof output[0].value) {
+      var tagName = output[0].tagName.toLowerCase();
+      if (tagName === 'input' || tagName === 'textarea') {
         output.val(value);
+      } else {
+        output.text(value);
       }
       if (this.get('hideOnSelect')) {
         this.hide();
@@ -163,6 +166,10 @@ define(function(require, exports, module) {
       $trigger.on('blur.calendar', function() {
         self.hide();
       });
+      // enable auto hide feature
+      if ($trigger[0].tagName.toLowerCase() !== 'input') {
+        self.autohide();
+      }
     },
 
     disable: function() {
