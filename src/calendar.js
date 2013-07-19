@@ -87,8 +87,8 @@ define(function(require, exports, module) {
         var focus = self.get('focus');
         self.months.select(focus);
         self.years.select(focus);
-        self.trigger('selectDate', value);
         if (el) {
+          self.trigger('selectDate', value);
           if (moment.isMoment(value)) {
             value = value.format(this.get('format'));
           }
@@ -102,8 +102,8 @@ define(function(require, exports, module) {
         self.renderPannel();
         if (el) {
           self.renderContainer('dates', focus);
+          self.trigger('selectMonth', focus);
         }
-        self.trigger('selectMonth', focus);
       });
       this.years.on('select', function(value, el) {
         var focus = self.get('focus');
@@ -112,8 +112,8 @@ define(function(require, exports, module) {
         self.renderPannel();
         if (el && el.data('role') === 'year') {
           self.renderContainer('dates', focus);
+          self.trigger('selectYear', focus);
         }
-        self.trigger('selectYear', focus);
       });
 
       var container = this.element.find('[data-role=container]');
@@ -186,8 +186,6 @@ define(function(require, exports, module) {
         value = moment(value, this.get('format'));
         if (value.isValid()) {
           this.dates.select(value);
-          this.months.select(value);
-          this.years.select(value);
         }
       }
       Calendar.superclass.show.call(this);

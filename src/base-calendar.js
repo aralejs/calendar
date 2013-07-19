@@ -189,7 +189,7 @@ define(function(require, exports, module) {
 
       var trigger = $(this.get('trigger'))[0];
       var element = this.element;
-      $('body').on('click.calendar', function(e) {
+      $('body').on('mousedown.calendar', function(e) {
         // not click on element
         if (element.find(e.target).length || element[0] === e.target) {
           return;
@@ -206,7 +206,7 @@ define(function(require, exports, module) {
         this._shim.destroy();
       }
       // clean event binding of autohide
-      $('body').off('click.calendar');
+      $('body').off('mousedown.calendar');
       BaseCalendar.superclass.destroy.call(this);
     }
 
