@@ -170,6 +170,14 @@ define(function(require, exports, module) {
       this.years.focus(date);
     },
 
+    range: function(range) {
+      this.set('range', range);
+      this.dates.set('range', range);
+      this.months.set('range', range);
+      this.years.set('range', range);
+      this.renderContainer(this.get('mode'));
+    },
+
     destroy: function() {
       this.dates.destroy();
       this.months.destroy();
