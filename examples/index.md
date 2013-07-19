@@ -10,16 +10,6 @@
 <link rel="stylesheet" href="../src/calendar.css" />
 ````
 
-设置国际化支持：
-
-````javascript
-seajs.config({
-    vars: {
-        locale: 'zh-cn'
-    }
-});
-````
-
 ## There is nothing to do
 
 最简示例，没有任何特殊要求：
@@ -212,9 +202,6 @@ seajs.use('calendar', function(Calendar) {
 
 ````javascript
 seajs.use(['jquery', 'calendar'], function($, Calendar) {
-    new Calendar({trigger: '#date-trigger-2'}).on('selectDate', function(date) {
-        $('#date-output-2').text(date.format('YYYY-MM-DD'));
-        this.hide();
-    });
+    new Calendar({trigger: '#date-trigger-2', output: '#date-output-2'});
 });
 ````
