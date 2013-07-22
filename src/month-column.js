@@ -1,5 +1,6 @@
 define(function(require, exports, module) {
   var $ = require('$');
+  var moment = require('moment');
   var BaseColumn = require('./base-column');
 
   var MonthColumn = BaseColumn.extend({
@@ -10,7 +11,7 @@ define(function(require, exports, module) {
       model: {
         getter: function() {
           return createMonthModel(
-            this.get('focus'), this.get('range'), this.get('process')
+            this.get('focus'), this.get('process'), this
           );
         }
       }
@@ -57,7 +58,15 @@ define(function(require, exports, module) {
     },
 
     inRange: function(date) {
-      return isInRange(date, this.get('range'));
+      var range = this.get('range');
+      if (date.month) {
+        return isInRange(date, range);
+      }
+      if (date.toString().length < 3) {
+        var time = this.get('focus');
+        return isInRange(time.clone().month(date), range);
+      }
+      return isInRange(moment(date, this.get('format')), range);
     },
 
     _sync: function(focus, el) {
@@ -79,14 +88,14 @@ define(function(require, exports, module) {
     'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
   ];
 
-  function createMonthModel(time, range, fn) {
+  function createMonthModel(time, fn, ctx) {
     var month = time.month();
     var items = [];
 
     for (i = 0; i < MONTHS.length; i++) {
       var item = {
         value: i,
-        available: isInRange(i, range),
+        available: ctx.inRange.call(ctx, i),
         label: MONTHS[i]
       };
       if (fn) {
@@ -115,21 +124,22 @@ define(function(require, exports, module) {
     }
     if ($.isArray(range)) {
       var start = range[0];
-      if (start && start.month) {
-        start = start.month();
-      }
       var end = range[1];
-      if (end && end.month) {
-        end = end.month();
-      }
       var result = true;
-      if (start) {
+      if (start && start.month) {
         result = result && date >= start;
+      } else if (start) {
+        result = result && date.month() >= start;
       }
-      if (end) {
+      if (end && end.month) {
         result = result && date <= end;
+      } else if (end) {
+        result = result && date.month() <= end;
       }
       return result;
+    }
+    if ($.isFunction(range)) {
+      return range(date);
     }
     return true;
   }
