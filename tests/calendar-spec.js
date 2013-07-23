@@ -235,6 +235,16 @@ define(function(require) {
       cal.destroy();
     });
 
+    it('can get time from output', function() {
+      var input = $('<input>');
+      input.val('2012-12-15');
+      cal = new Calendar({trigger: input});
+      cal.show();
+      expect(cal.element.find('.focused-element').data('value')).to.equal('2012-12-15');
+      cal.element.remove();
+      cal.destroy();
+    });
+
     it('can change input type', function() {
       var input = $('<input>');
       input.attr('type', 'date');

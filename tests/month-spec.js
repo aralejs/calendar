@@ -24,6 +24,17 @@ define(function(require) {
       cal.destroy();
     });
 
+    it('can delete is inrange', function() {
+      cal = new MonthColumn({
+        focus: '2012-08-11',
+        range: function(date) {
+          return date.month() > 2;
+        }
+      });
+      expect(cal.inRange(moment('2012-01-02'))).not.to.be.ok();
+      expect(cal.inRange('2012-06-02')).to.be.ok();
+    });
+
     it('should focus on Aug when show', function() {
       cal = new MonthColumn({focus: '2012-08-11'});
       cal.show();
