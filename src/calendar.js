@@ -180,13 +180,9 @@ define(function(require, exports, module) {
     },
 
     show: function() {
-      var output = $(this.get('output'));
-      var value = output.val() || output.text();
+      var value = this._outputTime();
       if (value) {
-        value = moment(value, this.get('format'));
-        if (value.isValid()) {
-          this.dates.select(value);
-        }
+        this.dates.select(value);
       }
       Calendar.superclass.show.call(this);
     },

@@ -57,6 +57,15 @@ define(function(require, exports, module) {
       this.element.find(selector).addClass('focused-element');
     },
 
+    refresh: function() {
+      var focus = this.get('focus').year();
+      var column = this.element.find('[data-role=month-column]');
+      var year = column.data('year');
+      if (parseInt(year, 10) !== focus) {
+        this.element.html($(this.compileTemplate()).html());
+      }
+    },
+
     inRange: function(date) {
       var range = this.get('range');
       if (date.month) {
@@ -71,6 +80,7 @@ define(function(require, exports, module) {
 
     _sync: function(focus, el) {
       this.set('focus', focus);
+      this.refresh();
       this.focus(focus);
       // if user call select(value, null) it will not trigger an event
       if (el !== null) {
@@ -106,6 +116,7 @@ define(function(require, exports, module) {
     }
 
     var current = {
+      year: time.year(),
       value: month,
       label: MONTHS[month]
     };
@@ -158,7 +169,8 @@ define(function(require, exports, module) {
 
   function template(model, options) {
     var _ = options.helpers._;
-    html = '<table class="ui-calendar-month" data-role="month-column">';
+    html = '<table class="ui-calendar-month" data-role="month-column"';
+    html += ' data-year="' + model.current.year + '">';
 
     $.each(model.items, function(i, items) {
       html += '<tr class="ui-calendar-month-column">';

@@ -31,10 +31,11 @@ define(function(require, exports, module) {
       focus: {
         value: '',
         getter: function(val) {
-          if (!val) {
-            return moment();
+          val = val || this._outputTime();
+          if (val) {
+            return moment(val, this.get('format'));
           }
-          return moment(val, this.get('format'));
+          return moment();
         },
         setter: function(val) {
           if (!val) {
@@ -131,6 +132,17 @@ define(function(require, exports, module) {
         x: align.baseXY[0],
         y: align.baseXY[1]
       });
+    },
+
+    _outputTime: function() {
+      var output = $(this.get('output'));
+      var value = output.val() || output.text();
+      if (value) {
+        value = moment(value, this.get('format'));
+        if (value.isValid()) {
+          return value;
+        }
+      }
     },
 
     output: function(value) {
