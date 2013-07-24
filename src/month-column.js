@@ -59,8 +59,7 @@ define(function(require, exports, module) {
 
     refresh: function() {
       var focus = this.get('focus').year();
-      var column = this.element.find('[data-role=month-column]');
-      var year = column.data('year');
+      var year = this.element.data('year');
       if (parseInt(year, 10) !== focus) {
         this.element.html($(this.compileTemplate()).html());
       }
