@@ -57,6 +57,9 @@ define(function(require, exports, module) {
     },
 
     refresh: function() {
+      if (!this._rendered) {
+        return;
+      }
       var focus = this.get('focus').year();
       var column = this.element.find('[data-role=month-column]');
       var year = column.data('year');
