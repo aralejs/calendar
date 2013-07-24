@@ -205,3 +205,28 @@ seajs.use(['jquery', 'calendar'], function($, Calendar) {
     new Calendar({trigger: '#date-trigger-2', output: '#date-output-2'});
 });
 ````
+
+
+## Double Calendar
+
+````html
+<input id="start-cal" type="text" />
+<input id="end-cal" type="text" />
+````
+
+````javascript
+seajs.use('calendar', function(Calendar) {
+    var t1 = '2012-01-01';
+    var t2 = '2015-01-01';
+    var c1 = new Calendar({trigger: '#start-cal', range: [t1, null]})
+    var c2 = new Calendar({trigger: '#end-cal', range: [null, t2]})
+
+    c1.on('selectDate', function(date) {
+        c2.range([date, t2]);
+    });
+
+    c2.on('selectDate', function(date) {
+        c1.range([t1, date]);
+    });
+});
+```
