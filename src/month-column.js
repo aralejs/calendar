@@ -61,8 +61,7 @@ define(function(require, exports, module) {
         return;
       }
       var focus = this.get('focus').year();
-      var column = this.element.find('[data-role=month-column]');
-      var year = column.data('year');
+      var year = this.element.data('year');
       if (parseInt(year, 10) !== focus) {
         this.element.html($(this.compileTemplate()).html());
       }
@@ -171,7 +170,7 @@ define(function(require, exports, module) {
 
   function template(model, options) {
     var _ = options.helpers._;
-    html = '<table class="ui-calendar-month" data-role="month-column"';
+    var html = '<table class="ui-calendar-month" data-role="month-column"';
     html += ' data-year="' + model.current.year + '">';
 
     $.each(model.items, function(i, items) {

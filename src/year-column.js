@@ -173,7 +173,7 @@ define(function(require, exports, module) {
 
   function template(model, options) {
     var _ = options.helpers._;
-    html = '<table class="ui-calendar-year" data-role="year-column">';
+    var html = '<table class="ui-calendar-year" data-role="year-column">';
 
     $.each(model.items, function(i, items) {
       html += '<tr class="ui-calendar-year-column">';
