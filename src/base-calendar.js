@@ -11,6 +11,7 @@ define(function(require, exports, module) {
   var match = ua.match(/msie\s+(\d+)/);
   var insaneIE = false;
   if (match && match[1]) {
+    // IE < 9
     insaneIE = parseInt(match[1], 10) < 9;
   }
 
@@ -94,6 +95,8 @@ define(function(require, exports, module) {
       this._shim = new Shim(this.element).sync();
 
       var self = this;
+
+      // keep cursor focus in trigger
       this.element.on('mousedown', function(e) {
         if (insaneIE) {
           var trigger = $(self.get('trigger'))[0];
@@ -135,6 +138,7 @@ define(function(require, exports, module) {
     },
 
     _outputTime: function() {
+      // parse time from output value
       var output = $(this.get('output'));
       var value = output.val() || output.text();
       if (value) {
@@ -164,6 +168,7 @@ define(function(require, exports, module) {
     },
 
     enable: function() {
+      // enable trigger for show calendar
       var trigger = this.get('trigger');
       if (!trigger) {
         return;
@@ -188,6 +193,7 @@ define(function(require, exports, module) {
     },
 
     disable: function() {
+      // disable trigger
       var trigger = this.get('trigger');
       var self = this;
       if (trigger) {
@@ -199,10 +205,13 @@ define(function(require, exports, module) {
     },
 
     autohide: function() {
+      // autohide when trigger is not input
       var me = this;
 
       var trigger = $(this.get('trigger'))[0];
       var element = this.element;
+
+      // click anywhere except calendar and trigger
       $('body').on('mousedown.calendar', function(e) {
         // not click on element
         if (element.find(e.target).length || element[0] === e.target) {

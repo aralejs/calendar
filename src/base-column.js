@@ -25,6 +25,26 @@ define(function(require, exports, module) {
       },
       template: null,
       format: 'YYYY-MM-DD',
+      range: {
+        value: '',
+        getter: function(val) {
+          if (!val) {
+            return null;
+          }
+          if ($.isArray(val)) {
+            var start = val[0];
+            if (start && start.length > 4) {
+              start = moment(start, this.get('format'));
+            }
+            var end = val[1];
+            if (end && end.length > 4) {
+              end = moment(end, this.get('format'));
+            }
+            return [start, end];
+          }
+          return val;
+        }
+      },
       lang: {}
     },
 

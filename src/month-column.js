@@ -6,7 +6,6 @@ define(function(require, exports, module) {
   var MonthColumn = BaseColumn.extend({
     attrs: {
       template: template,
-      range: null,
       process: null,
       model: {
         getter: function() {

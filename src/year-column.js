@@ -4,7 +4,6 @@ define(function(require, exports, module) {
 
   var YearColumn = BaseColumn.extend({
     attrs: {
-      range: null,
       process: null,
       template: template,
       model: {
@@ -22,6 +21,13 @@ define(function(require, exports, module) {
         var value = el.data('value');
         this.select(value, el);
       }
+    },
+
+    setup: function() {
+      YearColumn.superclass.setup.call(this);
+      this.on('change:range', function() {
+        this.element.html($(this.compileTemplate()).html());
+      });
     },
 
     prev: function() {
