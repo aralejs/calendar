@@ -133,4 +133,14 @@ define(function(require) {
     });
   });
 
+  it('will refresh when year changed', function() {
+      cal = new MonthColumn({focus: '2012-12-11'});
+      cal.render();
+
+      expect(cal.element.find('[data-year]').data('year')).to.equal(2012);
+      cal.next();
+      expect(cal.element.find('[data-year]').data('year')).to.equal(2013);
+      cal.destroy();
+  });
+
 });
