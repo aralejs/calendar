@@ -24,6 +24,13 @@ define(function(require, exports, module) {
       }
     },
 
+    setup: function() {
+      MonthColumn.superclass.setup.call(this);
+      this.on('change:range', function() {
+        this.element.html($(this.compileTemplate()).html());
+      });
+    },
+
     prev: function() {
       var focus = this.get('focus').add('months', -1);
       return this._sync(focus);
@@ -61,7 +68,7 @@ define(function(require, exports, module) {
         return;
       }
       var focus = this.get('focus').year();
-      var year = this.element.data('year');
+      var year = this.element.find('[data-role=month-column]').data('year');
       if (parseInt(year, 10) !== focus) {
         this.element.html($(this.compileTemplate()).html());
       }
