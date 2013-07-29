@@ -145,12 +145,12 @@ define(function(require, exports, module) {
       if (start && start.month) {
         result = result && date >= start;
       } else if (start) {
-        result = result && date.month() >= start;
+        result = result && (date.month() + 1) >= start;
       }
       if (end && end.month) {
         result = result && date <= end;
       } else if (end) {
-        result = result && date.month() <= end;
+        result = result && (date.month() + 1) <= end;
       }
       return result;
     }
