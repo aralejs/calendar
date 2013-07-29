@@ -64,9 +64,6 @@ define(function(require, exports, module) {
     },
 
     refresh: function() {
-      if (!this.rendered) {
-        return;
-      }
       var focus = this.get('focus').year();
       var year = this.element.find('[data-year]').data('year');
       if (parseInt(year, 10) !== focus) {
