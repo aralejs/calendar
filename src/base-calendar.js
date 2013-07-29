@@ -176,8 +176,11 @@ define(function(require, exports, module) {
       var self = this;
       var $trigger = $(trigger);
       if ($trigger.attr('type') === 'date') {
-        // remove default style for type date
-        $trigger.attr('type', 'text');
+        try {
+          // remove default style for type date
+          $trigger.attr('type', 'text');
+        } catch (e) {
+        }
       }
       var event = this.get('triggerType') + '.calendar';
       $trigger.on(event, function() {

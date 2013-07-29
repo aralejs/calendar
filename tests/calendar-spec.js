@@ -5,6 +5,9 @@ define(function(require) {
   var Calendar = require('calendar');
   var cal;
 
+  var ua = (window.navigator.userAgent || "").toLowerCase();
+  var isIE = ua.match(/msie\s+(\d+)/);
+
   describe('Calendar', function() {
     it('can initialize without options', function() {
       cal = new Calendar();
@@ -238,9 +241,11 @@ define(function(require) {
     it('can get time from output', function() {
       var input = $('<input>');
       input.val('2012-12-15');
+      input.appendTo('body');
       cal = new Calendar({trigger: input});
       cal.show();
       expect(cal.element.find('.focused-element').data('value')).to.equal('2012-12-15');
+      input.remove();
       cal.element.remove();
       cal.destroy();
     });
@@ -249,7 +254,9 @@ define(function(require) {
       var input = $('<input>');
       input.attr('type', 'date');
       cal = new Calendar({trigger: input});
-      expect(input.attr('type')).to.equal('text');
+      if (!isIE) {
+        expect(input.attr('type')).to.equal('text');
+      }
       cal.destroy();
     });
 
