@@ -135,6 +135,8 @@ define(function(require, exports, module) {
   }
 
   function isInRange(date, range) {
+    // reset to the first day
+    date.date(1);
     if (range == null) {
       return true;
     }
