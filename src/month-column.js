@@ -134,9 +134,8 @@ define(function(require, exports, module) {
     return {current: current, items: list};
   }
 
-  function isInRange(date, range) {
+  function isInRange(d, range) {
     // reset to the first day
-    date.date(1);
     if (range == null) {
       return true;
     }
@@ -145,19 +144,21 @@ define(function(require, exports, module) {
       var end = range[1];
       var result = true;
       if (start && start.month) {
+        var date = d.clone().date(d.dates());
         result = result && date >= start;
       } else if (start) {
-        result = result && (date.month() + 1) >= start;
+        result = result && (d.month() + 1) >= start;
       }
       if (end && end.month) {
+        var date = d.clone().date(1);
         result = result && date <= end;
       } else if (end) {
-        result = result && (date.month() + 1) <= end;
+        result = result && (d.month() + 1) <= end;
       }
       return result;
     }
     if ($.isFunction(range)) {
-      return range(date);
+      return range(d);
     }
     return true;
   }
