@@ -141,6 +141,16 @@ define(function(require) {
       cal.destroy();
     });
 
+    it('Jan is not disabled', function() {
+      cal = new MonthColumn({
+        focus: '2012-12-11',
+        range: ['2012-01-15']
+      });
+
+      expect(cal.element.find('td').eq(0).hasClass('disabled-element')).not.to.be.ok();
+      cal.destroy()
+    });
+
   });
 
 });

@@ -144,14 +144,14 @@ define(function(require, exports, module) {
       var end = range[1];
       var result = true;
       if (start && start.month) {
-        var date = d.clone().date(d.dates());
-        result = result && date >= start;
+        var lastDate = d.clone().date(d.daysInMonth());
+        result = result && lastDate >= start;
       } else if (start) {
         result = result && (d.month() + 1) >= start;
       }
       if (end && end.month) {
-        var date = d.clone().date(1);
-        result = result && date <= end;
+        var firstDate = d.clone().date(1);
+        result = result && firstDate <= end;
       } else if (end) {
         result = result && (d.month() + 1) <= end;
       }
