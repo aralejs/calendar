@@ -75,6 +75,9 @@ define(function(require, exports, module) {
     },
 
     inRange: function(date) {
+      if (!moment.isMoment(date)) {
+        date = moment(date, this.get('format'));
+      }
       return BaseColumn.isInRange(date, this.get('range'));
     },
 
