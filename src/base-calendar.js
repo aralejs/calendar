@@ -14,6 +14,9 @@ define(function(require, exports, module) {
     // IE < 9
     insaneIE = parseInt(match[1], 10) < 9;
   }
+  if (document.documentMode && document.documentMode < 9) {
+    insaneIE = true;
+  }
 
   var BaseCalendar = Widget.extend({
     attrs: {
