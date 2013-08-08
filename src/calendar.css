@@ -4,14 +4,14 @@
 
 .ui-calendar {
   position: absolute;
-  font: 16px/20px 'Xin Gothic', 'PT Sans', 'Hiragino Sans GB', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font:14px/16px tahoma,arial,'Hiragino Sans GB', sans-serif;
   background: #f9f9f9;
   border-collapse: collapse;
   border-spacing: 0;
   border: 1px solid #dadada;
   box-shadow: 1px 1px 9px #ccc;
   text-align: center;
-  width: 238px;
+  width: 210px;
   z-index: 10;
 }
 .ui-calendar .ui-calendar-date,
@@ -22,9 +22,10 @@
   box-shadow: none;
 }
 .ui-calendar .ui-calendar-pannel {
-  width: 238px;
+  width: 200px;
   border-bottom: 1px solid #dadada;
   zoom: 1;
+  padding: 5px;
 }
 .ui-calendar .ui-calendar-pannel:after,
 .ui-calendar .ui-calendar-pannel:before {
@@ -41,8 +42,9 @@
   float: left;
   width: 12.5%;
   *width: 29px;
-  padding: 2px 0;
+  padding: 3px 0;
   cursor: pointer;
+  font-weight: bold;
 }
 .ui-calendar .ui-calendar-control:hover {
   background-color: #efefee;
@@ -50,4 +52,8 @@
 .ui-calendar .ui-calendar-pannel .month,
 .ui-calendar .ui-calendar-pannel .year {
   width: 25%;
+}
+.ui-calendar-container{
+  margin-bottom: 25px;
+  border-bottom: 1px solid #dadada;
 }
