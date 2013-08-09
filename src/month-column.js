@@ -145,7 +145,7 @@ define(function(require, exports, module) {
       var result = true;
       if (start && start.month) {
         var lastDate = d.clone().date(d.daysInMonth());
-        lastDate.hour(23).minute(59).second(59).millisecond(59);
+        lastDate.hour(23).minute(59).second(59).millisecond(999);
         result = result && lastDate >= start;
       } else if (start) {
         result = result && (d.month() + 1) >= start;
