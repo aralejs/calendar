@@ -8,19 +8,20 @@
   box-shadow: 1px 1px 9px #ccc;
   text-align: center;
   border-spacing: 0;
+  width: 238px;
 }
 .ui-calendar-date tr {
   background-color: #f9f9f9;
   border: none;
   margin: 0;
   padding: 0;
-  width: 238px;
+  width: 100%;
   color: #333;
 }
 .ui-calendar-date td, .ui-calendar-date th {
   font-weight: normal;
-  border: none;
   text-align: center;
+  border: none;
   width: 34px;
   padding: 4px 0;
 }
@@ -34,9 +35,6 @@
 .ui-calendar-date .ui-calendar-date-column .previous-month,
 .ui-calendar-date .ui-calendar-date-column .next-month {
   color: #ccc;
-}
-.ui-calendar-date .ui-calendar-date-column td {
-  cursor: pointer;
 }
 .ui-calendar-date .ui-calendar-date-column td:hover {
   cursor: pointer;
@@ -62,25 +60,25 @@
   border: 1px solid #dadada;
   box-shadow: 1px 1px 9px #ccc;
   text-align: center;
+  border-spacing: 0;
+  width: 238px;
 }
 .ui-calendar-month tr {
   background-color: #f9f9f9;
   border: none;
   margin: 0;
   padding: 0;
-  width: 238px;
+  width: 100%;
   color: #333;
 }
 .ui-calendar-month .ui-calendar-month-column td {
-  display: inline-block;
-  border: none;
   text-align: center;
-  cursor: pointer;
-  width: 78px;
-  margin: 2px;
+  width: 76px;
+  border: none;
   padding: 6px 0;
 }
 .ui-calendar-month .ui-calendar-month-column td:hover {
+  cursor: pointer;
   color: #333;
   background: #dadada;
 }
@@ -103,25 +101,25 @@
   border: 1px solid #dadada;
   box-shadow: 1px 1px 9px #ccc;
   text-align: center;
+  border-spacing: 0;
+  width: 238px;
 }
 .ui-calendar-year tr {
   background-color: #f9f9f9;
   border: none;
   margin: 0;
   padding: 0;
-  width: 238px;
+  width: 100%;
   color: #333;
 }
 .ui-calendar-year .ui-calendar-year-column td {
-  display: inline-block;
-  border: none;
   text-align: center;
-  cursor: pointer;
-  width: 78px;
-  margin: 2px;
+  width: 76px;
+  border: none;
   padding: 6px 0;
 }
 .ui-calendar-year .ui-calendar-year-column td:hover {
+  cursor: pointer;
   color: #333;
   background: #dadada;
 }
@@ -137,14 +135,16 @@
 /*! endblock arale/calendar/0.9.0/css/year-debug.css */
 
 .ui-calendar {
-    position: absolute;
-    font: 16px/20px 'Xin Gothic', 'PT Sans', 'Hiragino Sans GB', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background: #f9f9f9;
-    border-collapse: collapse;
-    border-spacing: 0;
-    border: 1px solid #dadada;
-    box-shadow: 1px 1px 9px #ccc;
-    text-align: center;
+  position: absolute;
+  font: 16px/20px 'Xin Gothic', 'PT Sans', 'Hiragino Sans GB', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: #f9f9f9;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #dadada;
+  box-shadow: 1px 1px 9px #ccc;
+  text-align: center;
+  width: 238px;
+  z-index: 10;
 }
 .ui-calendar .ui-calendar-date,
 .ui-calendar .ui-calendar-month,
@@ -154,6 +154,7 @@
   box-shadow: none;
 }
 .ui-calendar .ui-calendar-pannel {
+  width: 238px;
   border-bottom: 1px solid #dadada;
   zoom: 1;
 }
@@ -167,9 +168,11 @@
   clear: both;
 }
 .ui-calendar .ui-calendar-control {
+  display: inline;
   display: inline-block;
   float: left;
   width: 12.5%;
+  *width: 29px;
   padding: 2px 0;
   cursor: pointer;
 }
@@ -179,14 +182,4 @@
 .ui-calendar .ui-calendar-pannel .month,
 .ui-calendar .ui-calendar-pannel .year {
   width: 25%;
-}
-.ui-double-calendar {
-  width: 420px;
-}
-.ui-double-calendar .ui-calendar-control {
-  width: 7%;
-}
-.ui-double-calendar .ui-calendar-pannel .month,
-.ui-double-calendar .ui-calendar-pannel .year {
-  width: 18%;
 }

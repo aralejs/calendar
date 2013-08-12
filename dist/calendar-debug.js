@@ -1,4 +1,4 @@
-define("arale/calendar/0.9.0/calendar-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "./base-calendar-debug", "arale/position/1.0.1/position-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug", "./i18n/{locale}-debug", "./date-column-debug", "./base-column-debug", "./templates/date-debug.handlebars", "./month-column-debug", "./templates/month-debug.handlebars", "./year-column-debug", "./templates/year-debug.handlebars" ], function(require, exports, module) {
+define("arale/calendar/0.9.0/calendar-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "./base-calendar-debug", "arale/position/1.0.1/position-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "./i18n/zh-cn-debug", "./date-column-debug", "./base-column-debug", "./month-column-debug", "./year-column-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var moment = require("gallery/moment/2.0.0/moment-debug");
     var BaseCalendar = require("./base-calendar-debug");
@@ -68,10 +68,11 @@ define("arale/calendar/0.9.0/calendar-debug", [ "$-debug", "gallery/moment/2.0.0
                 self.months.select(focus);
                 self.years.select(focus);
                 if (el) {
+                    self.trigger("selectDate", value);
                     if (moment.isMoment(value)) {
                         value = value.format(this.get("format"));
                     }
-                    self._output(value);
+                    self.output(value);
                 }
             });
             this.months.on("select", function(value, el) {
@@ -81,6 +82,7 @@ define("arale/calendar/0.9.0/calendar-debug", [ "$-debug", "gallery/moment/2.0.0
                 self.renderPannel();
                 if (el) {
                     self.renderContainer("dates", focus);
+                    self.trigger("selectMonth", focus);
                 }
             });
             this.years.on("select", function(value, el) {
@@ -90,6 +92,7 @@ define("arale/calendar/0.9.0/calendar-debug", [ "$-debug", "gallery/moment/2.0.0
                 self.renderPannel();
                 if (el && el.data("role") === "year") {
                     self.renderContainer("dates", focus);
+                    self.trigger("selectYear", focus);
                 }
             });
             var container = this.element.find("[data-role=container]");
@@ -126,6 +129,27 @@ define("arale/calendar/0.9.0/calendar-debug", [ "$-debug", "gallery/moment/2.0.0
             monthPannel.text(month);
             yearPannel.text(focus.year());
         },
+        focus: function(date) {
+            date = moment(date, this.get("format"));
+            this.dates.focus(date);
+            this.months.focus(date);
+            this.years.focus(date);
+        },
+        range: function(range) {
+            // change range dynamically
+            this.set("range", range);
+            this.dates.set("range", range);
+            this.months.set("range", range);
+            this.years.set("range", range);
+            this.renderContainer(this.get("mode"));
+        },
+        show: function() {
+            var value = this._outputTime();
+            if (value) {
+                this.dates.select(value);
+            }
+            Calendar.superclass.show.call(this);
+        },
         destroy: function() {
             this.dates.destroy();
             this.months.destroy();
@@ -133,15 +157,31 @@ define("arale/calendar/0.9.0/calendar-debug", [ "$-debug", "gallery/moment/2.0.0
             Calendar.superclass.destroy.call(this);
         }
     });
+    Calendar.BaseColumn = require("./base-column-debug");
+    Calendar.BaseCalendar = BaseCalendar;
+    Calendar.DateColumn = DateColumn;
+    Calendar.MonthColumn = MonthColumn;
+    Calendar.YearColumn = YearColumn;
     module.exports = Calendar;
 });
 
-define("arale/calendar/0.9.0/base-calendar-debug", [ "$-debug", "arale/position/1.0.1/position-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug", "arale/calendar/0.9.0/i18n/{locale}-debug" ], function(require, exports, module) {
+define("arale/calendar/0.9.0/base-calendar-debug", [ "$-debug", "arale/position/1.0.1/position-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/calendar/0.9.0/i18n/zh-cn-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var Position = require("arale/position/1.0.1/position-debug");
     var moment = require("gallery/moment/2.0.0/moment-debug");
-    var Widget = require("arale/widget/1.1.0/widget-debug");
-    var lang = require("arale/calendar/0.9.0/i18n/{locale}-debug") || {};
+    var Widget = require("arale/widget/1.1.1/widget-debug");
+    var Shim = require("arale/iframe-shim/1.0.2/iframe-shim-debug");
+    var lang = require("arale/calendar/0.9.0/i18n/zh-cn-debug") || {};
+    var ua = (window.navigator.userAgent || "").toLowerCase();
+    var match = ua.match(/msie\s+(\d+)/);
+    var insaneIE = false;
+    if (match && match[1]) {
+        // IE < 9
+        insaneIE = parseInt(match[1], 10) < 9;
+    }
+    if (document.documentMode && document.documentMode < 9) {
+        insaneIE = true;
+    }
     var BaseCalendar = Widget.extend({
         attrs: {
             lang: lang,
@@ -158,11 +198,11 @@ define("arale/calendar/0.9.0/base-calendar-debug", [ "$-debug", "arale/position/
             focus: {
                 value: "",
                 getter: function(val) {
-                    val = val ? val : $(this.get("trigger")).val();
-                    if (!val) {
-                        return moment();
+                    val = val || this._outputTime();
+                    if (val) {
+                        return moment(val, this.get("format"));
                     }
-                    return moment(val, this.get("format"));
+                    return moment();
                 },
                 setter: function(val) {
                     if (!val) {
@@ -209,23 +249,23 @@ define("arale/calendar/0.9.0/base-calendar-debug", [ "$-debug", "arale/position/
         },
         setup: function() {
             BaseCalendar.superclass.setup.call(this);
+            this.enable();
+            this._shim = new Shim(this.element).sync();
             var self = this;
-            var trigger = this.get("trigger");
-            if (trigger) {
-                var $trigger = $(this.get("trigger"));
-                $trigger.on(this.get("triggerType"), function() {
-                    self.show();
-                });
-                $trigger.on("blur", function() {
-                    self.hide();
-                });
-                this.element.on("mousedown", function(e) {
-                    // TODO: ie
-                    e.preventDefault();
-                });
-            }
+            // keep cursor focus in trigger
+            this.element.on("mousedown", function(e) {
+                if (insaneIE) {
+                    var trigger = $(self.get("trigger"))[0];
+                    trigger.onbeforedeactivate = function() {
+                        window.event.returnValue = false;
+                        trigger.onbeforedeactivate = null;
+                    };
+                }
+                e.preventDefault();
+            });
         },
         show: function() {
+            this.trigger("show");
             if (!this.rendered) {
                 this._pin();
                 this.render();
@@ -234,6 +274,7 @@ define("arale/calendar/0.9.0/base-calendar-debug", [ "$-debug", "arale/position/
             this.element.show();
         },
         hide: function() {
+            this.trigger("hide");
             this.element.hide();
         },
         _pin: function(align) {
@@ -248,29 +289,126 @@ define("arale/calendar/0.9.0/base-calendar-debug", [ "$-debug", "arale/position/
                 y: align.baseXY[1]
             });
         },
-        _output: function(value) {
+        _outputTime: function() {
+            // parse time from output value
+            var output = $(this.get("output"));
+            var value = output.val() || output.text();
+            if (value) {
+                value = moment(value, this.get("format"));
+                if (value.isValid()) {
+                    return value;
+                }
+            }
+        },
+        output: function(value) {
+            // send value to output
             var output = this.get("output");
             if (!output.length) {
                 return;
             }
-            if (typeof output[0].value === "undefined") {
-                output.text(value);
-            } else {
+            value = value || this.get("focus");
+            var tagName = output[0].tagName.toLowerCase();
+            if (tagName === "input" || tagName === "textarea") {
                 output.val(value);
+            } else {
+                output.text(value);
             }
             if (this.get("hideOnSelect")) {
                 this.hide();
             }
+        },
+        enable: function() {
+            // enable trigger for show calendar
+            var trigger = this.get("trigger");
+            if (!trigger) {
+                return;
+            }
+            var self = this;
+            var $trigger = $(trigger);
+            if ($trigger.attr("type") === "date") {
+                try {
+                    // remove default style for type date
+                    $trigger.attr("type", "text");
+                } catch (e) {}
+            }
+            var event = this.get("triggerType") + ".calendar";
+            $trigger.on(event, function() {
+                self.show();
+            });
+            $trigger.on("blur.calendar", function() {
+                self.hide();
+            });
+            // enable auto hide feature
+            if ($trigger[0].tagName.toLowerCase() !== "input") {
+                self.autohide();
+            }
+        },
+        disable: function() {
+            // disable trigger
+            var trigger = this.get("trigger");
+            var self = this;
+            if (trigger) {
+                var $trigger = $(trigger);
+                var event = this.get("triggerType") + ".calendar";
+                $trigger.off(event);
+                $trigger.off("blur.calendar");
+            }
+        },
+        autohide: function() {
+            // autohide when trigger is not input
+            var me = this;
+            var trigger = $(this.get("trigger"))[0];
+            var element = this.element;
+            // click anywhere except calendar and trigger
+            $("body").on("mousedown.calendar", function(e) {
+                // not click on element
+                if (element.find(e.target).length || element[0] === e.target) {
+                    return;
+                }
+                // not click on trigger
+                if (trigger !== e.target) {
+                    me.hide();
+                }
+            });
+        },
+        destroy: function() {
+            if (this._shim) {
+                this._shim.destroy();
+            }
+            // clean event binding of autohide
+            $("body").off("mousedown.calendar");
+            BaseCalendar.superclass.destroy.call(this);
         }
     });
     module.exports = BaseCalendar;
 });
 
-define("arale/calendar/0.9.0/date-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/calendar/0.9.0/base-column-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+define("arale/calendar/0.9.0/i18n/zh-cn-debug", [], {
+    Su: "日",
+    Mo: "一",
+    Tu: "二",
+    We: "三",
+    Th: "四",
+    Fr: "五",
+    Sa: "六",
+    Jan: "一月",
+    Feb: "二月",
+    Mar: "三月",
+    Apr: "四月",
+    May: "五月",
+    Jun: "六月",
+    Jul: "七月",
+    Aug: "八月",
+    Sep: "九月",
+    Oct: "十月",
+    Nov: "十一月",
+    Dec: "十二月"
+});
+
+define("arale/calendar/0.9.0/date-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/calendar/0.9.0/base-column-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var moment = require("gallery/moment/2.0.0/moment-debug");
     var BaseColumn = require("arale/calendar/0.9.0/base-column-debug");
-    var template = require("arale/calendar/0.9.0/templates/date-debug.handlebars");
     var DateColumn = BaseColumn.extend({
         attrs: {
             startDay: "Sun",
@@ -333,6 +471,12 @@ define("arale/calendar/0.9.0/date-column-debug", [ "$-debug", "gallery/moment/2.
             var selector = "[data-value=" + focus.format("YYYY-MM-DD") + "]";
             this.element.find(".focused-element").removeClass("focused-element");
             this.element.find(selector).addClass("focused-element");
+        },
+        inRange: function(date) {
+            if (!moment.isMoment(date)) {
+                date = moment(date, this.get("format"));
+            }
+            return BaseColumn.isInRange(date, this.get("range"));
         },
         _sync: function(focus, prev, el) {
             this.set("focus", focus);
@@ -451,12 +595,58 @@ define("arale/calendar/0.9.0/date-column-debug", [ "$-debug", "gallery/moment/2.
             items: list
         };
     }
+    /* template in handlebars
+  <table class="ui-calendar-date" data-role="date-column">
+    <tr class="ui-calendar-day-column">
+      {{#each day.items}}
+      <th class="ui-calendar-day ui-calendar-day-{{value}}" data-role="day" data-value="{{value}}">{{_ label}}</th>
+      {{/each}}
+    </tr>
+    {{#each date.items}}
+    <tr class="ui-calendar-date-column">
+      {{#each this}}
+      <td class="ui-calendar-day-{{day}} {{className}} {{#unless available}}disabled-element{{/unless}}" data-role="date" data-value="{{value}}">{{label}}</td>
+      {{/each}}
+    </tr>
+    {{/each}}
+  </table>
+  */
+    function template(model, options) {
+        // keep the same API as handlebars
+        var _ = options.helpers._;
+        var html = '<table class="ui-calendar-date" data-role="date-column">';
+        // day column
+        html += '<tr class="ui-calendar-day-column">';
+        $.each(model.day.items, function(i, item) {
+            html += '<th class="ui-calendar-day ui-calendar-day-' + item.value + '" ';
+            html += 'data-role="day" data-value="' + item.value + '">';
+            html += _(item.label);
+            html += "</th>";
+        });
+        html += "</tr>";
+        // date column
+        $.each(model.date.items, function(i, items) {
+            html += '<tr class="ui-calendar-date-column">';
+            $.each(items, function(i, item) {
+                var className = [ "ui-calendar-day-" + item.day, item.className || "" ];
+                if (!item.available) {
+                    className.push("disabled-element");
+                }
+                html += '<td class="' + className.join(" ") + '" data-role="date"';
+                html += 'data-value="' + item.value + '">';
+                html += item.label + "</td>";
+            });
+            html += "</tr>";
+        });
+        html += "</table>";
+        return html;
+    }
 });
 
-define("arale/calendar/0.9.0/base-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+define("arale/calendar/0.9.0/base-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var moment = require("gallery/moment/2.0.0/moment-debug");
-    var Widget = require("arale/widget/1.1.0/widget-debug");
+    var Widget = require("arale/widget/1.1.1/widget-debug");
     var BaseColumn = Widget.extend({
         attrs: {
             focus: {
@@ -479,6 +669,26 @@ define("arale/calendar/0.9.0/base-column-debug", [ "$-debug", "gallery/moment/2.
             },
             template: null,
             format: "YYYY-MM-DD",
+            range: {
+                value: "",
+                getter: function(val) {
+                    if (!val) {
+                        return null;
+                    }
+                    if ($.isArray(val)) {
+                        var start = val[0];
+                        if (start && start.length > 4) {
+                            start = moment(start, this.get("format"));
+                        }
+                        var end = val[1];
+                        if (end && end.length > 4) {
+                            end = moment(end, this.get("format"));
+                        }
+                        return [ start, end ];
+                    }
+                    return val;
+                }
+            },
             lang: {}
         },
         compileTemplate: function() {
@@ -537,157 +747,17 @@ define("arale/calendar/0.9.0/base-column-debug", [ "$-debug", "gallery/moment/2.
     };
 });
 
-define("arale/calendar/0.9.0/templates/date-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
-    var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
-    var template = Handlebars.template;
-    module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
-        this.compilerInfo = [ 3, ">= 1.0.0-rc.4" ];
-        helpers = helpers || {};
-        for (var key in Handlebars.helpers) {
-            helpers[key] = helpers[key] || Handlebars.helpers[key];
-        }
-        data = data || {};
-        var buffer = "", stack1, stack2, functionType = "function", escapeExpression = this.escapeExpression, helperMissing = helpers.helperMissing, self = this;
-        function program1(depth0, data) {
-            var buffer = "", stack1, options;
-            buffer += '\n    <th class="ui-calendar-day ui-calendar-day-';
-            if (stack1 = helpers.value) {
-                stack1 = stack1.call(depth0, {
-                    hash: {},
-                    data: data
-                });
-            } else {
-                stack1 = depth0.value;
-                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
-            }
-            buffer += escapeExpression(stack1) + '" data-role="day" data-value="';
-            if (stack1 = helpers.value) {
-                stack1 = stack1.call(depth0, {
-                    hash: {},
-                    data: data
-                });
-            } else {
-                stack1 = depth0.value;
-                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
-            }
-            buffer += escapeExpression(stack1) + '">';
-            options = {
-                hash: {},
-                data: data
-            };
-            buffer += escapeExpression((stack1 = helpers["_"], stack1 ? stack1.call(depth0, depth0.label, options) : helperMissing.call(depth0, "_", depth0.label, options))) + "</th>\n    ";
-            return buffer;
-        }
-        function program3(depth0, data) {
-            var buffer = "", stack1;
-            buffer += '\n  <tr class="ui-calendar-date-column">\n    ';
-            stack1 = helpers.each.call(depth0, depth0, {
-                hash: {},
-                inverse: self.noop,
-                fn: self.program(4, program4, data),
-                data: data
-            });
-            if (stack1 || stack1 === 0) {
-                buffer += stack1;
-            }
-            buffer += "\n  </tr>\n  ";
-            return buffer;
-        }
-        function program4(depth0, data) {
-            var buffer = "", stack1;
-            buffer += '\n    <td class="ui-calendar-day-';
-            if (stack1 = helpers.day) {
-                stack1 = stack1.call(depth0, {
-                    hash: {},
-                    data: data
-                });
-            } else {
-                stack1 = depth0.day;
-                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
-            }
-            buffer += escapeExpression(stack1) + " ";
-            if (stack1 = helpers.className) {
-                stack1 = stack1.call(depth0, {
-                    hash: {},
-                    data: data
-                });
-            } else {
-                stack1 = depth0.className;
-                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
-            }
-            buffer += escapeExpression(stack1) + " ";
-            stack1 = helpers.unless.call(depth0, depth0.available, {
-                hash: {},
-                inverse: self.noop,
-                fn: self.program(5, program5, data),
-                data: data
-            });
-            if (stack1 || stack1 === 0) {
-                buffer += stack1;
-            }
-            buffer += '" data-role="date" data-value="';
-            if (stack1 = helpers.value) {
-                stack1 = stack1.call(depth0, {
-                    hash: {},
-                    data: data
-                });
-            } else {
-                stack1 = depth0.value;
-                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
-            }
-            buffer += escapeExpression(stack1) + '">';
-            if (stack1 = helpers.label) {
-                stack1 = stack1.call(depth0, {
-                    hash: {},
-                    data: data
-                });
-            } else {
-                stack1 = depth0.label;
-                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
-            }
-            buffer += escapeExpression(stack1) + "</td>\n    ";
-            return buffer;
-        }
-        function program5(depth0, data) {
-            return "disabled-element";
-        }
-        buffer += '<table class="ui-calendar-date" data-role="date-column">\n  <tr class="ui-calendar-day-column">\n    ';
-        stack2 = helpers.each.call(depth0, (stack1 = depth0.day, stack1 == null || stack1 === false ? stack1 : stack1.items), {
-            hash: {},
-            inverse: self.noop,
-            fn: self.program(1, program1, data),
-            data: data
-        });
-        if (stack2 || stack2 === 0) {
-            buffer += stack2;
-        }
-        buffer += "\n  </tr>\n  ";
-        stack2 = helpers.each.call(depth0, (stack1 = depth0.date, stack1 == null || stack1 === false ? stack1 : stack1.items), {
-            hash: {},
-            inverse: self.noop,
-            fn: self.program(3, program3, data),
-            data: data
-        });
-        if (stack2 || stack2 === 0) {
-            buffer += stack2;
-        }
-        buffer += "\n</table>\n";
-        return buffer;
-    });
-});
-
-define("arale/calendar/0.9.0/month-column-debug", [ "$-debug", "arale/calendar/0.9.0/base-column-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+define("arale/calendar/0.9.0/month-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/calendar/0.9.0/base-column-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
+    var moment = require("gallery/moment/2.0.0/moment-debug");
     var BaseColumn = require("arale/calendar/0.9.0/base-column-debug");
-    var template = require("arale/calendar/0.9.0/templates/month-debug.handlebars");
     var MonthColumn = BaseColumn.extend({
         attrs: {
             template: template,
-            range: null,
             process: null,
             model: {
                 getter: function() {
-                    return createMonthModel(this.get("focus"), this.get("range"), this.get("process"));
+                    return createMonthModel(this.get("focus"), this.get("process"), this);
                 }
             }
         },
@@ -697,6 +767,12 @@ define("arale/calendar/0.9.0/month-column-debug", [ "$-debug", "arale/calendar/0
                 var value = el.data("value");
                 this.select(value, el);
             }
+        },
+        setup: function() {
+            MonthColumn.superclass.setup.call(this);
+            this.on("change:range", function() {
+                this.element.html($(this.compileTemplate()).html());
+            });
         },
         prev: function() {
             var focus = this.get("focus").add("months", -1);
@@ -725,8 +801,27 @@ define("arale/calendar/0.9.0/month-column-debug", [ "$-debug", "arale/calendar/0
             this.element.find(".focused-element").removeClass("focused-element");
             this.element.find(selector).addClass("focused-element");
         },
+        refresh: function() {
+            var focus = this.get("focus").year();
+            var year = this.element.find("[data-year]").data("year");
+            if (parseInt(year, 10) !== focus) {
+                this.element.html($(this.compileTemplate()).html());
+            }
+        },
+        inRange: function(date) {
+            var range = this.get("range");
+            if (date.month) {
+                return isInRange(date, range);
+            }
+            if (date.toString().length < 3) {
+                var time = this.get("focus");
+                return isInRange(time.clone().month(date), range);
+            }
+            return isInRange(moment(date, this.get("format")), range);
+        },
         _sync: function(focus, el) {
             this.set("focus", focus);
+            this.refresh();
             this.focus(focus);
             // if user call select(value, null) it will not trigger an event
             if (el !== null) {
@@ -738,13 +833,13 @@ define("arale/calendar/0.9.0/month-column-debug", [ "$-debug", "arale/calendar/0
     module.exports = MonthColumn;
     // helpers
     var MONTHS = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-    function createMonthModel(time, range, fn) {
+    function createMonthModel(time, fn, ctx) {
         var month = time.month();
         var items = [];
         for (i = 0; i < MONTHS.length; i++) {
             var item = {
                 value: i,
-                available: isInRange(i, range),
+                available: ctx.inRange.call(ctx, i),
                 label: MONTHS[i]
             };
             if (fn) {
@@ -754,6 +849,7 @@ define("arale/calendar/0.9.0/month-column-debug", [ "$-debug", "arale/calendar/0
             items.push(item);
         }
         var current = {
+            year: time.year(),
             value: month,
             label: MONTHS[month]
         };
@@ -767,113 +863,72 @@ define("arale/calendar/0.9.0/month-column-debug", [ "$-debug", "arale/calendar/0
             items: list
         };
     }
-    function isInRange(date, range) {
+    function isInRange(d, range) {
+        // reset to the first day
         if (range == null) {
             return true;
         }
         if ($.isArray(range)) {
             var start = range[0];
-            if (start && start.month) {
-                start = start.month();
-            }
             var end = range[1];
-            if (end && end.month) {
-                end = end.month();
-            }
             var result = true;
-            if (start) {
-                result = result && date >= start;
+            if (start && start.month) {
+                var lastDate = d.clone().date(d.daysInMonth());
+                lastDate.hour(23).minute(59).second(59).millisecond(999);
+                result = result && lastDate >= start;
+            } else if (start) {
+                result = result && d.month() + 1 >= start;
             }
-            if (end) {
-                result = result && date <= end;
+            if (end && end.month) {
+                var firstDate = d.clone().date(1);
+                firstDate.hour(0).minute(0).second(0).millisecond(0);
+                result = result && firstDate <= end;
+            } else if (end) {
+                result = result && d.month() + 1 <= end;
             }
             return result;
         }
+        if ($.isFunction(range)) {
+            return range(d);
+        }
         return true;
+    }
+    /* template in handlebars
+  <table class="ui-calendar-month" data-role="month-column">
+  {{#each items}}
+  <tr class="ui-calendar-month-column">
+      {{#each this}}
+      <td class="{{#unless available}}disabled-element{{/unless}}" data-role="month" data-value="{{value}}">{{_ label}}</td>
+      {{/each}}
+  </tr>
+  {{/each}}
+  </table>
+  */
+    function template(model, options) {
+        var _ = options.helpers._;
+        var html = '<table class="ui-calendar-month" data-role="month-column">';
+        $.each(model.items, function(i, items) {
+            html += '<tr class="ui-calendar-month-column" data-year="' + model.current.year + '">';
+            $.each(items, function(i, item) {
+                html += '<td data-role="month"';
+                if (!item.available) {
+                    html += ' class="disabled-element"';
+                }
+                html += 'data-value="' + item.value + '">';
+                html += _(item.label) + "</td>";
+            });
+            html += "</tr>";
+        });
+        html += "</table>";
+        return html;
     }
 });
 
-define("arale/calendar/0.9.0/templates/month-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
-    var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
-    var template = Handlebars.template;
-    module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
-        this.compilerInfo = [ 3, ">= 1.0.0-rc.4" ];
-        helpers = helpers || {};
-        for (var key in Handlebars.helpers) {
-            helpers[key] = helpers[key] || Handlebars.helpers[key];
-        }
-        data = data || {};
-        var buffer = "", stack1, self = this, functionType = "function", escapeExpression = this.escapeExpression, helperMissing = helpers.helperMissing;
-        function program1(depth0, data) {
-            var buffer = "", stack1;
-            buffer += '\n<tr class="ui-calendar-month-column">\n    ';
-            stack1 = helpers.each.call(depth0, depth0, {
-                hash: {},
-                inverse: self.noop,
-                fn: self.program(2, program2, data),
-                data: data
-            });
-            if (stack1 || stack1 === 0) {
-                buffer += stack1;
-            }
-            buffer += "\n</tr>\n";
-            return buffer;
-        }
-        function program2(depth0, data) {
-            var buffer = "", stack1, options;
-            buffer += '\n    <td class="';
-            stack1 = helpers.unless.call(depth0, depth0.available, {
-                hash: {},
-                inverse: self.noop,
-                fn: self.program(3, program3, data),
-                data: data
-            });
-            if (stack1 || stack1 === 0) {
-                buffer += stack1;
-            }
-            buffer += '" data-role="month" data-value="';
-            if (stack1 = helpers.value) {
-                stack1 = stack1.call(depth0, {
-                    hash: {},
-                    data: data
-                });
-            } else {
-                stack1 = depth0.value;
-                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
-            }
-            buffer += escapeExpression(stack1) + '">';
-            options = {
-                hash: {},
-                data: data
-            };
-            buffer += escapeExpression((stack1 = helpers["_"], stack1 ? stack1.call(depth0, depth0.label, options) : helperMissing.call(depth0, "_", depth0.label, options))) + "</td>\n    ";
-            return buffer;
-        }
-        function program3(depth0, data) {
-            return "disabled-element";
-        }
-        buffer += '<table class="ui-calendar-month" data-role="month-column">\n';
-        stack1 = helpers.each.call(depth0, depth0.items, {
-            hash: {},
-            inverse: self.noop,
-            fn: self.program(1, program1, data),
-            data: data
-        });
-        if (stack1 || stack1 === 0) {
-            buffer += stack1;
-        }
-        buffer += "\n</table>\n";
-        return buffer;
-    });
-});
-
-define("arale/calendar/0.9.0/year-column-debug", [ "$-debug", "arale/calendar/0.9.0/base-column-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.0/widget-debug", "arale/base/1.1.0/base-debug", "arale/class/1.0.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+define("arale/calendar/0.9.0/year-column-debug", [ "$-debug", "arale/calendar/0.9.0/base-column-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var BaseColumn = require("arale/calendar/0.9.0/base-column-debug");
-    var template = require("arale/calendar/0.9.0/templates/year-debug.handlebars");
     var YearColumn = BaseColumn.extend({
         attrs: {
-            range: null,
             process: null,
             template: template,
             model: {
@@ -889,7 +944,12 @@ define("arale/calendar/0.9.0/year-column-debug", [ "$-debug", "arale/calendar/0.
                 this.select(value, el);
             }
         },
-        templateHelpers: {},
+        setup: function() {
+            YearColumn.superclass.setup.call(this);
+            this.on("change:range", function() {
+                this.element.html($(this.compileTemplate()).html());
+            });
+        },
         prev: function() {
             var focus = this.get("focus").add("years", -1);
             return this._sync(focus);
@@ -923,6 +983,9 @@ define("arale/calendar/0.9.0/year-column-debug", [ "$-debug", "arale/calendar/0.
             if (focus < years.first().data("value") || focus > years.last().data("value")) {
                 this.element.html($(this.compileTemplate()).html());
             }
+        },
+        inRange: function(date) {
+            return isInRange(date, this.get("range"));
         },
         _sync: function(focus, el) {
             this.set("focus", focus);
@@ -1002,88 +1065,33 @@ define("arale/calendar/0.9.0/year-column-debug", [ "$-debug", "arale/calendar/0.
         }
         return true;
     }
-});
-
-define("arale/calendar/0.9.0/templates/year-debug.handlebars", [ "gallery/handlebars/1.0.2/runtime-debug" ], function(require, exports, module) {
-    var Handlebars = require("gallery/handlebars/1.0.2/runtime-debug");
-    var template = Handlebars.template;
-    module.exports = template(function(Handlebars, depth0, helpers, partials, data) {
-        this.compilerInfo = [ 3, ">= 1.0.0-rc.4" ];
-        helpers = helpers || {};
-        for (var key in Handlebars.helpers) {
-            helpers[key] = helpers[key] || Handlebars.helpers[key];
-        }
-        data = data || {};
-        var buffer = "", stack1, self = this, functionType = "function", escapeExpression = this.escapeExpression, helperMissing = helpers.helperMissing;
-        function program1(depth0, data) {
-            var buffer = "", stack1;
-            buffer += '\n  <tr class="ui-calendar-year-column">\n    ';
-            stack1 = helpers.each.call(depth0, depth0, {
-                hash: {},
-                inverse: self.noop,
-                fn: self.program(2, program2, data),
-                data: data
+    /* template in handlebars
+  <table class="ui-calendar-year" data-role="year-column">
+    {{#each items}}
+    <tr class="ui-calendar-year-column">
+      {{#each this}}
+      <td {{#unless available}}class="disabled-element"{{/unless}} data-role="{{role}}" data-value="{{value}}">{{_ label}}</td>
+      {{/each}}
+    </tr>
+    {{/each}}
+  </table>
+  */
+    function template(model, options) {
+        var _ = options.helpers._;
+        var html = '<table class="ui-calendar-year" data-role="year-column">';
+        $.each(model.items, function(i, items) {
+            html += '<tr class="ui-calendar-year-column">';
+            $.each(items, function(i, item) {
+                html += '<td data-role="' + item.role + '"';
+                if (!item.available) {
+                    html += ' class="disabled-element"';
+                }
+                html += 'data-value="' + item.value + '">';
+                html += _(item.label) + "</td>";
             });
-            if (stack1 || stack1 === 0) {
-                buffer += stack1;
-            }
-            buffer += "\n  </tr>\n  ";
-            return buffer;
-        }
-        function program2(depth0, data) {
-            var buffer = "", stack1, options;
-            buffer += "\n    <td ";
-            stack1 = helpers.unless.call(depth0, depth0.available, {
-                hash: {},
-                inverse: self.noop,
-                fn: self.program(3, program3, data),
-                data: data
-            });
-            if (stack1 || stack1 === 0) {
-                buffer += stack1;
-            }
-            buffer += ' data-role="';
-            if (stack1 = helpers.role) {
-                stack1 = stack1.call(depth0, {
-                    hash: {},
-                    data: data
-                });
-            } else {
-                stack1 = depth0.role;
-                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
-            }
-            buffer += escapeExpression(stack1) + '" data-value="';
-            if (stack1 = helpers.value) {
-                stack1 = stack1.call(depth0, {
-                    hash: {},
-                    data: data
-                });
-            } else {
-                stack1 = depth0.value;
-                stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
-            }
-            buffer += escapeExpression(stack1) + '">';
-            options = {
-                hash: {},
-                data: data
-            };
-            buffer += escapeExpression((stack1 = helpers["_"], stack1 ? stack1.call(depth0, depth0.label, options) : helperMissing.call(depth0, "_", depth0.label, options))) + "</td>\n    ";
-            return buffer;
-        }
-        function program3(depth0, data) {
-            return 'class="disabled-element"';
-        }
-        buffer += '<table class="ui-calendar-year" data-role="year-column">\n  ';
-        stack1 = helpers.each.call(depth0, depth0.items, {
-            hash: {},
-            inverse: self.noop,
-            fn: self.program(1, program1, data),
-            data: data
+            html += "</tr>";
         });
-        if (stack1 || stack1 === 0) {
-            buffer += stack1;
-        }
-        buffer += "\n</table>\n";
-        return buffer;
-    });
+        html += "</table>";
+        return html;
+    }
 });
