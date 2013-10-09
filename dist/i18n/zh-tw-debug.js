@@ -1,4 +1,4 @@
-define("arale/calendar/0.8.5/i18n/zh-cn/lang-debug", [], {
+define("arale/calendar/0.9.0/i18n/zh-tw-debug", [], {
     Su: "日",
     Mo: "一",
     Tu: "二",
@@ -17,6 +17,5 @@ define("arale/calendar/0.8.5/i18n/zh-cn/lang-debug", [], {
     Sep: "九月",
     Oct: "十月",
     Nov: "十一月",
-    Dec: "十二月",
-    Today: "今天"
+    Dec: "十二月"
 });

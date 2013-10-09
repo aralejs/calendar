@@ -1,389 +1,205 @@
-// # Calendar
-//
-// Calendar is also known as date-picker. It is widely used in web apps.
-//
-// This calendar is a part of [arale](http://aralejs.org) project, therefore,
-// it is suitable for any project that is powered by [seajs](http://seajs.org).
-//
-// ## Syntax Overview:
-//
-//     var Calendar = require('calendar');
-//     var cal = new Calendar({
-//         trigger: 'input.date-picker',
-//         format: "YYYY-MM-DD"
-//     });
-//
-// Need more complex task? Head over to Options section.
-//
-
 define(function(require, exports, module) {
+  var $ = require('$');
+  var moment = require('moment');
 
-    // Calendar is designed for desktop, we don't need to consider ``zepto``.
-    var $ = require('$');
-    var moment = require('moment');
-    var Overlay = require('overlay');
-    var Templatable = require('templatable');
-    var i18nlang = 'i18n!lang';
-    var lang = require(i18nlang) || {};
+  var BaseCalendar = require('./base-calendar');
+  var DateColumn = require('./date-column');
+  var MonthColumn = require('./month-column');
+  var YearColumn = require('./year-column');
+  var template = [
+    '<div class="ui-calendar">',
+    '<div class="ui-calendar-pannel" data-role="pannel">',
+    '<span class="ui-calendar-control" data-role="prev-year">&lt;&lt;</span>',
+    '<span class="ui-calendar-control" data-role="prev-month">&lt;</span>',
+    '<span class="ui-calendar-control month" data-role="current-month"></span>',
+    '<span class="ui-calendar-control year" data-role="current-year"></span>',
+    '<span class="ui-calendar-control" data-role="next-month">&gt;</span>',
+    '<span class="ui-calendar-control" data-role="next-year">&gt;&gt;</span>',
+    '</div>',
+    '<div class="ui-calendar-container" data-role="container">',
+    '</div>',
+    '</div>'
+  ].join('');
 
-    var template = require('./calendar-tpl');
-    var CalendarModel = require('./model');
+  var Calendar = BaseCalendar.extend({
+    attrs: {
+      mode: 'dates',
+      template: template
+    },
 
-    // ## Options
-    // default options for calendar
-    var defaults = {
-        // ### trigger and input
-        // element, usually input[type=date], or date icon
-        trigger: null,
-        triggerType: 'click',
-
-        // output format
-        format: 'YYYY-MM-DD',
-
-        // output field
-        output: {
-            value: '',
-            getter: function(val) {
-                val = val ? val : this.get('trigger');
-                return $(val);
-            }
-        },
-
-        // ### overlay
-        align: {
-            getter: function() {
-                var trigger = this.get('trigger');
-                if (trigger) {
-                    return {
-                        selfXY: [0, 0],
-                        baseElement: trigger,
-                        baseXY: [0, $(trigger).height() + 10]
-                    };
-                }
-                return {
-                    selfXY: [0, 0],
-                    baseXY: [0, 0]
-                };
-            }
-        },
-
-        // ### display
-        // start of a week, default is Sunday.
-        startDay: 'Sun',
-        showTime: false,
-        hideOnSelect: true,
-
-        // when initialize a calendar, which date should be focused.
-        // default is today.
-        focus: {
-            value: '',
-            getter: function(val) {
-                val = val ? val : $(this.get('trigger')).val();
-                if (!val) return moment();
-                return moment(val, this.get('format'));
-            }
-        },
-        range: null,
-
-        template: template,
-
-        model: {
-            getter: function() {
-                if (!this.hasOwnProperty('model')) {
-                    var modelConfig = {
-                        focus: this.get('focus'),
-                        range: this.get('range'),
-                        showTime: this.get('showTime'),
-                        startDay: this.get('startDay')
-                    };
-                    this.model = new CalendarModel(modelConfig);
-                }
-
-                return this.model;
-            }
+    events: {
+      'click [data-role=current-month]': function(ev) {
+        if (this.get('mode') === 'months') {
+          this.renderContainer('dates');
+        } else {
+          this.renderContainer('months');
         }
-    };
-
-    var Calendar = Overlay.extend({
-        Implements: [Templatable],
-
-        attrs: defaults,
-
-        events: {
-            'click [data-role=mode-year]': '_changeMode',
-            'click [data-role=prev-year]': 'prevYear',
-            'click [data-role=next-year]': 'nextYear',
-            'click [data-role=mode-month]': '_changeMode',
-            'click [data-role=prev-month]': 'prevMonth',
-            'click [data-role=next-month]': 'nextMonth',
-
-            'click [data-role=previous-10-year]': '_selectYear',
-            'click [data-role=next-10-year]': '_selectYear',
-            'click [data-role=year]': '_selectYear',
-            'click [data-role=month]': '_selectMonth',
-            'click [data-role=day]': '_selectDay',
-            'click [data-role=date]': '_selectDate',
-            'click [data-role=today]': '_selectToday'
-        },
-
-        templateHelpers: {
-            '_': function(key) {return lang[key] || key;}
-        },
-
-        setup: function() {
-            Calendar.superclass.setup.call(this);
-
-            var self = this;
-
-            // bind trigger
-            var $trigger = $(this.get('trigger'));
-            $trigger.on(this.get('triggerType'), function() {
-                self.show();
-                setFocusedElement(self.element, self.model);
-            });
-            $trigger.on('keydown', function(ev) {
-                self._keyControl(ev);
-            });
-            $trigger.on('blur', function() {
-                self.hide();
-            });
-
-            self.element.on('mousedown', function(ev) {
-                if ($.browser.msie && parseInt($.browser.version, 10) < 9) {
-                    var trigger = $trigger[0];
-                    trigger.onbeforedeactivate = function() {
-                        window.event.returnValue = false;
-                        trigger.onbeforedeactivate = null;
-                    };
-                }
-                ev.preventDefault();
-            });
-
-            // bind model change event
-            var model = this.model;
-            model.on('changeStartday changeMode', function() {
-                self.renderPartial('[data-role=data-container]');
-                self.renderPartial('[data-role=pannel-container]');
-                self.renderPartial('[data-role=month-year-container]');
-                setFocusedElement(self.element, self.model);
-            });
-            model.on('changeMonth changeYear', function() {
-                var mode = model.get('mode');
-                if (mode.date || mode.year) {
-                    self.renderPartial('[data-role=data-container]');
-                }
-                self.renderPartial('[data-role=month-year-container]');
-                setFocusedElement(self.element, self.model);
-            });
-            model.on('changeRange', function() {
-                self.renderPartial('[data-role=data-container]');
-            });
-            model.on('refresh', function() {
-                setFocusedElement(self.element, self.model);
-            });
-        },
-
-        show: function() {
-            Calendar.superclass.show.call(this);
-
-            var $output = this.get('output');
-            var date = $output.val();
-            if (date) this.setFocus(moment(date, this.get('format')));
-        },
-
-        range: function(range) {
-            this.model.changeRange(range);
-        },
-
-        prevYear: function() {
-            this.model.changeYear(-1);
-        },
-
-        nextYear: function() {
-            this.model.changeYear(1);
-        },
-
-        prevMonth: function() {
-            this.model.changeMonth(-1);
-        },
-
-        nextMonth: function() {
-            this.model.changeMonth(1);
-        },
-
-        setFocus: function(date) {
-            this.model.selectDate(date);
-            this.model.changeMode('date');
-            setFocusedElement(this.element, this.model);
-        },
-
-        _selectYear: function(ev) {
-            var el = $(ev.target);
-            if (el.data('role') === 'year') {
-                this.model.changeMode('date', {year: el.data('value')});
-            } else {
-                this.model.changeMode('year', {year: el.data('value')});
-            }
-        },
-
-        _selectMonth: function(ev) {
-            var el = $(ev.target);
-            this.model.changeMode('date', {month: el.data('value')});
-        },
-
-        _selectDay: function(ev) {
-            var el = $(ev.target);
-            this.model.changeStartDay(el.data('value'));
-        },
-
-        _selectDate: function(ev) {
-            var el = $(ev.target);
-            var date = this.model.selectDate(el.data('value'));
-            this._fillDate(date);
-        },
-
-        _selectToday: function(ev) {
-            var today = moment().format('YYYY-MM-DD');
-            var date = this.model.selectDate(today);
-            this._fillDate(date);
-        },
-
-        _changeMode: function(ev) {
-            var mode = $(ev.target).data('role').substring(5);
-            this.model.changeMode(mode);
-        },
-
-        _keyControl: function(ev) {
-            var modeMap = {
-                68: 'date',
-                77: 'month',
-                89: 'year'
-            };
-            if (ev.keyCode in modeMap) {
-                this.model.changeMode(modeMap[ev.keyCode]);
-                ev.preventDefault();
-                return false;
-            }
-            var codeMap = {
-                13: 'enter',
-                27: 'esc',
-                37: 'left',
-                38: 'up',
-                39: 'right',
-                40: 'down'
-            };
-            if (!(ev.keyCode in codeMap)) return;
-
-            ev.preventDefault();
-
-            var keyboard = codeMap[ev.keyCode];
-            var mode = this.model.get('mode');
-            if (ev.shiftKey && keyboard === 'down') {
-                this.nextYear();
-            } else if (ev.shiftKey && keyboard === 'up') {
-                this.prevYear();
-            } else if (ev.shiftKey && keyboard === 'right') {
-                this.nextMonth();
-            } else if (ev.shiftKey && keyboard === 'left') {
-                this.prevMonth();
-            } else if (keyboard === 'esc') {
-                this.hide();
-            } else if (mode.date) {
-                this._keyControlDate(keyboard);
-            } else if (mode.month) {
-                this._keyControlMonth(keyboard);
-            } else if (mode.year) {
-                this._keyControlYear(keyboard);
-            }
-        },
-
-        _keyControlDate: function(keyboard) {
-            if (keyboard === 'enter') {
-                var date = this.model.selectDate();
-                this._fillDate(date);
-                return;
-            }
-            var moves = {
-                'right': 1,
-                'left': -1,
-                'up': -7,
-                'down': 7
-            };
-            this.model.changeDate(moves[keyboard]);
-        },
-
-        _keyControlMonth: function(keyboard) {
-            if (keyboard === 'enter') {
-                var date = this.model.selectDate();
-                this.model.changeMode('date', {month: date.month()});
-                return;
-            }
-            var moves = {
-                'right': 1,
-                'left': -1,
-                'up': -3,
-                'down': 3
-            };
-            this.model.changeMonth(moves[keyboard]);
-        },
-
-        _keyControlYear: function(keyboard) {
-            if (keyboard === 'enter') {
-                var date = this.model.selectDate();
-                this.model.changeMode('date', {year: date.year()});
-                return;
-            }
-            var moves = {
-                'right': 1,
-                'left': -1,
-                'up': -3,
-                'down': 3
-            };
-            this.model.changeYear(moves[keyboard]);
-        },
-
-        _fillDate: function(date) {
-            if (!this.model.isInRange(date)) {
-                this.trigger('selectDisabledDate', date);
-                return this;
-            }
-            this.trigger('selectDate', date);
-
-            var trigger = this.get('trigger');
-            if (!trigger) {
-                return this;
-            }
-            var $output = this.get('output');
-            if (typeof $output[0].value === 'undefined') {
-                return this;
-            }
-            var value = date.format(this.get('format'));
-            $output.val(value);
-
-            if (this.get('hideOnSelect')) {
-              this.hide();
-            }
+      },
+      'click [data-role=current-year]': function(ev) {
+        if (this.get('mode') === 'years') {
+          this.renderContainer('dates');
+        } else {
+          this.renderContainer('years');
         }
-    });
+      },
+      'click [data-role=prev-year]': function(ev) {
+        var focus = this.years.prev();
+        this.dates.select(focus);
+        this.months.select(focus);
+      },
+      'click [data-role=next-year]': function(ev) {
+        var focus = this.years.next();
+        this.dates.select(focus);
+        this.months.select(focus);
+      },
+      'click [data-role=prev-month]': function(ev) {
+        var focus = this.months.prev();
+        this.dates.select(focus);
+        this.years.select(focus);
+      },
+      'click [data-role=next-month]': function(ev) {
+        var focus = this.months.next();
+        this.dates.select(focus);
+        this.years.select(focus);
+      }
+    },
 
-    function setFocusedElement(element, model) {
-        var current;
-        var mode = model.get('mode');
-        var o = ['date', 'month', 'year'];
-        for (var i = 0; i < o.length; i++) {
-            if (mode[o[i]]) current = o[i];
+    setup: function() {
+      Calendar.superclass.setup.call(this);
+      this.renderPannel();
+
+      var attrs = {
+        lang: this.get('lang'),
+        focus: this.get('focus'),
+        range: this.get('range'),
+        format: this.get('format'),
+        startDay: this.get('startDay'),
+        process: this.get('process')
+      };
+
+      this.dates = new DateColumn(attrs);
+      this.months = new MonthColumn(attrs);
+      this.years = new YearColumn(attrs);
+
+      var self = this;
+      this.dates.on('select', function(value, el) {
+        self.set('focus', value);
+        var focus = self.get('focus');
+        self.months.select(focus);
+        self.years.select(focus);
+        if (el) {
+          self.trigger('selectDate', value);
+          if (moment.isMoment(value)) {
+            value = value.format(this.get('format'));
+          }
+          self.output(value);
         }
-        if (!current) return;
-        var selector = '[data-value=' + model.get(current).current.value + ']';
-        element.find('.focused-element').removeClass('focused-element');
-        element.find(selector).addClass('focused-element');
+      });
+      this.months.on('select', function(value, el) {
+        var focus = self.get('focus');
+        focus.month(value);
+        self.set('focus', focus);
+        self.renderPannel();
+        if (el) {
+          self.renderContainer('dates', focus);
+          self.trigger('selectMonth', focus);
+        }
+      });
+      this.years.on('select', function(value, el) {
+        var focus = self.get('focus');
+        focus.year(value);
+        self.set('focus', focus);
+        self.renderPannel();
+        if (el && el.data('role') === 'year') {
+          self.renderContainer('dates', focus);
+          self.trigger('selectYear', focus);
+        }
+      });
+
+      var container = this.element.find('[data-role=container]');
+      container.append(this.dates.element);
+      container.append(this.months.element);
+      container.append(this.years.element);
+      this.renderContainer('dates');
+    },
+
+    renderContainer: function(mode, focus) {
+      this.set('mode', mode);
+
+      focus = focus || this.get('focus');
+
+      this.dates.hide();
+      this.months.hide();
+      this.years.hide();
+      this.dates.select(focus, null);
+      this.months.select(focus, null);
+      this.years.select(focus, null);
+
+      if (mode === 'dates') {
+        this.dates.element.show();
+      } else if (mode === 'months') {
+        this.months.element.show();
+      } else if (mode === 'years') {
+        this.years.element.show();
+      }
+      return this;
+
+    },
+
+    renderPannel: function() {
+      var focus = this.get('focus');
+      var monthPannel = this.element.find('[data-role=current-month]');
+      var yearPannel = this.element.find('[data-role=current-year]');
+
+      var MONTHS = [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+        'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      ];
+
+      var month = MONTHS[focus.month()];
+      month = this.get('lang')[month] || month;
+
+      monthPannel.text(month);
+      yearPannel.text(focus.year());
+    },
+
+    focus: function(date) {
+      date = moment(date, this.get('format'));
+      this.dates.focus(date);
+      this.months.focus(date);
+      this.years.focus(date);
+    },
+
+    range: function(range) {
+      // change range dynamically
+      this.set('range', range);
+      this.dates.set('range', range);
+      this.months.set('range', range);
+      this.years.set('range', range);
+      this.renderContainer(this.get('mode'));
+    },
+
+    show: function() {
+      var value = this._outputTime();
+      if (value) {
+        this.dates.select(value);
+      }
+      Calendar.superclass.show.call(this);
+    },
+
+    destroy: function() {
+      this.dates.destroy();
+      this.months.destroy();
+      this.years.destroy();
+      Calendar.superclass.destroy.call(this);
     }
+  });
 
-    Calendar.autoRender = function(config) {
-        config.trigger = config.element;
-        config.element = '';
-        new Calendar(config);
-    };
+  Calendar.BaseColumn = require('./base-column');
+  Calendar.BaseCalendar = BaseCalendar;
+  Calendar.DateColumn = DateColumn;
+  Calendar.MonthColumn = MonthColumn;
+  Calendar.YearColumn = YearColumn;
 
-    module.exports = Calendar;
+  module.exports = Calendar;
 });

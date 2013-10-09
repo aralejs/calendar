@@ -1,0 +1,50 @@
+.ui-calendar-date {
+  font: 16px/20px 'Xin Gothic', 'PT Sans', 'Hiragino Sans GB', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  border-collapse: collapse;
+  background-color: #f9f9f9;
+  border: 1px solid #dadada;
+  box-shadow: 1px 1px 9px #ccc;
+  text-align: center;
+  border-spacing: 0;
+  width: 238px;
+}
+.ui-calendar-date tr {
+  background-color: #f9f9f9;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  color: #333;
+}
+.ui-calendar-date td, .ui-calendar-date th {
+  font-weight: normal;
+  text-align: center;
+  border: none;
+  width: 34px;
+  padding: 4px 0;
+}
+.ui-calendar-date .ui-calendar-day-column {
+  border-bottom: 1px solid #dadada;
+}
+.ui-calendar-date .ui-calendar-day-0,
+.ui-calendar-date .ui-calendar-day-6 {
+  color: #d64;
+}
+.ui-calendar-date .ui-calendar-date-column .previous-month,
+.ui-calendar-date .ui-calendar-date-column .next-month {
+  color: #ccc;
+}
+.ui-calendar-date .ui-calendar-date-column td:hover {
+  cursor: pointer;
+  color: #333;
+  background: #dadada;
+}
+.ui-calendar-date .ui-calendar-date-column td.focused-element {
+  color: #fff;
+  background: #d64;
+}
+.ui-calendar-date .ui-calendar-date-column td.disabled-element {
+  background: #eee;
+  color: #bbb;
+  cursor: not-allowed;
+}

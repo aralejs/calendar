@@ -2,7 +2,8 @@
 
 -------------
 
-[![Build Status](https://secure.travis-ci.org/aralejs/calendar.png)](https://travis-ci.org/aralejs/calendar)
+[![Build Status](https://travis-ci.org/aralejs/calendar.png)](https://travis-ci.org/aralejs/calendar)
+[![Coverage Status](https://coveralls.io/repos/aralejs/calendar/badge.png)](https://coveralls.io/r/aralejs/calendar)
 
 
 提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。
@@ -72,6 +73,14 @@ range: function(time) {
 }
 ```
 
+### hideOnSelect `boolean`
+
+选择日期时日历自动隐藏，默认为 true
+
+### output `element`
+
+选择日期时自动填充到 output，默认 output 同 trigger。
+
 
 ## Methods
 
@@ -79,35 +88,41 @@ range: function(time) {
 
 ### show()
 
-显示日历。继承自 [Overlay](http://aralejs.org/overlay/)。
+显示日历。
 
 ### hide()
 
-隐藏日历。继承自 [Overlay](http://aralejs.org/overlay/)。
+隐藏日历。
 
-### range(aRange)
 
-动态修改日历的 range，参考双日历演示。
+### disable()
+
+禁用 trigger。
+
+### enable()
+
+启用 trigger。
+
+### autohide()
+
+当时 trigger 不是 input 时，调用此方法可自动隐藏日历。
+
+
+### focus(date)
+
+焦点设置为指定时间。
 
 ```javascript
-cal.range(['2012-10-10', '2012-10-19'])
+cal.focus('2012-12-25');
 ```
 
-### prevYear()
+### range(range)
 
-切换到上一年。
+重新设置 range。
 
-### nextYear()
+### output(date)
 
-切换到下一年。
-
-### prevMonth()
-
-切换到上一月。
-
-### nextMonth()
-
-切换到下一月。
+将 date 填入 output 里。
 
 
 ## Events
@@ -120,6 +135,14 @@ cal.on('..event..', function(param){
 })
 ```
 
+### show
+
+日历显示时。
+
+### hide
+
+日历隐藏时。
+
 ### selectDate `moment`
 
 当用户选择日期时。
@@ -130,16 +153,43 @@ cal.on('..event..', function(param){
 })
 ```
 
-### selectDisabledDate `moment`
+### selectMonth `moment`
 
-当用户选择了不可用的日期时。
+当用户选择月份时。
 
 ```javascript
-.on('selectDisabledDate', function(date) {
+.on('selectMonth', function(date) {
     // date is a moment instance
 })
 ```
 
-## More information
 
-该日历大量使用 [moment](http://momentjs.com)，请查看 moment 官网，获取更多帮助。
+### selectYear `moment`
+
+当用户选择年份时。
+
+```javascript
+.on('selectYear', function(date) {
+    // date is a moment instance
+})
+```
+
+## Developer API
+
+Calendar 自身也是基于 Developer API 来实现的。
+
+### Calendar.DateColumn
+
+日期表，见示例: [date-column](http://aralejs.org/calendar/examples/date-column.html)
+
+### Calendar.MonthColumn
+
+月份表，见示例: [month-column](http://aralejs.org/calendar/examples/month-column.html)
+
+### Calendar.YearColumn
+
+年份表，见示例: [year-column](http://aralejs.org/calendar/examples/year-column.html)
+
+### Calendar.BaseCalendar
+
+基础日历。
