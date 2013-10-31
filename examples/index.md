@@ -15,7 +15,7 @@
 最简示例，没有任何特殊要求：
 
 ````html
-<input id="date-nothing" type="text" />
+<input id="date-nothing" type="text"  value="2013-10-31"/>
 ````
 
 ````javascript
@@ -23,7 +23,7 @@ seajs.use('calendar', function(Calendar) {
     var t1 = (new Date).getTime();
     new Calendar({trigger: '#date-nothing'});
     var t2 = (new Date).getTime();
-    document.title = (t2 - t1);
+    document.title += (t2 - t1);
 });
 ````
 
@@ -232,4 +232,4 @@ seajs.use('calendar', function(Calendar) {
         c1.range([t1, date]);
     });
 });
-```
+````
