@@ -2,6 +2,9 @@
 
 ------------
 
+## 1.0.0
+
+`tag:improved` [new UI](http://demo.alibaba-inc.com/categories/872/projects/4232/vds/16228)
 
 ## 0.8.5
 

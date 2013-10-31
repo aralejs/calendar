@@ -15,7 +15,7 @@
 最简示例，没有任何特殊要求：
 
 ````html
-<input id="date-nothing" type="text"  value="2013-10-31"/>
+<input id="date-nothing" type="text" />
 ````
 
 ````javascript
