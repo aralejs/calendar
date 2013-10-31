@@ -1,15 +1,16 @@
+/* year */
 .ui-calendar-year {
-  font: 16px/20px 'Xin Gothic', 'PT Sans', 'Hiragino Sans GB', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size:14px;
   border-collapse: collapse;
-  background-color: #f9f9f9;
+  background-color: #fff;
   border: 1px solid #dadada;
   box-shadow: 1px 1px 9px #ccc;
   text-align: center;
   border-spacing: 0;
-  width: 238px;
+  width: 210px;
 }
 .ui-calendar-year tr {
-  background-color: #f9f9f9;
+  background-color: #fff;
   border: none;
   margin: 0;
   padding: 0;
@@ -24,12 +25,12 @@
 }
 .ui-calendar-year .ui-calendar-year-column td:hover {
   cursor: pointer;
-  color: #333;
-  background: #dadada;
+  color: #fff;
+  background: #FFC4A4;
 }
 .ui-calendar-year .ui-calendar-year-column td.focused-element {
   color: #fff;
-  background: #d64;
+  background: #f97229;
 }
 .ui-calendar-year .ui-calendar-year-column td.disabled-element {
   background: #eee;
