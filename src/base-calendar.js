@@ -18,6 +18,9 @@ define(function(require, exports, module) {
     insaneIE = true;
   }
 
+  var current_date = moment();
+  current_date = moment([current_date.year(), current_date.month(), current_date.date()]);
+
   var BaseCalendar = Widget.extend({
     attrs: {
       lang: lang,
@@ -39,11 +42,11 @@ define(function(require, exports, module) {
           if (val) {
             return moment(val, this.get('format'));
           }
-          return moment();
+          return current_date;
         },
         setter: function(val) {
           if (!val) {
-            return moment();
+            return current_date;
           }
           return moment(val, this.get('format'));
         }

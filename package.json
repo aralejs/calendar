@@ -6,7 +6,7 @@
   "author": "Hsiaoming Yang <me@lepture.com>",
   "maintainers": [
     "冒顿 <hotoo.cn@gmail.com>",
-    "偏右 <afc163@gmail.com>"
+    "乔花 <shengyan1985@gmail.com>"
   ],
   "homepage": "http://aralejs.org/calendar/",
   "repository": {
@@ -25,6 +25,7 @@
       "base": "arale/base/1.1.1/base",
       "position": "arale/position/1.0.1/position",
       "iframe-shim": "arale/iframe-shim/1.0.2/iframe-shim",
+      "handlebars": "gallery/handlebars/1.0.2/handlebars",
       "widget": "arale/widget/1.1.1/widget"
     },
     "output": [

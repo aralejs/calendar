@@ -2,6 +2,9 @@ define(function(require, exports, module) {
   var $ = require('$');
   var moment = require('moment');
   var Widget = require('widget');
+  
+  var current_date = moment();
+  current_date = moment([current_date.year(), current_date.month(), current_date.date()]);
 
   var BaseColumn = Widget.extend({
     attrs: {
@@ -11,11 +14,11 @@ define(function(require, exports, module) {
           if (val) {
             return val;
           }
-          return moment();
+          return current_date;
         },
         setter: function(val) {
           if (!val) {
-            return moment();
+            return current_date;
           }
           if (moment.isMoment(val)) {
             return val;

@@ -1,4 +1,4 @@
-define("arale/calendar/0.9.0/i18n/ja-debug", [], {
+define("arale/calendar/1.0.0/i18n/ja-debug", [], {
     Su: "日",
     Mo: "月",
     Tu: "火",

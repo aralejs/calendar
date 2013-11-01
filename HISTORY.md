@@ -6,6 +6,8 @@
 
 `tag:improved` [new UI](http://demo.alibaba-inc.com/categories/872/projects/4232/vds/16228)
 
+`tag:improved` [#53](https://github.com/aralejs/calendar/issues/53) focus 默认值从原来的当前日期时间 `moment()` 改为当前日期的零点 `moment([current_date.year(), current_date.month(), current_date.date()])`
+
 ## 0.8.5
 
 `tag:improved` update arale/overlay to 1.0.1

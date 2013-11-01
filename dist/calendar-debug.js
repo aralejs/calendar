@@ -1,4 +1,4 @@
-define("arale/calendar/0.9.0/calendar-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "./base-calendar-debug", "arale/position/1.0.1/position-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "./i18n/zh-cn-debug", "./date-column-debug", "./base-column-debug", "./month-column-debug", "./year-column-debug" ], function(require, exports, module) {
+define("arale/calendar/1.0.0/calendar-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "./base-calendar-debug", "arale/position/1.0.1/position-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "./i18n/zh-cn-debug", "./date-column-debug", "./base-column-debug", "./month-column-debug", "./year-column-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var moment = require("gallery/moment/2.0.0/moment-debug");
     var BaseCalendar = require("./base-calendar-debug");
@@ -165,13 +165,13 @@ define("arale/calendar/0.9.0/calendar-debug", [ "$-debug", "gallery/moment/2.0.0
     module.exports = Calendar;
 });
 
-define("arale/calendar/0.9.0/base-calendar-debug", [ "$-debug", "arale/position/1.0.1/position-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/calendar/0.9.0/i18n/zh-cn-debug" ], function(require, exports, module) {
+define("arale/calendar/1.0.0/base-calendar-debug", [ "$-debug", "arale/position/1.0.1/position-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug", "arale/iframe-shim/1.0.2/iframe-shim-debug", "arale/calendar/1.0.0/i18n/zh-cn-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var Position = require("arale/position/1.0.1/position-debug");
     var moment = require("gallery/moment/2.0.0/moment-debug");
     var Widget = require("arale/widget/1.1.1/widget-debug");
     var Shim = require("arale/iframe-shim/1.0.2/iframe-shim-debug");
-    var lang = require("arale/calendar/0.9.0/i18n/zh-cn-debug") || {};
+    var lang = require("arale/calendar/1.0.0/i18n/zh-cn-debug") || {};
     var ua = (window.navigator.userAgent || "").toLowerCase();
     var match = ua.match(/msie\s+(\d+)/);
     var insaneIE = false;
@@ -182,6 +182,8 @@ define("arale/calendar/0.9.0/base-calendar-debug", [ "$-debug", "arale/position/
     if (document.documentMode && document.documentMode < 9) {
         insaneIE = true;
     }
+    var current_date = moment();
+    current_date = moment([ current_date.year(), current_date.month(), current_date.date() ]);
     var BaseCalendar = Widget.extend({
         attrs: {
             lang: lang,
@@ -202,11 +204,11 @@ define("arale/calendar/0.9.0/base-calendar-debug", [ "$-debug", "arale/position/
                     if (val) {
                         return moment(val, this.get("format"));
                     }
-                    return moment();
+                    return current_date;
                 },
                 setter: function(val) {
                     if (!val) {
-                        return moment();
+                        return current_date;
                     }
                     return moment(val, this.get("format"));
                 }
@@ -383,7 +385,7 @@ define("arale/calendar/0.9.0/base-calendar-debug", [ "$-debug", "arale/position/
     module.exports = BaseCalendar;
 });
 
-define("arale/calendar/0.9.0/i18n/zh-cn-debug", [], {
+define("arale/calendar/1.0.0/i18n/zh-cn-debug", [], {
     Su: "日",
     Mo: "一",
     Tu: "二",
@@ -405,10 +407,10 @@ define("arale/calendar/0.9.0/i18n/zh-cn-debug", [], {
     Dec: "十二月"
 });
 
-define("arale/calendar/0.9.0/date-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/calendar/0.9.0/base-column-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+define("arale/calendar/1.0.0/date-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/calendar/1.0.0/base-column-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var moment = require("gallery/moment/2.0.0/moment-debug");
-    var BaseColumn = require("arale/calendar/0.9.0/base-column-debug");
+    var BaseColumn = require("arale/calendar/1.0.0/base-column-debug");
     var DateColumn = BaseColumn.extend({
         attrs: {
             startDay: "Sun",
@@ -643,10 +645,12 @@ define("arale/calendar/0.9.0/date-column-debug", [ "$-debug", "gallery/moment/2.
     }
 });
 
-define("arale/calendar/0.9.0/base-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+define("arale/calendar/1.0.0/base-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var moment = require("gallery/moment/2.0.0/moment-debug");
     var Widget = require("arale/widget/1.1.1/widget-debug");
+    var current_date = moment();
+    current_date = moment([ current_date.year(), current_date.month(), current_date.date() ]);
     var BaseColumn = Widget.extend({
         attrs: {
             focus: {
@@ -655,11 +659,11 @@ define("arale/calendar/0.9.0/base-column-debug", [ "$-debug", "gallery/moment/2.
                     if (val) {
                         return val;
                     }
-                    return moment();
+                    return current_date;
                 },
                 setter: function(val) {
                     if (!val) {
-                        return moment();
+                        return current_date;
                     }
                     if (moment.isMoment(val)) {
                         return val;
@@ -747,10 +751,10 @@ define("arale/calendar/0.9.0/base-column-debug", [ "$-debug", "gallery/moment/2.
     };
 });
 
-define("arale/calendar/0.9.0/month-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/calendar/0.9.0/base-column-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+define("arale/calendar/1.0.0/month-column-debug", [ "$-debug", "gallery/moment/2.0.0/moment-debug", "arale/calendar/1.0.0/base-column-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var moment = require("gallery/moment/2.0.0/moment-debug");
-    var BaseColumn = require("arale/calendar/0.9.0/base-column-debug");
+    var BaseColumn = require("arale/calendar/1.0.0/base-column-debug");
     var MonthColumn = BaseColumn.extend({
         attrs: {
             template: template,
@@ -924,9 +928,9 @@ define("arale/calendar/0.9.0/month-column-debug", [ "$-debug", "gallery/moment/2
     }
 });
 
-define("arale/calendar/0.9.0/year-column-debug", [ "$-debug", "arale/calendar/0.9.0/base-column-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
+define("arale/calendar/1.0.0/year-column-debug", [ "$-debug", "arale/calendar/1.0.0/base-column-debug", "gallery/moment/2.0.0/moment-debug", "arale/widget/1.1.1/widget-debug", "arale/base/1.1.1/base-debug", "arale/class/1.1.0/class-debug", "arale/events/1.1.0/events-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
-    var BaseColumn = require("arale/calendar/0.9.0/base-column-debug");
+    var BaseColumn = require("arale/calendar/1.0.0/base-column-debug");
     var YearColumn = BaseColumn.extend({
         attrs: {
             process: null,

@@ -1,4 +1,4 @@
-define("arale/calendar/0.9.0/i18n/fr-debug", [], {
+define("arale/calendar/1.0.0/i18n/fr-debug", [], {
     Su: "Di",
     Mo: "Lu",
     Tu: "Ma",
