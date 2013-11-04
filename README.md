@@ -193,3 +193,7 @@ Calendar 自身也是基于 Developer API 来实现的。
 ### Calendar.BaseCalendar
 
 基础日历。
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/aralejs/calendar/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
