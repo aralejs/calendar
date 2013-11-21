@@ -239,7 +239,7 @@ define("arale/calendar/1.0.0/base-calendar-debug", [ "$-debug", "arale/position/
                         return {
                             selfXY: [ 0, 0 ],
                             baseElement: trigger,
-                            baseXY: [ 0, trigger.height() + 10 ]
+                            baseXY: [ 0, "100%+" + 10 ]
                         };
                     }
                     return {
