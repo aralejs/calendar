@@ -83,7 +83,7 @@ define(function(require, exports, module) {
             return {
               selfXY: [0, 0],
               baseElement: trigger,
-              baseXY: [0, '100%+' + 10]
+              baseXY: [0, '100%']
             };
           }
           return {
