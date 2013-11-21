@@ -270,6 +270,16 @@ define(function(require) {
       cal.element.remove();
       cal.destroy();
     });
+
+    it('can change language', function() {
+      cal = new Calendar({
+        lang: require('i18n/en')
+      });
+      cal.show();
+      expect(cal.element.html().indexOf('Jun') >= 0).to.be.ok();
+      cal.destroy();
+    });
+
   });
 });
 
