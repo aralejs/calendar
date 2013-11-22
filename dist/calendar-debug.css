@@ -58,7 +58,6 @@ table.ui-calendar-date tr {
 .ui-calendar-date .ui-calendar-date-column td.disabled-element {
   background: #e2e2e2;
   color: #c3c3c3;
-  cursor: not-allowed;
 }
 .ui-calendar-date .ui-calendar-date-column td.disabled-element:hover {
   border-color: #fff;
@@ -102,7 +101,6 @@ table.ui-calendar-month tr {
 .ui-calendar-month .ui-calendar-month-column td.disabled-element {
   background: #e2e2e2;
   color: #c3c3c3;
-  cursor: not-allowed;
 }
 .ui-calendar-month .ui-calendar-month-column td.disabled-element:hover {
   border-color: #fff;
@@ -145,7 +143,6 @@ table.ui-calendar-year tr {
 .ui-calendar-year .ui-calendar-year-column td.disabled-element {
   background: #e2e2e2;
   color: #c3c3c3;
-  cursor: not-allowed;
 }
 .ui-calendar-year .ui-calendar-year-column td.disabled-element:hover {
   border-color: #fff;
@@ -213,4 +210,8 @@ table.ui-calendar-year tr {
 .ui-calendar-container{
   border-bottom: 1px solid #dadada;
   background-color: #fff;
+}
+
+.ui-calendar td.disabled-element {
+  cursor: not-allowed!important;
 }

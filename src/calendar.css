@@ -64,3 +64,7 @@
   border-bottom: 1px solid #dadada;
   background-color: #fff;
 }
+
+.ui-calendar td.disabled-element {
+  cursor: not-allowed!important;
+}

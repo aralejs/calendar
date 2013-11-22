@@ -81,7 +81,7 @@ seajs.use('calendar', function(Calendar) {
 
 ## You can't select this date
 
-比如只能选择 2012-12-06 到 2012-12-25 之间的日期：
+比如只能选择 2012-12-06 到 2012-12-20 之间的日期：
 
 ````html
 <input id="date-disable-1" type="text" value="2012-12-08" />
@@ -91,7 +91,7 @@ seajs.use('calendar', function(Calendar) {
 seajs.use('calendar', function(Calendar) {
     var cal = new Calendar({
         trigger: '#date-disable-1',
-        range: ['2012-12-06', '2012-12-20']
+        range: ['2012-11-01', '2013-11-22']
     });
 });
 ````
