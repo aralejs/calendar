@@ -11,7 +11,7 @@
   border: 1px solid #dadada;
   box-shadow: 1px 1px 9px #ccc;
   text-align: center;
-  width: 189px;
+  width: 238px;
   z-index: 10;
   color: #666;
 }
@@ -24,10 +24,11 @@
   border-collapse: separate;
   *border-collapse: collapse;
   border-spacing: 0;
+  padding: 5px;
 }
 .ui-calendar .ui-calendar-pannel {
-  height: 25px;
-  line-height: 25px;
+  height: 30px;
+  line-height: 30px;
   padding: 0;
   margin: 0;
   background: #f9f9f9;
@@ -49,6 +50,7 @@
   *width: 20px;
   *zoom: 1;
   cursor: pointer;
+  font-weight: normal;
 }
 .ui-calendar .ui-calendar-control:hover {
   background-color: #efefee;
@@ -56,6 +58,7 @@
 .ui-calendar .ui-calendar-pannel .month,
 .ui-calendar .ui-calendar-pannel .year {
   width: 24%;
+  font-weight: bold;
 }
 .ui-calendar-container{
   border-bottom: 1px solid #dadada;

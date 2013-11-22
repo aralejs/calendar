@@ -16,19 +16,18 @@ table.ui-calendar-date tr {
   background: #fff;
 }
 .ui-calendar-date td, .ui-calendar-date th {
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
+  width: 34px;
+  height: 30px;
+  line-height: 30px;
   padding: 0;
   margin: 0;
   text-align: center;
-  border: 1px solid #fff;
-  *border: none;
+  border: none;
   cursor: pointer;
 }
 .ui-calendar-date .ui-calendar-day-column {
-  background:#868686;
-  color:#cacaca;
+  background: #868686;
+  color: #cacaca;
 }
 .ui-calendar-date .ui-calendar-day-column th {
   border-color: #868686;
@@ -40,7 +39,7 @@ table.ui-calendar-date tr {
 }
 .ui-calendar-date .ui-calendar-date-column td:hover {
   cursor: pointer;
-  border-color: #f57403;
+  background-color: #FFDEB8;
 }
 .ui-calendar-date .ui-calendar-date-column td.previous-month,
 .ui-calendar-date .ui-calendar-date-column td.next-month {
@@ -83,19 +82,18 @@ table.ui-calendar-month tr {
   background: #fff;
 }
 .ui-calendar-month .ui-calendar-month-column td {
-  width: 76px;
-  height: 25px;
-  line-height: 25px;
+  width: 79px;
+  height: 36px;
+  line-height: 36px;
   padding: 0;
   margin: 0;
   text-align: center;
-  border: 1px solid #fff;
-  *border: none;
+  border: none;
   cursor: pointer;
 }
 .ui-calendar-month .ui-calendar-month-column td:hover {
   cursor: pointer;
-  border-color: #f57403;
+  background-color: #FFDEB8;
 }
 .ui-calendar-month .ui-calendar-month-column td.focused-element {
   color: #fff;
@@ -128,19 +126,17 @@ table.ui-calendar-year tr {
   background: #fff;
 }
 .ui-calendar-year .ui-calendar-year-column td {
-  width: 76px;
-  height: 25px;
-  line-height: 25px;
+  width: 79px;
+  height: 36px;
+  line-height: 36px;
   padding: 0;
   margin: 0;
   text-align: center;
-  border: 1px solid #fff;
-  *border: none;
   cursor: pointer;
 }
 .ui-calendar-year .ui-calendar-year-column td:hover {
   cursor: pointer;
-  border-color: #f57403;
+  background-color: #FFDEB8;
 }
 .ui-calendar-year .ui-calendar-year-column td.focused-element {
   color: #fff;
@@ -165,7 +161,7 @@ table.ui-calendar-year tr {
   border: 1px solid #dadada;
   box-shadow: 1px 1px 9px #ccc;
   text-align: center;
-  width: 189px;
+  width: 238px;
   z-index: 10;
   color: #666;
 }
@@ -178,10 +174,11 @@ table.ui-calendar-year tr {
   border-collapse: separate;
   *border-collapse: collapse;
   border-spacing: 0;
+  padding: 5px;
 }
 .ui-calendar .ui-calendar-pannel {
-  height: 25px;
-  line-height: 25px;
+  height: 30px;
+  line-height: 30px;
   padding: 0;
   margin: 0;
   background: #f9f9f9;
@@ -203,6 +200,7 @@ table.ui-calendar-year tr {
   *width: 20px;
   *zoom: 1;
   cursor: pointer;
+  font-weight: normal;
 }
 .ui-calendar .ui-calendar-control:hover {
   background-color: #efefee;
@@ -210,6 +208,7 @@ table.ui-calendar-year tr {
 .ui-calendar .ui-calendar-pannel .month,
 .ui-calendar .ui-calendar-pannel .year {
   width: 24%;
+  font-weight: bold;
 }
 .ui-calendar-container{
   border-bottom: 1px solid #dadada;
