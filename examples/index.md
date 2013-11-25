@@ -91,7 +91,7 @@ seajs.use('calendar', function(Calendar) {
 seajs.use('calendar', function(Calendar) {
     var cal = new Calendar({
         trigger: '#date-disable-1',
-        range: ['2012-11-01', '2013-11-22']
+        range: ['2012-12-06', '2012-12-20']
     });
 });
 ````
