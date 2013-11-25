@@ -130,6 +130,7 @@ table.ui-calendar-year tr {
   padding: 0;
   margin: 0;
   text-align: center;
+  border: none;
   cursor: pointer;
 }
 .ui-calendar-year .ui-calendar-year-column td:hover {

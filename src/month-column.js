@@ -159,9 +159,6 @@ define(function(require, exports, module) {
       }
       return result;
     }
-    if ($.isFunction(range)) {
-      return range(d);
-    }
     return true;
   }
 

@@ -4,6 +4,8 @@
 
 ## 1.0.0
 
+`tag:improved` [#43](https://github.com/aralejs/calendar/issues/43) range 参数只对日期表生效
+
 `tag:improved` [new UI](http://demo.alibaba-inc.com/categories/872/projects/4232/vds/16228) 适当做了样式优化。
 
 `tag:improved` [#53](https://github.com/aralejs/calendar/issues/53) focus 默认值从原来的当前日期时间 `moment()` 改为当前日期的零点 `moment([current_date.year(), current_date.month(), current_date.date()])`

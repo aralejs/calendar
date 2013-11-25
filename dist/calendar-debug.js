@@ -892,9 +892,6 @@ define("arale/calendar/1.0.0/month-column-debug", [ "$-debug", "gallery/moment/2
             }
             return result;
         }
-        if ($.isFunction(range)) {
-            return range(d);
-        }
         return true;
     }
     /* template in handlebars
