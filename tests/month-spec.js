@@ -24,7 +24,7 @@ define(function(require) {
       cal.destroy();
     });
 
-    it('can delete is inrange', function() {
+    xit('can delete is inrange', function() {
       cal = new MonthColumn({
         focus: '2012-08-11',
         range: function(date) {
