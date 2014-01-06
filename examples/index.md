@@ -230,3 +230,30 @@ seajs.use('calendar', function(Calendar) {
     });
 });
 ````
+
+## 实现一个年月历
+
+````html
+<input id="year-month-cal" type="text" />
+````
+
+````javascript
+seajs.use('calendar', function(Calendar) {
+    var cal = new Calendar({
+        trigger: "#year-month-cal",
+        events: {
+          'click [data-role=current-month]': function(ev) {
+            this.renderContainer('months');
+          },
+          'click [data-role=current-year]': function(ev) {
+            this.renderContainer('years');
+          }
+        }
+    }).on('show selectYear', function() {
+        this.renderContainer('months');
+    }).on('selectMonth', function(date) {
+        this.hide();
+        this.output(date.format('YYYY-MM'));
+    });
+});
+````
