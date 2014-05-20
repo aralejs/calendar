@@ -3,10 +3,12 @@ var Position = require('position');
 var moment = require('moment');
 var Widget = require('arale-widget');
 var Shim = require('arale-iframe-shim');
-// var lang = require('./i18n/zh-cn') || {};
 
 var langs = {
   'zh-cn': require('./i18n/zh-cn'),
+  'zh-tw': require('./i18n/zh-tw'),
+  'fr': require('./i18n/fr'),
+  'ja': require('./i18n/ja'),
   'en': require('./i18n/en')
 };
 
