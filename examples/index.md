@@ -4,12 +4,6 @@
 
 ------------
 
-首先需要引入样式文件，默认提供了一个 simple 主题。
-
-````html
-<link rel="stylesheet" href="../src/calendar.css" />
-````
-
 ## There is nothing to do
 
 最简示例，没有任何特殊要求：
@@ -19,7 +13,7 @@
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     new Calendar({trigger: '#date-nothing'});
 });
 ````
@@ -33,7 +27,7 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     var lang = {
         'Su': '日', 'Mo': '月', 'Tu': '火', 'We': '水', 'Th': '木',
         'Fr': '金', 'Sa': '土',
@@ -62,7 +56,7 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     new Calendar({trigger: '#date-focus-1', focus: '2012-12-12'});
 });
 ````
@@ -74,7 +68,7 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     new Calendar({trigger: '#date-focus-2'});
 });
 ````
@@ -88,7 +82,7 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     var cal = new Calendar({
         trigger: '#date-disable-1',
         range: ['2012-12-06', '2012-12-20']
@@ -103,7 +97,7 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     var cal = new Calendar({
         trigger: '#date-disable-2',
         range: [null, '2012-12-25']
@@ -118,7 +112,7 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     var cal = new Calendar({
         trigger: '#date-disable-3',
         range: function(date) {
@@ -141,7 +135,7 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     new Calendar({trigger: '#date-format', format: 'YYYY MM-DD HH:mm:ss'});
 });
 ````
@@ -155,7 +149,7 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     // new Calendar({trigger: '#date-startday', startDay: 2});
     // new Calendar({trigger: '#date-startday', startDay: 'Wed'});
     new Calendar({trigger: '#date-startday', startDay: 'Wednesday'});
@@ -172,7 +166,7 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     new Calendar({trigger: '#date-not-hide', hideOnSelect: false});
 });
 ````
@@ -188,7 +182,7 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     new Calendar({trigger: '#date-trigger', output: "#date-output"});
 });
 ````
@@ -201,7 +195,7 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 ````javascript
-seajs.use(['jquery', 'calendar'], function($, Calendar) {
+seajs.use(['jquery', '../index'], function($, Calendar) {
     new Calendar({trigger: '#date-trigger-2', output: '#date-output-2'});
 });
 ````
@@ -215,7 +209,7 @@ seajs.use(['jquery', 'calendar'], function($, Calendar) {
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     var t1 = '2012-01-01';
     var t2 = '2015-01-01';
     var c1 = new Calendar({trigger: '#start-cal', range: [t1, null]})
@@ -238,7 +232,7 @@ seajs.use('calendar', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     var cal = new Calendar({
         trigger: "#year-month-cal",
         events: {

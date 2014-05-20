@@ -4,8 +4,6 @@
 
 -----
 
-<link rel="stylesheet" href="../src/css/date.css" />
-
 <style type="text/css">
 .ui-calendar-date {
 position: absolute;
@@ -16,7 +14,7 @@ right: 10%;
 
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     var date = new Calendar.DateColumn({});
     date.show();
 });

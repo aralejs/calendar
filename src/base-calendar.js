@@ -101,7 +101,9 @@ var BaseCalendar = Widget.extend({
     BaseCalendar.superclass.setup.call(this);
     this.enable();
     
-    this.set('lang', langs[this.get('lang')]);
+    if (typeof this.get('lang') === 'string') {
+      this.set('lang', langs[this.get('lang')]);
+    }
 
     this._shim = new Shim(this.element).sync();
 

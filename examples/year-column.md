@@ -4,8 +4,6 @@
 
 ------------
 
-<link rel="stylesheet" href="../src/css/year.css" />
-
 <style type="text/css">
 .ui-calendar-year {
 position: absolute;
@@ -16,7 +14,7 @@ right: 10%;
 
 
 ````javascript
-seajs.use('calendar', function(Calendar) {
+seajs.use('../index', function(Calendar) {
     var year = new Calendar.YearColumn({range: [2012]});
     year.show();
 });
