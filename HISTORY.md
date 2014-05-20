@@ -2,6 +2,10 @@
 
 ------------
 
+## 1.1.0
+
+`improved` 按照 spm@3.x 规范升级。
+
 ## 1.0.0
 
 `tag:improved` [#43](https://github.com/aralejs/calendar/issues/43) range 参数只对日期表生效

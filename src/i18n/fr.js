@@ -1,4 +1,4 @@
-define({
+module.exports = {
   'Su': 'Di',
   'Mo': 'Lu',
   'Tu': 'Ma',
@@ -18,4 +18,4 @@ define({
   'Oct': 'oct.',
   'Nov': 'nov.',
   'Dec': 'déc.'
-});
+};

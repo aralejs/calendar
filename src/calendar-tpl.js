@@ -1,10 +1,10 @@
-define(function(require, exports, module) {
-    var Handlebars = require('handlebars');
-(function() {
-  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+var Handlebars = require('handlebars-runtime');
+var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+
 module.exports = template(function (Handlebars,depth0,helpers,partials,data) {
+
   this.compilerInfo = [2,'>= 1.0.0-rc.3'];
-helpers = helpers || Handlebars.helpers; data = data || {};
+  helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
 
 function program1(depth0,data) {
@@ -189,6 +189,5 @@ function program17(depth0,data) {
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n    </ul>\n</div>\n";
   return buffer;
-  });
-})();
+
 });
