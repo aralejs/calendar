@@ -2,6 +2,7 @@
 
 -------------
 
+[![spm package](http://spmjs.io/badge/arale-calendar)](http://spmjs.io/package/arale-calendar)
 [![Build Status](https://travis-ci.org/aralejs/calendar.png)](https://travis-ci.org/aralejs/calendar)
 [![Coverage Status](https://coveralls.io/repos/aralejs/calendar/badge.png)](https://coveralls.io/r/aralejs/calendar)
 
