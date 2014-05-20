@@ -37,7 +37,7 @@
 .ui-calendar .ui-calendar-pannel:before {
   display: table;
   line-height: 0;
-  content: "";
+  content: '';
 }
 .ui-calendar .ui-calendar-pannel:after {
   clear: both;
