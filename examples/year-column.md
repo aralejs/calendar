@@ -28,19 +28,19 @@ var year = new YearColumn({..attributes..});
 
 ### focus `moment`
 
-初始聚焦的年份，默认为今年。接受任何 moment 支持的参数，推荐使用 ``YYYY-MM-DD`` 格式。
+初始聚焦的年份，默认为今年。接受任何 moment 支持的参数，推荐使用 `YYYY-MM-DD` 格式。
 
 
 ### format `string`
 
-输出日期格式，默认为 ``YYYY-MM-DD``
+输出日期格式，默认为 `YYYY-MM-DD`
 
 
 ### range `array|function`
 
 设置可选范围，可接受数组与函数。例如 [startYear, endYear]。
 
-推荐使用： ``["2012", "2014"]`` 这种写法，方便阅读。
+推荐使用： `["2012", "2014"]` 这种写法，方便阅读。
 
 
 ## Methods

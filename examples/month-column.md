@@ -29,11 +29,11 @@ var month = new MonthColumn({..attributes..});
 
 ### focus `moment`
 
-初始聚焦的年份，默认为当月。接受任何 moment 支持的参数，推荐使用 ``YYYY-MM-DD`` 格式。
+初始聚焦的年份，默认为当月。接受任何 moment 支持的参数，推荐使用 `YYYY-MM-DD` 格式。
 
 ### format `string`
 
-输出日期格式，默认为 ``YYYY-MM-DD``
+输出日期格式，默认为 `YYYY-MM-DD`
 
 ### range `array|function`
 

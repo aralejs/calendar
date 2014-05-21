@@ -61,7 +61,7 @@ seajs.use('../index', function(Calendar) {
 });
 ````
 
-另外，如果 ``input`` 框中有值，会将此值做为初始值：
+另外，如果 `input` 框中有值，会将此值做为初始值：
 
 ````html
 <input id="date-focus-2" type="text" value="2012-12-25" />
@@ -127,8 +127,8 @@ seajs.use('../index', function(Calendar) {
 
 ## Format of ouput
 
-默认的输入输出格式为 ``YYYY-MM-DD``，你可以设置为任何自己想要的格式，比如：
-``YYYY MM-DD HH:mm:ss``。
+默认的输入输出格式为 `YYYY-MM-DD`，你可以设置为任何自己想要的格式，比如：
+`YYYY MM-DD HH:mm:ss`。
 
 ````html
 <input id="date-format" type="text" />

@@ -34,11 +34,11 @@ trigger 唤出日历的元素，可以是：
 
 ### focus `moment`
 
-日历初始聚焦的日期，默认为今天。接受任何 moment 支持的参数，推荐使用 ``YYYY-MM-DD`` 格式。
+日历初始聚焦的日期，默认为今天。接受任何 moment 支持的参数，推荐使用 `YYYY-MM-DD` 格式。
 
 ### format `string`
 
-输出日期格式，默认为 ``YYYY-MM-DD``
+输出日期格式，默认为 `YYYY-MM-DD`
 
 ### align `overlay.align`
 
@@ -64,7 +64,7 @@ trigger 唤出日历的元素，可以是：
 
 设置可选范围，可接受数组与函数。例如 [startDate, endDate]，其中 startDate 与 endDate 支持所有 moment 支持的写法。
 
-推荐使用： ``["2012-12-12", "2014-01-01"]`` 这种写法，方便阅读。
+推荐使用： `["2012-12-12", "2014-01-01"]` 这种写法，方便阅读。
 
 函数示例：
 
@@ -194,7 +194,4 @@ Calendar 自身也是基于 Developer API 来实现的。
 ### Calendar.BaseCalendar
 
 基础日历。
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/aralejs/calendar/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
