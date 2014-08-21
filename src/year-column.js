@@ -154,6 +154,8 @@ function isInRange(date, range) {
       result = result && date <= end;
     }
     return result;
+  }  else if ($.isFunction(range)) {
+    return range(date);
   }
   return true;
 }

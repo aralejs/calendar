@@ -279,4 +279,13 @@ describe('Calendar', function() {
     cal.destroy();
   });
 
+  it('can set format', function() {
+    cal = new Calendar({
+      'focus': '01-02-2010',
+      'format': 'DD-MM-YYYY'
+    });
+    expect(cal.get('focus').format('YYYY-MM-DD')).to.equal(moment('2010-02-01').format('YYYY-MM-DD'));
+    cal.destroy();
+  });
+
 });

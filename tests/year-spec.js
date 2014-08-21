@@ -1,6 +1,7 @@
 var expect = require('expect.js');
 var YearColumn = require('../index').YearColumn;
 var moment = require('moment');
+var sinon = require('sinon');
 var cal;
 
 describe('Year Column', function() {

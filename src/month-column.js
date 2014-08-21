@@ -157,6 +157,8 @@ function isInRange(d, range) {
       result = result && (d.month() + 1) <= end;
     }
     return result;
+  } else if ($.isFunction(range)) {
+    return range(d);
   }
   return true;
 }
