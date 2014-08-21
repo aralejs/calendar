@@ -19,5 +19,6 @@ Thumbs.db
 build
 node_modules
 sea-modules
+spm_modules
 _site
 dist
