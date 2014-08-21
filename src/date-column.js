@@ -28,7 +28,8 @@ var DateColumn = BaseColumn.extend({
           this.get('focus'),
           this.get('startDay'),
           this.get('range'),
-          this.get('process')
+          this.get('process'),
+          this.get('format')
         );
         var day = createDayModel(this.get('startDay'));
         return {date: date, day: day};
@@ -45,13 +46,13 @@ var DateColumn = BaseColumn.extend({
   },
 
   prev: function() {
-    var prev = this.get('focus').format('YYYY-MM-DD');
+    var prev = this.get('focus').format(this.get('format'));
     var focus = this.get('focus').add('days', -1);
     return this._sync(focus, prev);
   },
 
   next: function() {
-    var prev = this.get('focus').format('YYYY-MM-DD');
+    var prev = this.get('focus').format(this.get('format'));
     var focus = this.get('focus').add('days', 1);
     return this._sync(focus, prev);
   },
@@ -61,14 +62,14 @@ var DateColumn = BaseColumn.extend({
       this.trigger('selectDisable', value, el);
       return value;
     }
-    var prev = this.get('focus').format('YYYY-MM-DD');
+    var prev = this.get('focus').format(this.get('format'));
     this.set('focus', value);
     return this._sync(this.get('focus'), prev, el);
   },
 
   focus: function(focus) {
     focus = focus || this.get('focus');
-    var selector = '[data-value=' + focus.format('YYYY-MM-DD') + ']';
+    var selector = '[data-value=' + focus.format(this.get('format')) + ']';
     this.element.find('.focused-element').removeClass('focused-element');
     this.element.find(selector).addClass('focused-element');
   },
@@ -140,13 +141,13 @@ function createDayModel(startDay) {
 }
 
 
-function createDateModel(current, startDay, range, fn) {
+function createDateModel(current, startDay, range, fn, format) {
   var items = [], delta, d, daysInMonth;
   startDay = parseStartDay(startDay);
 
   var pushData = function(d, className) {
     var item = {
-      value: d.format('YYYY-MM-DD'),
+      value: d.format(format),
       label: d.date(),
 
       day: d.day(),
@@ -201,7 +202,7 @@ function createDateModel(current, startDay, range, fn) {
   }
 
   var _current = {
-    value: current.format('YYYY-MM-DD'),
+    value: current.format(format),
     label: current.date()
   };
 
