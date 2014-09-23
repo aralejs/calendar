@@ -214,8 +214,10 @@ seajs.use('../index', function(Calendar) {
     var t2 = '2015-01-01';
     var c1 = new Calendar({trigger: '#start-cal', range: [t1, null]})
     var c2 = new Calendar({trigger: '#end-cal', range: [null, t2]})
+    console.log(c1.get('focus').format('YYYY-MM-DD'), c2.get('focus').format('YYYY-MM-DD'));
 
     c1.on('selectDate', function(date) {
+        console.log(c1.get('focus').format('YYYY-MM-DD'), c2.get('focus').format('YYYY-MM-DD'));
         c2.range([date, t2]);
     });
 

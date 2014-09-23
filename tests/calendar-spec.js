@@ -1,5 +1,6 @@
 var $ = require('jquery');
 var expect = require('expect.js');
+var sinon = require('sinon');
 var moment = require('moment');
 var Calendar = require('../index');
 var cal;
@@ -266,6 +267,16 @@ describe('Calendar', function() {
     cal.range(['2012-08-01', '2012-08-12']);
     expect(cal.element.find('[data-value=2012-08-15]').hasClass('disabled-element')).to.be.ok();
     expect(cal.element.find('[data-value=2012-08-10]').hasClass('disabled-element')).not.to.be.ok();
+    cal.element.remove();
+    cal.destroy();
+  });
+
+  it('should rerender whole pannel when calendar range', function() {
+    cal = new Calendar({focus: '2012-08-20'});
+    cal.show();
+    var renderPanel = sinon.spy(cal, 'renderPannel');
+    cal.range(['2012-08-01', '2012-08-12']);
+    expect(renderPanel.calledOnce).to.be.ok();
     cal.element.remove();
     cal.destroy();
   });

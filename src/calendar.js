@@ -176,6 +176,7 @@ var Calendar = BaseCalendar.extend({
     this.months.set('range', range);
     this.years.set('range', range);
     this.renderContainer(this.get('mode'));
+    this.renderPannel();
   },
 
   show: function() {

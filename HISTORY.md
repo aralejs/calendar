@@ -6,6 +6,9 @@
 
 `fixed` 修复自定义 format 导致日期选择和显示出错的问题。
 
+`fixed` 修复设置 range 范围后日期面板未重渲染导致的显示错误问题。[图例](https://t.alipayobjects.com/images/T1tqhcXmtDXXXXXXXX.png)
+
+
 ## 1.1.0
 
 `improved` 按照 spm@3.x 规范升级。
