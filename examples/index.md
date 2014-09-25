@@ -41,7 +41,7 @@ seajs.use('../index', function(Calendar) {
         align: {
           selfXY: [0, 0],
           baseElement: '#date-lang',
-          baseXY: [0, 10]
+          baseXY: [0, '100%+20']
         }
     });
 });
