@@ -107,7 +107,7 @@ var BaseCalendar = Widget.extend({
       this.set('lang', langs[this.get('lang')]);
     }
 
-    this._shim = new Shim(this.element).sync();
+    this._shim = new Shim(this.element);
 
     var self = this;
 
@@ -200,9 +200,11 @@ var BaseCalendar = Widget.extend({
     var event = this.get('triggerType') + '.calendar';
     $trigger.on(event, function() {
       self.show();
+      self._shim.sync();
     });
     $trigger.on('blur.calendar', function() {
       self.hide();
+      self._shim.sync();
     });
     // enable auto hide feature
     if ($trigger[0].tagName.toLowerCase() !== 'input') {
