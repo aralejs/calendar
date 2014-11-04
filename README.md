@@ -3,8 +3,8 @@
 -------------
 
 [![spm package](http://spmjs.io/badge/arale-calendar)](http://spmjs.io/package/arale-calendar)
-[![Build Status](https://travis-ci.org/aralejs/calendar.png)](https://travis-ci.org/aralejs/calendar)
-[![Coverage Status](https://coveralls.io/repos/aralejs/calendar/badge.png)](https://coveralls.io/r/aralejs/calendar)
+[![Build Status](https://img.shields.io/travis/aralejs/calendar.svg?style=flat)](https://travis-ci.org/aralejs/calendar)
+[![Coverage Status](https://img.shields.io/coveralls/aralejs/calendar.svg?style=flat)](https://coveralls.io/r/aralejs/calendar)
 
 
 提供图形化的日历界面供用户选择日期与时间，提供简洁的接口供开发者输出自定义格式的时间。
