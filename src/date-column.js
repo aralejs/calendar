@@ -69,7 +69,7 @@ var DateColumn = BaseColumn.extend({
 
   focus: function(focus) {
     focus = focus || this.get('focus');
-    var selector = '[data-value=' + focus.format(this.get('format')) + ']';
+    var selector = '[data-value="' + focus.format(this.get('format')) + '"]';
     this.element.find('.focused-element').removeClass('focused-element');
     this.element.find(selector).addClass('focused-element');
   },

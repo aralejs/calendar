@@ -128,7 +128,7 @@ seajs.use('../index', function(Calendar) {
 ## Format of ouput
 
 默认的输入输出格式为 `YYYY-MM-DD`，你可以设置为任何自己想要的格式，比如：
-`MM-DD-YYYY`。
+`MM/DD/YYYY`。
 
 ````html
 <input id="date-format" type="text" />
@@ -136,7 +136,7 @@ seajs.use('../index', function(Calendar) {
 
 ````javascript
 seajs.use('../index', function(Calendar) {
-    new Calendar({trigger: '#date-format', format: 'MM-DD'});
+    new Calendar({trigger: '#date-format', format: 'MM/DD/YYYY'});
 });
 ````
 

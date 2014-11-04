@@ -57,7 +57,7 @@ var MonthColumn = BaseColumn.extend({
 
   focus: function(focus) {
     focus = focus || this.get('focus');
-    var selector = '[data-value=' + focus.month() + ']';
+    var selector = '[data-value="' + focus.month() + '"]';
     this.element.find('.focused-element').removeClass('focused-element');
     this.element.find(selector).addClass('focused-element');
   },

@@ -55,7 +55,7 @@ var YearColumn = BaseColumn.extend({
 
   focus: function(focus) {
     focus = focus || this.get('focus');
-    var selector = '[data-value=' + focus.year() + ']';
+    var selector = '[data-value="' + focus.year() + '"]';
     this.element.find('.focused-element').removeClass('focused-element');
     this.element.find(selector).addClass('focused-element');
   },
