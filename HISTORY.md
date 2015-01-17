@@ -2,6 +2,10 @@
 
 ------------
 
+## 1.1.2
+
+`improved` update moment to 2.9.0
+
 ## 1.1.1
 
 `fixed` 修复自定义 format 导致日期选择和显示出错的问题。
@@ -24,7 +28,6 @@
 ## 0.8.5
 
 `tag:improved` update arale/overlay to 1.0.1
-
 `tag:improved` update moment to 2.0.0
 
 ## 0.8.4
