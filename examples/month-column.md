@@ -14,10 +14,9 @@ right: 10%;
 
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    var month = new Calendar.MonthColumn({});
-    month.show();
-});
+var Calendar = require('arale-calendar');
+var month = new Calendar.MonthColumn({});
+month.show();
 ````
 
 

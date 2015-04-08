@@ -13,9 +13,8 @@
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    new Calendar({trigger: '#date-nothing'});
-});
+var Calendar = require('arale-calendar');
+new Calendar({trigger: '#date-nothing'});
 ````
 
 ## Set language later
@@ -27,23 +26,22 @@ seajs.use('../index', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    var lang = {
-        'Su': '日', 'Mo': '月', 'Tu': '火', 'We': '水', 'Th': '木',
-        'Fr': '金', 'Sa': '土',
-        'Jan': '1月', 'Feb': '2月', 'Mar': '3月', 'Apr': '4月',
-        'May': '5月', 'Jun': '6月', 'Jul': '7月', 'Aug': '8月',
-        'Sep': '9月', 'Oct': '10月', 'Nov': '11月', 'Dec': '12月'
-    };
-    new Calendar({
-        trigger: '#date-lang',
-        lang: lang,
-        align: {
-          selfXY: [0, 0],
-          baseElement: '#date-lang',
-          baseXY: [0, '100%+20']
-        }
-    });
+var Calendar = require('arale-calendar');
+var lang = {
+    'Su': '日', 'Mo': '月', 'Tu': '火', 'We': '水', 'Th': '木',
+    'Fr': '金', 'Sa': '土',
+    'Jan': '1月', 'Feb': '2月', 'Mar': '3月', 'Apr': '4月',
+    'May': '5月', 'Jun': '6月', 'Jul': '7月', 'Aug': '8月',
+    'Sep': '9月', 'Oct': '10月', 'Nov': '11月', 'Dec': '12月'
+};
+new Calendar({
+    trigger: '#date-lang',
+    lang: lang,
+    align: {
+      selfXY: [0, 0],
+      baseElement: '#date-lang',
+      baseXY: [0, '100%+20']
+    }
 });
 ````
 
@@ -56,9 +54,8 @@ seajs.use('../index', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    new Calendar({trigger: '#date-focus-1', focus: '2012-12-12'});
-});
+var Calendar = require('arale-calendar');
+new Calendar({trigger: '#date-focus-1', focus: '2012-12-12'});
 ````
 
 另外，如果 `input` 框中有值，会将此值做为初始值：
@@ -68,9 +65,8 @@ seajs.use('../index', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    new Calendar({trigger: '#date-focus-2'});
-});
+var Calendar = require('arale-calendar');
+new Calendar({trigger: '#date-focus-2'});
 ````
 
 ## You can't select this date
@@ -82,11 +78,10 @@ seajs.use('../index', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    var cal = new Calendar({
-        trigger: '#date-disable-1',
-        range: ['2012-12-06', '2012-12-20']
-    });
+var Calendar = require('arale-calendar');
+var cal = new Calendar({
+    trigger: '#date-disable-1',
+    range: ['2012-12-06', '2012-12-20']
 });
 ````
 
@@ -97,11 +92,10 @@ seajs.use('../index', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    var cal = new Calendar({
-        trigger: '#date-disable-2',
-        range: [null, '2012-12-25']
-    });
+var Calendar = require('arale-calendar');
+var cal = new Calendar({
+    trigger: '#date-disable-2',
+    range: [null, '2012-12-25']
 });
 ````
 
@@ -112,16 +106,15 @@ seajs.use('../index', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    var cal = new Calendar({
-        trigger: '#date-disable-3',
-        range: function(date) {
-            if (date.day) {
-                return date.day() != 2;
-            }
-            return true;
+var Calendar = require('arale-calendar');
+var cal = new Calendar({
+    trigger: '#date-disable-3',
+    range: function(date) {
+        if (date.day) {
+            return date.day() != 2;
         }
-    });
+        return true;
+    }
 });
 ````
 
@@ -135,9 +128,8 @@ seajs.use('../index', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    new Calendar({trigger: '#date-format', format: 'MM/DD/YYYY'});
-});
+var Calendar = require('arale-calendar');
+new Calendar({trigger: '#date-format', format: 'MM/DD/YYYY'});
 ````
 
 ## Day of the week
@@ -149,11 +141,10 @@ seajs.use('../index', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    // new Calendar({trigger: '#date-startday', startDay: 2});
-    // new Calendar({trigger: '#date-startday', startDay: 'Wed'});
-    new Calendar({trigger: '#date-startday', startDay: 'Wednesday'});
-});
+var Calendar = require('arale-calendar');
+// new Calendar({trigger: '#date-startday', startDay: 2});
+// new Calendar({trigger: '#date-startday', startDay: 'Wed'});
+new Calendar({trigger: '#date-startday', startDay: 'Wednesday'});
 ````
 
 
@@ -166,9 +157,8 @@ seajs.use('../index', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    new Calendar({trigger: '#date-not-hide', hideOnSelect: false});
-});
+var Calendar = require('arale-calendar');
+new Calendar({trigger: '#date-not-hide', hideOnSelect: false});
 ````
 
 
@@ -182,9 +172,8 @@ seajs.use('../index', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    new Calendar({trigger: '#date-trigger', output: "#date-output"});
-});
+var Calendar = require('arale-calendar');
+new Calendar({trigger: '#date-trigger', output: "#date-output"});
 ````
 
 甚至都没有输入框。
@@ -195,9 +184,8 @@ seajs.use('../index', function(Calendar) {
 ````
 
 ````javascript
-seajs.use(['jquery', '../index'], function($, Calendar) {
-    new Calendar({trigger: '#date-trigger-2', output: '#date-output-2'});
-});
+var Calendar = require('arale-calendar');
+new Calendar({trigger: '#date-trigger-2', output: '#date-output-2'});
 ````
 
 
@@ -209,21 +197,20 @@ seajs.use(['jquery', '../index'], function($, Calendar) {
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    var t1 = '2012-01-01';
-    var t2 = '2015-01-01';
-    var c1 = new Calendar({trigger: '#start-cal', range: [t1, null]})
-    var c2 = new Calendar({trigger: '#end-cal', range: [null, t2]})
+var Calendar = require('arale-calendar');
+var t1 = '2012-01-01';
+var t2 = '2015-01-01';
+var c1 = new Calendar({trigger: '#start-cal', range: [t1, null]})
+var c2 = new Calendar({trigger: '#end-cal', range: [null, t2]})
+console.log(c1.get('focus').format('YYYY-MM-DD'), c2.get('focus').format('YYYY-MM-DD'));
+
+c1.on('selectDate', function(date) {
     console.log(c1.get('focus').format('YYYY-MM-DD'), c2.get('focus').format('YYYY-MM-DD'));
+    c2.range([date, t2]);
+});
 
-    c1.on('selectDate', function(date) {
-        console.log(c1.get('focus').format('YYYY-MM-DD'), c2.get('focus').format('YYYY-MM-DD'));
-        c2.range([date, t2]);
-    });
-
-    c2.on('selectDate', function(date) {
-        c1.range([t1, date]);
-    });
+c2.on('selectDate', function(date) {
+    c1.range([t1, date]);
 });
 ````
 
@@ -234,22 +221,21 @@ seajs.use('../index', function(Calendar) {
 ````
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    var cal = new Calendar({
-        trigger: "#year-month-cal",
-        events: {
-          'click [data-role=current-month]': function(ev) {
-            this.renderContainer('months');
-          },
-          'click [data-role=current-year]': function(ev) {
-            this.renderContainer('years');
-          }
-        }
-    }).on('show selectYear', function() {
+var Calendar = require('arale-calendar');
+var cal = new Calendar({
+    trigger: "#year-month-cal",
+    events: {
+      'click [data-role=current-month]': function(ev) {
         this.renderContainer('months');
-    }).on('selectMonth', function(date) {
-        this.hide();
-        this.output(date.format('YYYY-MM'));
-    });
+      },
+      'click [data-role=current-year]': function(ev) {
+        this.renderContainer('years');
+      }
+    }
+}).on('show selectYear', function() {
+    this.renderContainer('months');
+}).on('selectMonth', function(date) {
+    this.hide();
+    this.output(date.format('YYYY-MM'));
 });
 ````

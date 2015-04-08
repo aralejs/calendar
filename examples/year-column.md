@@ -14,10 +14,9 @@ right: 10%;
 
 
 ````javascript
-seajs.use('../index', function(Calendar) {
-    var year = new Calendar.YearColumn({range: [2012]});
-    year.show();
-});
+var Calendar = require('arale-calendar');
+var year = new Calendar.YearColumn({range: [2012]});
+year.show();
 ````
 
 ## Attributes
