@@ -31,12 +31,12 @@ var MonthColumn = BaseColumn.extend({
   },
 
   prev: function() {
-    var focus = this.get('focus').add('months', -1);
+    var focus = this.get('focus').add(-1, 'months');
     return this._sync(focus);
   },
 
   next: function() {
-    var focus = this.get('focus').add('months', 1);
+    var focus = this.get('focus').add(1, 'months');
     return this._sync(focus);
   },
 

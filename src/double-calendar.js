@@ -65,7 +65,7 @@ var Calendar = BaseCalendar.extend({
 
     this.startDates = new DateColumn(attrs);
 
-    attrs['focus'] = focus.clone().add('months', 1);
+    attrs['focus'] = focus.clone().add(1, 'months');
     this.endDates = new DateColumn(attrs);
 
     this.element.find('.ui-calendar-start .ui-calendar-container').append(this.startDates.element);
@@ -93,7 +93,7 @@ var Calendar = BaseCalendar.extend({
     startYear.text(focus.year());
 
     focus = focus.clone();
-    focus.add('months', 1)
+    focus.add(1, 'months')
 
     month = MONTHS[focus.month()];
     month = lang[month] || month;
