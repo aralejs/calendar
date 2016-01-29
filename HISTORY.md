@@ -2,6 +2,9 @@
 
 ------------
 
+## 1.2.3
+完成calendar版本升级
+
 ## 1.1.2
 
 `improved` update moment to 2.9.0
