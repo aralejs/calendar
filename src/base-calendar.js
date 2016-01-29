@@ -1,6 +1,6 @@
-var $ = require('jquery');
-var Position = require('position');
-var moment = require('moment');
+var $ = require('spm-jquery');
+var Position = require('spm-position');
+var moment = require('spm-moment');
 var Widget = require('arale-widget');
 var Shim = require('arale-iframe-shim');
 

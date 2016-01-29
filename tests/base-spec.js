@@ -1,6 +1,6 @@
-var expect = require('expect.js');
+var expect = require('spm-expect.js');
 var BaseColumn = require('../index').BaseColumn;
-var moment = require('moment');
+var moment = require('spm-moment');
 var cal;
 
 describe('Base Column', function() {

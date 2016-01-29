@@ -1,7 +1,7 @@
-var expect = require('expect.js');
-var sinon = require('sinon');
+var expect = require('spm-expect.js');
+var sinon = require('spm-sinon');
 var DateColumn = require('../index').DateColumn;
-var moment = require('moment');
+var moment = require('spm-moment');
 var cal;
 
 describe('Date Column', function() {

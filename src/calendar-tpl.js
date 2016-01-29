@@ -1,4 +1,4 @@
-var Handlebars = require('handlebars-runtime');
+var Handlebars = require('spm-handlebars-runtime');
 var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 
 module.exports = template(function (Handlebars,depth0,helpers,partials,data) {

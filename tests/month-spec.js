@@ -1,7 +1,7 @@
-var expect = require('expect.js');
+var expect = require('spm-expect.js');
 var MonthColumn = require('../index').MonthColumn;
-var moment = require('moment');
-var sinon = require('sinon');
+var moment = require('spm-moment');
+var sinon = require('spm-sinon');
 var cal;
 
 describe('Month Column', function() {

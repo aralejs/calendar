@@ -1,5 +1,5 @@
-var $ = require('jquery');
-var moment = require('moment');
+var $ = require('spm-jquery');
+var moment = require('spm-moment');
 var BaseColumn = require('./base-column');
 
 var MonthColumn = BaseColumn.extend({

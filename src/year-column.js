@@ -1,4 +1,4 @@
-var $ = require('jquery');
+var $ = require('spm-jquery');
 var BaseColumn = require('./base-column');
 
 var YearColumn = BaseColumn.extend({

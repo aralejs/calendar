@@ -1,7 +1,7 @@
-var $ = require('jquery');
-var expect = require('expect.js');
-var sinon = require('sinon');
-var moment = require('moment');
+var $ = require('spm-jquery');
+var expect = require('spm-expect.js');
+var sinon = require('spm-sinon');
+var moment = require('spm-moment');
 var Calendar = require('../index');
 var cal;
 
