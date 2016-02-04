@@ -47,13 +47,13 @@ var DateColumn = BaseColumn.extend({
 
   prev: function() {
     var prev = this.get('focus').format(this.get('format'));
-    var focus = this.get('focus').add('days', -1);
+    var focus = this.get('focus').add(-1, 'days');
     return this._sync(focus, prev);
   },
 
   next: function() {
     var prev = this.get('focus').format(this.get('format'));
-    var focus = this.get('focus').add('days', 1);
+    var focus = this.get('focus').add(1, 'days');
     return this._sync(focus, prev);
   },
 
@@ -163,8 +163,8 @@ function createDateModel(current, startDay, range, fn, format) {
 
   // reset to the first date of the month
   var currentMonth = current.clone().date(1);
-  var previousMonth = currentMonth.clone().add('months', -1);
-  var nextMonth = currentMonth.clone().add('months', 1);
+  var previousMonth = currentMonth.clone().add(-1, 'months');
+  var nextMonth = currentMonth.clone().add(1, 'months');
 
   // Calculate days of previous month
   // that should be on current month's sheet

@@ -30,12 +30,12 @@ var YearColumn = BaseColumn.extend({
   },
 
   prev: function() {
-    var focus = this.get('focus').add('years', -1);
+    var focus = this.get('focus').add(-1, 'years');
     return this._sync(focus);
   },
 
   next: function() {
-    var focus = this.get('focus').add('years', 1);
+    var focus = this.get('focus').add(1, 'years');
     return this._sync(focus);
   },
 
